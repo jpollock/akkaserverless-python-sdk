@@ -1,0 +1,91 @@
+// Copyright 2021 Lightbend Inc.
+
+// gRPC interface for common messages and services for value-based Entity user functions.
+
+syntax = "proto3";
+
+package akkaserverless.component.valueentity;
+
+option go_package = "github.com/lightbend/akkaserverless-go-sdk/akkaserverless/entity;entity";
+option java_package = "com.akkaserverless.protocol";
+
+import "akkaserverless/component/component.proto";
+import "akkaserverless/component/entity/entity.proto";
+import "google/protobuf/any.proto";
+
+// Service that the SDK (in the user function) implements to make event-sourced
+// entities available to the proxy
+service ValueEntities {
+  // One stream will be established per active entity. Once established, the
+  // first message sent will be Init, which contains the entity ID, and, a state
+  // if the entity has previously persisted one. Once the Init message is sent,
+  // one to many commands are sent to the entity. Each request coming in leads
+  // to a new command being sent to the entity. The entity is expected to reply
+  // to each command with exactly one reply message. The entity should process
+  // commands and reply to commands in the order they came in. When processing a
+  // command the entity can read and persist (update or delete) the state.
+  rpc Handle(stream ValueEntityStreamIn) returns (stream ValueEntityStreamOut);
+}
+
+// Input message type for the gRPC stream in.
+message ValueEntityStreamIn {
+  oneof message {
+    ValueEntityInit init = 1;
+    entity.Command command = 2;
+  }
+}
+
+// The init message. This will always be the first message sent to the entity
+// when it is loaded.
+message ValueEntityInit {
+  // The name of the service that implements this entity.
+  string service_name = 1;
+  // The id of the entity.
+  string entity_id = 2;
+  // The initial state of the entity.
+  ValueEntityInitState state = 3;
+}
+
+// The state of the entity when it is first activated.
+message ValueEntityInitState {
+  // The value of the entity state, if the entity has already been created.
+  google.protobuf.Any value = 1;
+}
+
+// Output message type for the gRPC stream out.
+message ValueEntityStreamOut {
+  oneof message {
+    ValueEntityReply reply = 1;
+    Failure failure = 2;
+  }
+}
+
+// A reply to a command.
+message ValueEntityReply {
+  // The command being replied to
+  int64 command_id = 1;
+  // The action to take for the client response
+  ClientAction client_action = 2;
+  // Any side effects to perform
+  repeated SideEffect side_effects = 3;
+  // The action to take on the value entity
+  ValueEntityAction state_action = 4;
+}
+
+// An action to take for changing the entity state.
+message ValueEntityAction {
+  oneof action {
+    ValueEntityUpdate update = 1;
+    ValueEntityDelete delete = 2;
+  }
+}
+
+// An action which updates the persisted value of the Value entity. If the
+// entity is not yet persisted, it will be created.
+message ValueEntityUpdate {
+  // The value to set.
+  google.protobuf.Any value = 1;
+}
+
+// An action which deletes the persisted value of the Value entity.
+message ValueEntityDelete {}

@@ -1,0 +1,37 @@
+// Copyright 2021 Lightbend Inc.
+
+// gRPC interface for messages shared across eventsourced and value entities
+
+syntax = "proto3";
+
+package akkaserverless.component.entity;
+
+option go_package = "github.com/lightbend/akkaserverless-go-sdk/akkaserverless/protocol;protocol";
+option java_package = "com.akkaserverless.protocol";
+
+import "akkaserverless/component/component.proto";
+import "google/protobuf/any.proto";
+
+// A command. For each command received, a reply must be sent with a matching
+// command id.
+message Command {
+  // The ID of the entity instance this command is addressed to
+  string entity_id = 1;
+  // A command id.
+  int64 id = 2;
+  // Command name
+  string name = 3;
+  // The command payload.
+  google.protobuf.Any payload = 4;
+  // Whether the command is streamed or not.
+  bool streamed = 5;
+  // The command metadata.
+  //
+  // Not all transports support per message metadata, for example, gRPC doesn't.
+  // The Akka Serverless proxy MAY include metadata from other locations in this
+  // case, for example, in gRPC, a unary call MAY have the HTTP request headers
+  // attached to the command, while a streamed call MAY have the HTTP request
+  // headers attached as the metadata for either the first command, or every
+  // command. This specification leaves this behavior undefined.
+  Metadata metadata = 6;
+}
