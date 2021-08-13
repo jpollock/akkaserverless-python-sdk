@@ -59,6 +59,7 @@ class AkkaServerlessEventSourcedServicer(EventSourcedEntitiesServicer):
                     entity = self.event_sourced_entities[service_name]
                     handler = EventSourcedHandler(entity)
                     current_state = handler.init_state(entity_id)
+
                     initiated = True
                     if init.HasField("snapshot"):
                         event_sourced_snapshot: EventSourcedSnapshot = init.snapshot
@@ -86,7 +87,6 @@ class AkkaServerlessEventSourcedServicer(EventSourcedEntitiesServicer):
                 start_sequence_number = event.sequence
                 if event_result:
                     current_state = event_result
-                pprint("Handling event {}".format(event))
             elif request.HasField("command"):
                 command: Command = request.command
                 cmd = get_payload(command)
@@ -114,8 +114,8 @@ class AkkaServerlessEventSourcedServicer(EventSourcedEntitiesServicer):
                             event,
                             EventContext(entity_id, start_sequence_number + number),
                         )
-                        if event_result:
-                            current_state = event_result
+                        #if event_result:
+                        #    current_state = event_result
                         snapshot_every = handler.entity.snapshot_every
                         perform_snapshot = (snapshot_every > 0) and (
                             perform_snapshot or (sequence_number % snapshot_every == 0)
@@ -128,6 +128,7 @@ class AkkaServerlessEventSourcedServicer(EventSourcedEntitiesServicer):
                         )
 
                     event_sourced_reply.side_effects.extend(ctx.effects)
+                    
                     event_sourced_reply.events.extend(
                         [pack(event) for event in ctx.events]
                     )
@@ -136,6 +137,7 @@ class AkkaServerlessEventSourcedServicer(EventSourcedEntitiesServicer):
 
                 output = EventSourcedStreamOut()
                 output.reply.CopyFrom(event_sourced_reply)
+                
                 yield output
 
             else:

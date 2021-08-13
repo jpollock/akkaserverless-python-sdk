@@ -17,6 +17,8 @@ from akkaserverless.akkaserverless.protocol import discovery_pb2
 from akkaserverless.action_protocol_entity import Action
 from akkaserverless.akkaserverless.protocol.discovery_pb2_grpc import DiscoveryServicer
 from akkaserverless.event_sourced_entity import EventSourcedEntity
+from akkaserverless.value_entity import ValueEntity
+from akkaserverless.view import View
 
 logger = getLogger()
 
@@ -26,18 +28,29 @@ class AkkaServerlessEntityDiscoveryServicer(DiscoveryServicer):
     #components: List[Component]
     #action_protocol_entities: List[Action]
     event_sourced_entities: List[EventSourcedEntity]
+    value_entities: List[ValueEntity]
+    views: List[View]
     action_protocol_entities: List[Action]
+    
 
 
     def Discover(self, request, context):
         logger.info("discovering.")
         pprint(request)
         descriptor_set = FileDescriptorSet()
-        for entity in self.event_sourced_entities + self.action_protocol_entities:
+        for entity in self.event_sourced_entities + self.value_entities + self.action_protocol_entities:
             logger.info(f"entity: {entity.name()}")
             for descriptor in entity.file_descriptors:
                 logger.info(f"discovering {descriptor.name}")
                 logger.info(f"SD: {entity.service_descriptor.full_name}")
+                from_string = FileDescriptorProto.FromString(descriptor.serialized_pb)
+                descriptor_set.file.append(from_string)
+
+        for view in self.views:
+            logger.info(f"view: {view.name()}")
+            for descriptor in view.file_descriptors:
+                logger.info(f"discovering {descriptor.name}")
+                logger.info(f"SD: {view.service_descriptor.full_name}")
                 from_string = FileDescriptorProto.FromString(descriptor.serialized_pb)
                 descriptor_set.file.append(from_string)
 
@@ -117,11 +130,20 @@ class AkkaServerlessEntityDiscoveryServicer(DiscoveryServicer):
                     entity=discovery_pb2.EntitySettings(entity_type=entity.entity_type)
                 )
                 for entity in self.event_sourced_entities
+                  + self.value_entities
                 + self.action_protocol_entities
             ],
             proto=descriptor_set.SerializeToString(),
         )
         
+        # handling views; has to be a way to do this differently, as part of above
+        spec.components.extend(
+            discovery_pb2.Component(
+                component_type=entity.component_type(),
+                service_name=entity.service_descriptor.full_name,
+            )
+            for entity in self.views
+        )
         return spec
 
     def ReportError(self, request, context):
