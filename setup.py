@@ -54,9 +54,9 @@ print(f"packages: {packages}")
 setup(
     name=name,
     version=version,
-    url="https://github.com/akkaserverlessio/python-support",
+    url="https://github.com/jpollock/akkaserverless-python-sdk",
     license="Apache 2.0",
-    description="Cloudstate Python Support Library",
+    description="Akka Serverless Python Support Library",
     packages=packages,
     package_data={
         "": ["*.proto"],
@@ -82,3 +82,4 @@ setup(
         "build_py": FetchBuildProtosCommand,
     },
 )
+
