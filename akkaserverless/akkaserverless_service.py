@@ -86,14 +86,7 @@ class AkkaServerlessService:
         )
 
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=self.__workers))
-        '''
-        add_DiscoveryServicer_to_server(
-            AkkaServerlessEntityDiscoveryServicer(
-                self.__event_sourced_entities, self.__value_entities, self.__action_protocol_entities)
-            ),
-            server,
-        )
-        '''
+
         add_DiscoveryServicer_to_server(
             AkkaServerlessEntityDiscoveryServicer(
                 self.__event_sourced_entities, self.__value_entities, self.__views, self.__action_protocol_entities
@@ -111,12 +104,12 @@ class AkkaServerlessService:
             server,
         )
         
-        logging.info("Starting Cloudstate on address %s", self.__address)
+        logging.info("Starting Akka Serverless on address %s", self.__address)
         try:
             server.add_insecure_port(self.__address)
             server.start()
             server.wait_for_termination()
         except IOError as e:
-            logging.error("Error on start Cloudstate %s", e.__cause__)
+            logging.error("Error on start Akka Serverless %s", e.__cause__)
         
         return server
