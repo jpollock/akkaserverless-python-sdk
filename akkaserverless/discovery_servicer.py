@@ -13,28 +13,44 @@ from google.protobuf.descriptor_pb2 import FileDescriptorProto, FileDescriptorSe
 from google.protobuf.descriptor_pool import Default
 from google.protobuf.empty_pb2 import Empty
 
-from cloudstate import entity_pb2
-from cloudstate.action_protocol_entity import Action
-from cloudstate.entity_pb2_grpc import EntityDiscoveryServicer
-from cloudstate.event_sourced_entity import EventSourcedEntity
+from akkaserverless.akkaserverless.protocol import discovery_pb2
+from akkaserverless.action_protocol_entity import Action
+from akkaserverless.akkaserverless.protocol.discovery_pb2_grpc import DiscoveryServicer
+from akkaserverless.event_sourced_entity import EventSourcedEntity
+from akkaserverless.value_entity import ValueEntity
+from akkaserverless.view import View
 
 logger = getLogger()
 
 
 @dataclass
-class CloudStateEntityDiscoveryServicer(EntityDiscoveryServicer):
+class AkkaServerlessEntityDiscoveryServicer(DiscoveryServicer):
+    #components: List[Component]
+    #action_protocol_entities: List[Action]
     event_sourced_entities: List[EventSourcedEntity]
+    value_entities: List[ValueEntity]
+    views: List[View]
     action_protocol_entities: List[Action]
+    
 
-    def discover(self, request, context):
+
+    def Discover(self, request, context):
         logger.info("discovering.")
         pprint(request)
         descriptor_set = FileDescriptorSet()
-        for entity in self.event_sourced_entities + self.action_protocol_entities:
+        for entity in self.event_sourced_entities + self.value_entities + self.action_protocol_entities:
             logger.info(f"entity: {entity.name()}")
             for descriptor in entity.file_descriptors:
                 logger.info(f"discovering {descriptor.name}")
                 logger.info(f"SD: {entity.service_descriptor.full_name}")
+                from_string = FileDescriptorProto.FromString(descriptor.serialized_pb)
+                descriptor_set.file.append(from_string)
+
+        for view in self.views:
+            logger.info(f"view: {view.name()}")
+            for descriptor in view.file_descriptors:
+                logger.info(f"discovering {descriptor.name}")
+                logger.info(f"SD: {view.service_descriptor.full_name}")
                 from_string = FileDescriptorProto.FromString(descriptor.serialized_pb)
                 descriptor_set.file.append(from_string)
 
@@ -45,12 +61,22 @@ class CloudStateEntityDiscoveryServicer(EntityDiscoveryServicer):
         )
         descriptor_set.file.append(
             FileDescriptorProto.FromString(
-                Default().FindFileByName("cloudstate/entity_key.proto").serialized_pb
+                Default().FindFileByName("akkaserverless/eventing.proto").serialized_pb
             )
         )
         descriptor_set.file.append(
             FileDescriptorProto.FromString(
-                Default().FindFileByName("cloudstate/eventing.proto").serialized_pb
+                Default().FindFileByName("akkaserverless/annotations.proto").serialized_pb
+            )
+        )
+        descriptor_set.file.append(
+            FileDescriptorProto.FromString(
+                Default().FindFileByName("akkaserverless/component.proto").serialized_pb
+            )
+        )
+        descriptor_set.file.append(
+            FileDescriptorProto.FromString(
+                Default().FindFileByName("akkaserverless/views.proto").serialized_pb
             )
         )
         descriptor_set.file.append(
@@ -70,18 +96,21 @@ class CloudStateEntityDiscoveryServicer(EntityDiscoveryServicer):
                 Default().FindFileByName("google/api/http.proto").serialized_pb
             )
         )
+        '''
         descriptor_set.file.append(
             FileDescriptorProto.FromString(
                 Default().FindFileByName("google/api/httpbody.proto").serialized_pb
             )
         )
+        '''
         descriptor_set.file.append(
             FileDescriptorProto.FromString(
                 Default().FindFileByName("google/protobuf/any.proto").serialized_pb
             )
         )
-        spec = entity_pb2.EntitySpec(
-            service_info=entity_pb2.ServiceInfo(
+        
+        spec = discovery_pb2.Spec(
+            service_info=discovery_pb2.ServiceInfo(
                 service_name="",
                 service_version="0.1.0",
                 service_runtime="Python "
@@ -91,23 +120,33 @@ class CloudStateEntityDiscoveryServicer(EntityDiscoveryServicer):
                 + " "
                 + platform.python_compiler()
                 + "]",
-                support_library_name="cloudstate-python-support",
-                support_library_version="0.1.0",
+                support_library_name="akkaserverless-python-support",
+                support_library_version="0.0.1",
             ),
-            entities=[
-                entity_pb2.Entity(
-                    entity_type=entity.entity_type(),
+            components=[
+                discovery_pb2.Component(
+                    component_type=entity.component_type(),
                     service_name=entity.service_descriptor.full_name,
-                    persistence_id=entity.persistence_id,
+                    entity=discovery_pb2.EntitySettings(entity_type=entity.entity_type)
                 )
                 for entity in self.event_sourced_entities
+                  + self.value_entities
                 + self.action_protocol_entities
             ],
             proto=descriptor_set.SerializeToString(),
         )
+        
+        # handling views; has to be a way to do this differently, as part of above
+        spec.components.extend(
+            discovery_pb2.Component(
+                component_type=entity.component_type(),
+                service_name=entity.service_descriptor.full_name,
+            )
+            for entity in self.views
+        )
         return spec
 
-    def reportError(self, request, context):
+    def ReportError(self, request, context):
         logger.error(f"Report error: {request}")
         pprint(request)
         return Empty()

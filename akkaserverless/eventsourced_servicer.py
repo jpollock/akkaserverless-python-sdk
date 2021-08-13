@@ -9,35 +9,36 @@ from typing import List
 
 from google.protobuf import symbol_database as _symbol_database
 
-from cloudstate.entity_pb2 import Command
-from cloudstate.event_sourced_context import (
+from akkaserverless.akkaserverless.component.entity.entity_pb2 import Command
+from akkaserverless.event_sourced_context import (
     EventContext,
     EventSourcedCommandContext,
     SnapshotContext,
 )
-from cloudstate.event_sourced_entity import EventSourcedEntity, EventSourcedHandler
-from cloudstate.event_sourced_pb2 import (
+from akkaserverless.event_sourced_entity import EventSourcedEntity, EventSourcedHandler
+from akkaserverless.event_sourced_entity import EventSourcedEntity, EventSourcedHandler
+from akkaserverless.akkaserverless.component.eventsourcedentity.event_sourced_entity_pb2 import (
     EventSourcedEvent,
     EventSourcedInit,
     EventSourcedReply,
     EventSourcedSnapshot,
     EventSourcedStreamOut,
 )
-from cloudstate.event_sourced_pb2_grpc import EventSourcedServicer
-from cloudstate.utils.payload_utils import get_payload, pack
+from akkaserverless.akkaserverless.component.eventsourcedentity.event_sourced_entity_pb2_grpc import EventSourcedEntitiesServicer
+from akkaserverless.utils.payload_utils import get_payload, pack
 
 _sym_db = _symbol_database.Default()
 
 TYPE_URL_PREFIX = "type.googleapis.com/"
 
 
-class CloudStateEventSourcedServicer(EventSourcedServicer):
+class AkkaServerlessEventSourcedServicer(EventSourcedEntitiesServicer):
     def __init__(self, event_sourced_entities: List[EventSourcedEntity]):
         self.event_sourced_entities = {
             entity.name(): entity for entity in event_sourced_entities
         }
 
-    def handle(self, request_iterator, context):
+    def Handle(self, request_iterator, context):
         initiated = False
         current_state = None
         handler: EventSourcedHandler = None
@@ -58,6 +59,7 @@ class CloudStateEventSourcedServicer(EventSourcedServicer):
                     entity = self.event_sourced_entities[service_name]
                     handler = EventSourcedHandler(entity)
                     current_state = handler.init_state(entity_id)
+
                     initiated = True
                     if init.HasField("snapshot"):
                         event_sourced_snapshot: EventSourcedSnapshot = init.snapshot
@@ -85,7 +87,6 @@ class CloudStateEventSourcedServicer(EventSourcedServicer):
                 start_sequence_number = event.sequence
                 if event_result:
                     current_state = event_result
-                pprint("Handling event {}".format(event))
             elif request.HasField("command"):
                 command: Command = request.command
                 cmd = get_payload(command)
@@ -113,8 +114,8 @@ class CloudStateEventSourcedServicer(EventSourcedServicer):
                             event,
                             EventContext(entity_id, start_sequence_number + number),
                         )
-                        if event_result:
-                            current_state = event_result
+                        #if event_result:
+                        #    current_state = event_result
                         snapshot_every = handler.entity.snapshot_every
                         perform_snapshot = (snapshot_every > 0) and (
                             perform_snapshot or (sequence_number % snapshot_every == 0)
@@ -127,6 +128,7 @@ class CloudStateEventSourcedServicer(EventSourcedServicer):
                         )
 
                     event_sourced_reply.side_effects.extend(ctx.effects)
+                    
                     event_sourced_reply.events.extend(
                         [pack(event) for event in ctx.events]
                     )
@@ -135,6 +137,7 @@ class CloudStateEventSourcedServicer(EventSourcedServicer):
 
                 output = EventSourcedStreamOut()
                 output.reply.CopyFrom(event_sourced_reply)
+                
                 yield output
 
             else:

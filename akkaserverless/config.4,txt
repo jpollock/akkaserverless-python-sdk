@@ -1,0 +1,28 @@
+# Configuration for using an in memory journal and snapshot store
+include classpath("in-memory.conf")
+
+akkaserverless.proxy {
+  dev-mode-enabled = true
+  protocol-compatibility-check = false
+  eventing {
+    support = "logging"
+//    support = "google-pubsub" // for testing with local emulator
+
+    # If using pub sub assume that it is the emulator
+    google-pubsub {
+      host = "localhost"
+      port = 8085
+      rootCa = "none"
+      callCredentials = "none"
+      project-id = "test"
+//      manage-topics-and-subscriptions = "manually"
+      manage-topics-and-subscriptions = "by-proxy"
+    }
+  }
+}
+
+
+get roadmap -
+eng discussion 
+
+moving - 

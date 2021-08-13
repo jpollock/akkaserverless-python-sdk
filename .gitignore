@@ -16,3 +16,5 @@ venv
 protobuf/frontend
 protobuf/protocol
 protobuf/example/shoppingcart
+akkaserverless/akkaserverless
+akkaserverless/google

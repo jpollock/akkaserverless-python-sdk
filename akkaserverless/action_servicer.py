@@ -10,19 +10,19 @@ import grpc
 from google.protobuf import symbol_database as _symbol_database
 from grpc._server import _RequestIterator
 
-from cloudstate.action_context import ActionContext
-from cloudstate.action_pb2 import ActionCommand, ActionResponse
-from cloudstate.action_pb2_grpc import ActionProtocolServicer
-from cloudstate.action_protocol_entity import Action, ActionHandler
-from cloudstate.entity_pb2 import ClientAction
-from cloudstate.utils.payload_utils import get_payload
+from akkaserverless.action_context import ActionContext
+from akkaserverless.akkaserverless.component.action.action_pb2 import ActionCommand, ActionResponse
+from akkaserverless.akkaserverless.component.action.action_pb2_grpc import ActionsServicer
+from akkaserverless.action_protocol_entity import Action, ActionHandler
+from akkaserverless.akkaserverless.component.component_pb2 import ClientAction
+from akkaserverless.utils.payload_utils import get_payload
 
 _sym_db = _symbol_database.Default()
 
 TYPE_URL_PREFIX = "type.googleapis.com/"
 
 
-class CloudStateActionProtocolServicer(ActionProtocolServicer):
+class AkkaServerlessActionProtocolServicer(ActionsServicer):
     def __init__(self, action_protocol_entities: List[Action]):
         self.action_protocol_entities = {
             entity.name(): entity for entity in action_protocol_entities

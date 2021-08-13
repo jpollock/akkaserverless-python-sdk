@@ -10,8 +10,9 @@ from typing import Callable, List, MutableMapping
 
 from google.protobuf import descriptor as _descriptor
 
-from cloudstate.action_context import ActionContext
-from cloudstate.action_pb2 import _ACTIONPROTOCOL
+from akkaserverless.action_context import ActionContext
+from akkaserverless.akkaserverless.component.action.action_pb2 import _ACTIONS
+
 
 
 @dataclass
@@ -28,7 +29,7 @@ class Action:
         return self.name()
 
     def entity_type(self):
-        return _ACTIONPROTOCOL.full_name
+        return _ACTIONS.full_name
 
     def unary_handler(self, name: str):
         def register_unary_handler(function):

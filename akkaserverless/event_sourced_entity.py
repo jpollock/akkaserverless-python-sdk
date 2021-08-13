@@ -9,18 +9,18 @@ from typing import Any, Callable, List, MutableMapping
 
 from google.protobuf import descriptor as _descriptor
 
-from cloudstate.event_sourced_context import (
+from akkaserverless.event_sourced_context import (
     EventContext,
     EventSourcedCommandContext,
     SnapshotContext,
 )
-from cloudstate.event_sourced_pb2 import _EVENTSOURCED
 
 
 @dataclass
 class EventSourcedEntity:
     service_descriptor: _descriptor.ServiceDescriptor
     file_descriptors: List[_descriptor.FileDescriptor]
+    entity_type: str
     init_state: Callable[[str], Any]
     persistence_id: str = None
     snapshot_every: int = 0
@@ -33,8 +33,8 @@ class EventSourcedEntity:
         if not self.persistence_id:
             self.persistence_id = self.service_descriptor.full_name
 
-    def entity_type(self):
-        return _EVENTSOURCED.full_name
+    def component_type(self):
+        return "akkaserverless.component.eventsourcedentity.EventSourcedEntities" #_EVENTSOURCEDINIT.full_name
 
     def snapshot(self):
         def register_snapshot(function: Callable[[Any], Any]):
@@ -122,9 +122,36 @@ class EventSourcedEntity:
     def name(self):
         return self.service_descriptor.full_name
 
-
 def invoke(function, parameters):
     ordered_parameters = []
+
+    t = inspect.signature(function)
+
+    for parameter_definition in inspect.signature(function).parameters.values():
+        annotation = parameter_definition.annotation
+        if annotation == inspect._empty:
+            raise Exception(
+                f"Cannot inject parameter {parameter_definition.name} of function "
+                f"{function}: Missing type annotation"
+            )
+
+        # this assumes parameter names specified in user function
+        if parameter_definition.name == 'state':
+            if isinstance(parameters[0], annotation):
+                ordered_parameters.append(parameters[0])
+        elif parameter_definition.name == 'event':
+            if isinstance(parameters[1], annotation):
+                ordered_parameters.append(parameters[1])
+        elif parameter_definition.name == 'command':
+            if isinstance(parameters[1], annotation):
+                ordered_parameters.append(parameters[1])
+        elif parameter_definition.name == 'context':
+            if isinstance(parameters[2], annotation):
+                ordered_parameters.append(parameters[2])
+
+    # The above is not the right solution likely. But the below was not addressing fact that two 
+    # parameters, named differently of course, could be of same type.
+    '''
     for parameter_definition in inspect.signature(function).parameters.values():
         annotation = parameter_definition.annotation
         if annotation == inspect._empty:
@@ -136,13 +163,16 @@ def invoke(function, parameters):
         for param in parameters:
             if isinstance(param, annotation):
                 match_found = True
-                ordered_parameters.append(param)
+                if param is not None:
+                    ordered_parameters.append(param)
+                
         if not match_found:
             raise Exception(
                 "Cannot inject parameter {} of function {}: No matching value".format(
                     parameter_definition.name, function
                 )
             )
+    '''
     return function(*ordered_parameters)
 
 

@@ -6,8 +6,8 @@ Licensed under the Apache License, Version 2.0.
 from dataclasses import dataclass, field
 from typing import Any, List
 
-from cloudstate.contexts import ClientActionContext
-from cloudstate.entity_pb2 import Forward, SideEffect
+from akkaserverless.contexts import ClientActionContext
+from akkaserverless.akkaserverless.component.component_pb2 import Forward, SideEffect
 
 
 @dataclass

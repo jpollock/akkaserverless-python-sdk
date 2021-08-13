@@ -8,8 +8,8 @@ import sys
 from dataclasses import dataclass, field
 from typing import List
 
-from cloudstate.contexts import ClientActionContext
-from cloudstate.entity_pb2 import Forward, SideEffect
+from akkaserverless.contexts import ClientActionContext
+from akkaserverless.akkaserverless.component.component_pb2 import Forward, SideEffect
 
 
 @dataclass

@@ -1,10 +1,10 @@
 # Python User Language Support
-Python User Language Support for [Cloudstate](https://github.com/cloudstateio/cloudstate).
+Python User Language Support for [Cloudstate](https://github.com/akkaserverlessio/akkaserverless).
 
 ## Installation via source
 
 ```
-> git clone https://github.com/cloudstateio/python-support.git
+> git clone https://github.com/akkaserverlessio/python-support.git
 Cloning into 'python-support'...
 
 > cd python-support
@@ -24,7 +24,7 @@ python setup.py bdist_wheel
 
 ### local install
 ```
-python -m pip install dist/cloudstate-<the version>-py3-none-any.whl
+python -m pip install dist/akkaserverless-<the version>-py3-none-any.whl
 ```
 
 ### build and run tck, including provisional tests for stateless functions. 

@@ -1,29 +1,16 @@
+Akka Serverless makes development and operation of high-performing stateful services enjoyable: it provides SDKs for building services, and a managed cloud platform for deploying them. The SDKs expose a simple programming model, available in popular programming languages, that eliminates the need for plumbing code to handle database access or connections. The managed platform relieves you from configuring and maintaining the orchestration platform, and the data stores. Akka Serverless auto-scales services, and handles network partitions and failures. It also gives clear visibility into the running system with unified and scalable logging and monitoring.
 
-Cloudstate is a specification, protocol, and reference implementation for providing distributed state management patterns suitable for **Serverless** computing. 
-The current supported and envisioned patterns include:
+Read more [here](https://developer.lightbend.com/docs/akka-serverless/index.html) and sign-up [here](https://console.akkaserverless.com/p/register#) for a free account. 
 
-* **Event Sourcing**
-* **Conflict-Free Replicated Data Types (CRDTs)**
-* **Key-Value storage**
-* **P2P messaging**
-* **CQRS read side projections**
+The Akka Serverless Python user language support is a library that implements the Akka Serverless protocol and offers an pythonistic API 
+for writing components that implement the types supported by the Akka Serverless protocol. It is a [Tier 3 SDK](https://developer.lightbend.com/docs/akka-serverless/reference/service-api-reference.html).
 
-Cloudstate is polyglot, which means that services can be written in any language that supports gRPC, 
-and with language specific libraries provided that allow idiomatic use of the patterns in each language. 
-Cloudstate can be used either by itself, in combination with a Service Mesh, 
-or it is envisioned that it will be integrated with other Serverless technologies such as [Knative](https://knative.dev/).
-
-Read more about the design, architecture, techniques, and technologies behind Cloudstate in [this section in the documentation](https://github.com/cloudstateio/cloudstate/blob/master/README.md#enter-cloudstate). 
-
-The Cloudstate Python user language support is a library that implements the Cloudstate protocol and offers an pythonistic API 
-for writing entities that implement the types supported by the Cloudstate protocol.
-
-The Cloudstate documentation can be found [here](https://cloudstate.io/docs/)
+The Akka Serverless documentation can be found [here](https://developer.lightbend.com/docs/akka-serverless/index.html)
 
 ## Install and update using pip:
 
 ```
-pip install -U cloudstate
+pip install -U akkaserverless
 ```
 
 ## A Simple EventSourced Example:
@@ -35,26 +22,26 @@ pip install -U cloudstate
 syntax = "proto3";
 
 import "google/protobuf/empty.proto";
-import "cloudstate/entity_key.proto";
+import "akkaserverless/annotations.proto";
 import "google/api/annotations.proto";
 import "google/api/http.proto";
 
 package com.example.shoppingcart;
 
 message AddLineItem {
-    string user_id = 1 [(.cloudstate.entity_key) = true];
+    string user_id = 1 [(akkaserverless.field).entity_key = true];
     string product_id = 2;
     string name = 3;
     int32 quantity = 4;
 }
 
 message RemoveLineItem {
-    string user_id = 1 [(.cloudstate.entity_key) = true];
+    string user_id = 1 [(akkaserverless.field).entity_key = true];
     string product_id = 2;
 }
 
 message GetShoppingCart {
-    string user_id = 1 [(.cloudstate.entity_key) = true];
+    string user_id = 1 [(akkaserverless.field).entity_key = true];
 }
 
 message LineItem {
@@ -102,7 +89,7 @@ Here is an example of how to compile the sample proto file:
 python -m grpc_tools.protoc -I../../protos --python_out=. --grpc_python_out=. ../../protos/shoppingcart.proto
 ```
 
-### 3. Implement your business logic under an EventSourced Cloudstate Entity
+### 3. Implement your business logic under an EventSourced Akka Serverless Entity
 
 ```
 from dataclasses import dataclass, field
@@ -110,8 +97,8 @@ from typing import MutableMapping
 
 from google.protobuf.empty_pb2 import Empty
 
-from cloudstate.event_sourced_context import EventSourcedCommandContext
-from cloudstate.event_sourced_entity import EventSourcedEntity
+from akkaserverless.event_sourced_context import EventSourcedCommandContext
+from akkaserverless.event_sourced_entity import EventSourcedEntity
 from shoppingcart.domain_pb2 import (Cart as DomainCart, LineItem as DomainLineItem, ItemAdded, ItemRemoved)
 from shoppingcart.shoppingcart_pb2 import (Cart, LineItem, AddLineItem, RemoveLineItem)
 from shoppingcart.shoppingcart_pb2 import (_SHOPPINGCART, DESCRIPTOR as FILE_DESCRIPTOR)
@@ -127,7 +114,7 @@ def init(entity_id: str) -> ShoppingCartState:
     return ShoppingCartState(entity_id)
 
 
-entity = EventSourcedEntity(_SHOPPINGCART, [FILE_DESCRIPTOR], init)
+entity = EventSourcedEntity(_SHOPPINGCART, [FILE_DESCRIPTOR], 'carts', init)
 
 
 def to_domain_line_item(item):
@@ -207,29 +194,30 @@ def remove_item(state: ShoppingCartState, item: RemoveLineItem, ctx: EventSource
 ### 4. Register Entity
 
 ```
-from cloudstate.cloudstate import CloudState
+from akkaserverless.akkaserverless_service import AkkaServerlessService
 from shoppingcart.shopping_cart_entity import entity as shopping_cart_entity
 import logging
 
 if __name__ == '__main__':
     logging.basicConfig()
-    CloudState().register_event_sourced_entity(shopping_cart_entity).start()
+    service = AkkaServerlessService()
+    service.add_component(shopping_cart_entity)
+    service.start()
+
 ```
 
 ### 5. Deployment
 
-Cloudstate runs on Docker and Kubernetes you need to package your application so that it works as a Docker container 
-and can deploy it together with Cloudstate Operator on Kubernetes, the details and examples of all of which can be found [here](https://code.visualstudio.com/docs/containers/quickstart-python), [here](https://github.com/cloudstateio/python-support/blob/master/shoppingcart/Dockerfile) and [here](https://cloudstate.io/docs/core/current/user/deployment/index.html).
+See [here](https://developer.lightbend.com/docs/akka-serverless/deploying/index.html) for deployment information.
 
 ## Contributing
 
-For guidance on setting up a development environment and how to make a contribution to Cloudstate, 
-see the contributing [project page](https://github.com/cloudstateio/python-support) or consult an official documentation [here](https://cloudstate.io/docs/).
+TODO
 
 ## Links
 
-* [Website](https://cloudstate.io/)
-* [Documentation](https://cloudstate.io/docs/)
-* [Releases](https://pypi.org/project/cloudstate/)
-* [Code](https://github.com/cloudstateio/python-support)
-* [Issue tracker](https://github.com/cloudstateio/python-support/issues)
+* [Website](https://https://www.lightbend.com/akka-serverless/)
+* [Documentation](https://developer.lightbend.com/docs/akka-serverless/)
+* [Releases](https://pypi.org/project/akkaserverless/)
+* [Code](https://github.com/jpollock/akkaserverless-python-sdk)
+* [Issue tracker](https://github.com/jpollock/akkaserverless-python-sdk/issues)
