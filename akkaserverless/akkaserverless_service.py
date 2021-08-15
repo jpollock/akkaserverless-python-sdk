@@ -113,3 +113,11 @@ class AkkaServerlessService:
             logging.error("Error on start Akka Serverless %s", e.__cause__)
         
         return server
+
+    def ProxyTerminated(self, request, context):
+        logger.info(f"Proxy Terminated: {request}")
+        return Empty()
+
+    def HealthCheck(self, request, context):
+        logger.info(f"Health Check: {request}")
+        return Empty()

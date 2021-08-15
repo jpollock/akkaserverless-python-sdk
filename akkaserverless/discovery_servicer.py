@@ -96,6 +96,8 @@ class AkkaServerlessEntityDiscoveryServicer(DiscoveryServicer):
             )
         )
         '''
+        # Commenting out below; not sure why it is causing a problem
+        '''
         descriptor_set.file.append(
             FileDescriptorProto.FromString(
                 Default().FindFileByName("google/api/httpbody.proto").serialized_pb
@@ -130,7 +132,6 @@ class AkkaServerlessEntityDiscoveryServicer(DiscoveryServicer):
                 )
                 for entity in self.event_sourced_entities
                   + self.value_entities
-                + self.action_protocol_entities
             ],
             proto=descriptor_set.SerializeToString(),
         )
@@ -141,7 +142,7 @@ class AkkaServerlessEntityDiscoveryServicer(DiscoveryServicer):
                 component_type=entity.component_type(),
                 service_name=entity.service_descriptor.full_name,
             )
-            for entity in self.views
+            for entity in self.views + self.action_protocol_entities
         )
         return spec
 

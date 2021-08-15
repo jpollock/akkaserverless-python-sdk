@@ -29,7 +29,7 @@ class AkkaServerlessActionProtocolServicer(ActionsServicer):
         }
         assert len(action_protocol_entities) == len(self.action_protocol_entities)
 
-    def handleUnary(self, request: ActionCommand, context):
+    def HandleUnary(self, request: ActionCommand, context):
         logging.info(f"handling unary {request} {context}.")
         if request.service_name in self.action_protocol_entities:
             service = self.action_protocol_entities[request.service_name]
@@ -57,7 +57,7 @@ class AkkaServerlessActionProtocolServicer(ActionsServicer):
                 action_reply.failure.CopyFrom(client_action.failure)
             return action_reply
 
-    def handleStreamed(self, request_iterator: _RequestIterator, context):
+    def HandleStreamed(self, request_iterator: _RequestIterator, context):
         peek = request_iterator.next()  # evidently, the first message has no payload
         # and is probably intended to prime the stream handler.
         if peek.service_name in self.action_protocol_entities:
@@ -91,7 +91,7 @@ class AkkaServerlessActionProtocolServicer(ActionsServicer):
             ctx.fail(str(ex))
             logging.exception("Failed to execute command:" + str(ex))
 
-    def handleStreamedIn(self, request_iterator, context):
+    def HandleStreamedIn(self, request_iterator, context):
         peek = request_iterator.next()  # evidently, the first message has no payload
         # and is probably intended to prime the stream handler.
         logging.debug(f"peeked: {peek}")
@@ -125,7 +125,7 @@ class AkkaServerlessActionProtocolServicer(ActionsServicer):
             ctx.fail(str(ex))
             logging.exception("Failed to execute command:" + str(ex))
 
-    def handleStreamedOut(self, request, context):
+    def HandleStreamedOut(self, request, context):
         if request.service_name in self.action_protocol_entities:
             handler = ActionHandler(self.action_protocol_entities[request.service_name])
         else:

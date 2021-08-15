@@ -28,8 +28,8 @@ class Action:
     def persistence_id(self):
         return self.name()
 
-    def entity_type(self):
-        return _ACTIONS.full_name
+    def component_type(self):
+        return "akkaserverless.component.action.Actions"
 
     def unary_handler(self, name: str):
         def register_unary_handler(function):
