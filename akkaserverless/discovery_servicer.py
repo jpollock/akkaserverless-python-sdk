@@ -26,7 +26,6 @@ logger = getLogger()
 @dataclass
 class AkkaServerlessEntityDiscoveryServicer(DiscoveryServicer):
     #components: List[Component]
-    #action_protocol_entities: List[Action]
     event_sourced_entities: List[EventSourcedEntity]
     value_entities: List[ValueEntity]
     views: List[View]
@@ -150,3 +149,12 @@ class AkkaServerlessEntityDiscoveryServicer(DiscoveryServicer):
         logger.error(f"Report error: {request}")
         pprint(request)
         return Empty()
+
+    def ProxyTerminated(self, request, context):
+        logger.info(f"Proxy Terminated: {request}")
+        return Empty()
+
+    def HealthCheck(self, request, context):
+        logger.info(f"Health Check: {request}")
+        return Empty()
+

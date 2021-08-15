@@ -62,8 +62,8 @@ setup(
         "": ["*.proto"],
         "": []
     },
-    long_description=open("Description.md", "r").read(),
-    long_description_content_type="text/markdown",
+    #long_description=open("Description.md", "r").read(),
+    #long_description_content_type="text/markdown",
     zip_safe=False,
     scripts=["scripts/fetch-akkaserverless-pb.sh"],
     install_requires=[
