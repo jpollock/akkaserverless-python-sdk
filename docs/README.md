@@ -1,6 +1,6 @@
-# Cloudstate Python documentation
+# Akka Serverless Python documentation
 
-The Cloudstate documentation is built using [Antora](https://antora.org) with Asciidoc sources.
+The Akka Serverless documentation is built using [Antora](https://antora.org) with Asciidoc sources.
 
 The build is defined in the [Makefile](Makefile) and requires `make`, `bash`, and `docker`.
 

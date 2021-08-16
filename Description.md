@@ -216,7 +216,7 @@ See [here](https://developer.lightbend.com/docs/akka-serverless/deploying/index.
 
 ## Contributing
 
-Located in CONTRIBUTORS.
+TODO
 
 ## Links
 

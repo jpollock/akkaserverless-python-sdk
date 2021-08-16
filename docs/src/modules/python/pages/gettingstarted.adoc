@@ -6,7 +6,7 @@ Install the current version:
 
 [source,sh,subs="attributes+"]
 ----
-pip install cloudstate=={cloudstate-python-version}
+pip install akkaserverless=={akkaserverless-python-version}
 ----
 
-See the https://pypi.org/project/cloudstate/[Cloudstate project on PyPI] for more information.
+See the https://pypi.org/project/akkaserverless/[Akka Serverless project on PyPI] for more information.

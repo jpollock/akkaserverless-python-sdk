@@ -5,9 +5,9 @@ Licensed under the Apache License, Version 2.0.
 
 import logging
 
-from cloudstate.cloudstate import CloudState
-from cloudstate.test.actiondemo.action_definition import definition, definition2
-from cloudstate.test.shoppingcart import shopping_cart_entity
+from akkaserverless.akkaserverless import AkkaServerlessService
+from akkaserverless.test.actiondemo.action_definition import definition, definition2
+from akkaserverless.test.shoppingcart import shopping_cart_entity
 
 logger = logging.getLogger()
 
@@ -15,7 +15,7 @@ logger = logging.getLogger()
 def run_test_server(
     run_shopping_cart: bool = True, run_function_demo: bool = True, port: int = 8080
 ):
-    server_builder = CloudState().host("0.0.0.0").port(str(port))
+    server_builder = AkkaServerlessService().host("0.0.0.0").port(str(port))
     if run_shopping_cart:
         logger.info("adding shoppingcart service")
         server_builder = server_builder.register_event_sourced_entity(
