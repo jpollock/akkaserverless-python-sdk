@@ -98,6 +98,7 @@ class AkkaServerlessEntityDiscoveryServicer(DiscoveryServicer):
         '''
         # Commenting out below; not sure why it is causing a problem
         '''
+        '''
         descriptor_set.file.append(
             FileDescriptorProto.FromString(
                 Default().FindFileByName("google/api/httpbody.proto").serialized_pb

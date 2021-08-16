@@ -12,6 +12,10 @@ The Akka Serverless documentation can be found [here](https://developer.lightben
 ```
 pip install -U akkaserverless
 ```
+## Use Starter App
+
+Visit https://github.com/jpollock/akka-serverless-starter-python to use that repository as a template. Simply click "Use this template". (Explanation for the process, general to Github, is [here](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/creating-a-repository-from-a-template)).
+
 
 ## A Simple EventSourced Example:
 
@@ -212,7 +216,7 @@ See [here](https://developer.lightbend.com/docs/akka-serverless/deploying/index.
 
 ## Contributing
 
-TODO
+Located in CONTRIBUTORS.
 
 ## Links
 
