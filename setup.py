@@ -73,7 +73,7 @@ setup(
         "grpcio>=1.31.0",
         "grpcio-tools>=1.31.0",
         "protobuf>=3.11.3",
-        "pytest>=5.4.2",
+        "pytest>=6.2.4",
         "six>=1.14.0",
         "grpcio-reflection>=1.31.0",
         "docker",
