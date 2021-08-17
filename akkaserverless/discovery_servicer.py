@@ -124,6 +124,8 @@ class AkkaServerlessEntityDiscoveryServicer(DiscoveryServicer):
                 + "]",
                 support_library_name="akkaserverless-python-support",
                 support_library_version="0.0.1",
+                protocol_major_version=0,
+                protocol_minor_version=7,
             ),
             components=[
                 discovery_pb2.Component(
