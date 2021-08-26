@@ -18,6 +18,7 @@ from akkaserverless.action_protocol_entity import Action
 from akkaserverless.akkaserverless.protocol.discovery_pb2_grpc import DiscoveryServicer
 from akkaserverless.event_sourced_entity import EventSourcedEntity
 from akkaserverless.value_entity import ValueEntity
+from akkaserverless.replicated_entity import ReplicatedEntity
 from akkaserverless.view import View
 
 logger = getLogger()
@@ -28,6 +29,7 @@ class AkkaServerlessEntityDiscoveryServicer(DiscoveryServicer):
     #components: List[Component]
     event_sourced_entities: List[EventSourcedEntity]
     value_entities: List[ValueEntity]
+    replicated_entities: List[ReplicatedEntity]
     views: List[View]
     action_protocol_entities: List[Action]
     
@@ -37,7 +39,7 @@ class AkkaServerlessEntityDiscoveryServicer(DiscoveryServicer):
         logger.info("discovering.")
         pprint(request)
         descriptor_set = FileDescriptorSet()
-        for entity in self.event_sourced_entities + self.value_entities + self.action_protocol_entities:
+        for entity in self.event_sourced_entities + self.value_entities + self.replicated_entities + self.action_protocol_entities:
             logger.info(f"entity: {entity.name()}")
             for descriptor in entity.file_descriptors:
                 logger.info(f"discovering {descriptor.name}")
@@ -90,6 +92,7 @@ class AkkaServerlessEntityDiscoveryServicer(DiscoveryServicer):
                 Default().FindFileByName("google/api/annotations.proto").serialized_pb
             )
         )
+        
         descriptor_set.file.append(
             FileDescriptorProto.FromString(
                 Default().FindFileByName("google/api/http.proto").serialized_pb
@@ -134,7 +137,7 @@ class AkkaServerlessEntityDiscoveryServicer(DiscoveryServicer):
                     entity=discovery_pb2.EntitySettings(entity_type=entity.entity_type)
                 )
                 for entity in self.event_sourced_entities
-                  + self.value_entities
+                  + self.value_entities +  self.replicated_entities
             ],
             proto=descriptor_set.SerializeToString(),
         )
@@ -159,6 +162,6 @@ class AkkaServerlessEntityDiscoveryServicer(DiscoveryServicer):
         return Empty()
 
     def HealthCheck(self, request, context):
-        logger.info(f"Health Check: {request}")
+        #logger.info(f"Health Check: {request}")
         return Empty()
 

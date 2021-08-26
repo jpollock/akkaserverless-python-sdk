@@ -19,11 +19,13 @@ from akkaserverless.akkaserverless.protocol.discovery_pb2_grpc import add_Discov
 from akkaserverless.event_sourced_entity import EventSourcedEntity
 from akkaserverless.akkaserverless.component.eventsourcedentity.event_sourced_entity_pb2_grpc import add_EventSourcedEntitiesServicer_to_server
 from akkaserverless.eventsourced_servicer import AkkaServerlessEventSourcedServicer
-
 from akkaserverless.view import View
 from akkaserverless.value_entity import ValueEntity
 from akkaserverless.akkaserverless.component.valueentity.value_entity_pb2_grpc import add_ValueEntitiesServicer_to_server
 from akkaserverless.value_servicer import AkkaServerlessValueServicer
+from akkaserverless.replicated_entity import ReplicatedEntity
+from akkaserverless.akkaserverless.component.replicatedentity.replicated_entity_pb2_grpc import add_ReplicatedEntitiesServicer_to_server
+from akkaserverless.replicated_servicer import AkkaServerlessReplicatedServicer
 
 # from grpc_reflection.v1alpha import reflection
 
@@ -42,6 +44,7 @@ class AkkaServerlessService:
     __workers = multiprocessing.cpu_count()
     __event_sourced_entities: List[EventSourcedEntity] = field(default_factory=list)
     __value_entities: List[ValueEntity] = field(default_factory=list)
+    __replicated_entities: List[ReplicatedEntity] = field(default_factory=list)
     __action_protocol_entities: List[Action] = field(default_factory=list)
     __views: List[View] = field(default_factory=list)
 
@@ -73,6 +76,8 @@ class AkkaServerlessService:
             self.__event_sourced_entities.append(component)
         elif isinstance(component, ValueEntity):
             self.__value_entities.append(component)
+        elif isinstance(component, ReplicatedEntity):
+            self.__replicated_entities.append(component)
         elif isinstance(component, View):
             self.__views.append(component)
         return self
@@ -89,7 +94,7 @@ class AkkaServerlessService:
 
         add_DiscoveryServicer_to_server(
             AkkaServerlessEntityDiscoveryServicer(
-                self.__event_sourced_entities, self.__value_entities, self.__views, self.__action_protocol_entities
+                self.__event_sourced_entities, self.__value_entities, self.__replicated_entities, self.__views, self.__action_protocol_entities
             ),
             server,
         )
@@ -98,6 +103,9 @@ class AkkaServerlessService:
         )
         add_ValueEntitiesServicer_to_server(
             AkkaServerlessValueServicer(self.__value_entities), server
+        )
+        add_ReplicatedEntitiesServicer_to_server(
+            AkkaServerlessReplicatedServicer(self.__replicated_entities), server
         )
         add_ActionsServicer_to_server(
             AkkaServerlessActionProtocolServicer(self.__action_protocol_entities),

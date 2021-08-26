@@ -7,7 +7,7 @@ rm -rf ./proto
 mkdir -p ./proto
 
 # get the framework version from settings.js
-readonly framework_version="0.7.0-beta.14"
+readonly framework_version="0.7.0-beta.17"
 
 function download_protocol {
   local module="$1"
