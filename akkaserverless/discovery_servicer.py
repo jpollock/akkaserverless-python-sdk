@@ -159,6 +159,5 @@ class AkkaServerlessEntityDiscoveryServicer(DiscoveryServicer):
         return Empty()
 
     def HealthCheck(self, request, context):
-        logger.info(f"Health Check: {request}")
         return Empty()
 
