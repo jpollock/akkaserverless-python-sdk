@@ -19,8 +19,6 @@ from akkaserverless.akkaserverless.component.valueentity.value_entity_pb2 import
     ValueEntityInitState,
     ValueEntityReply,
     ValueEntityStreamOut,
-    ValueEntityUpdate,
-    ValueEntityAction
 )
 from akkaserverless.akkaserverless.component.valueentity.value_entity_pb2_grpc import ValueEntitiesServicer
 from akkaserverless.utils.payload_utils import get_payload, pack
@@ -68,7 +66,7 @@ class AkkaServerlessValueServicer(ValueEntitiesServicer):
                 command: Command = request.command
                 cmd = get_payload(command)
                 ctx = ValueEntityCommandContext(
-                    command.name, command.id, entity_id, start_sequence_number
+                    command.name, command.id, entity_id, start_sequence_number, current_state
                 )
                 result = None
                 try:
@@ -77,17 +75,13 @@ class AkkaServerlessValueServicer(ValueEntitiesServicer):
                     ctx.fail(str(ex))
                     logging.exception("Failed to execute command:" + str(ex))
 
-                current_state = result
-                client_action = ctx.create_client_action(result, False)
+                current_state = ctx.get_state()
                 
+                client_action = ctx.create_client_action(result, False)
                 value_reply = ValueEntityReply()
                 value_reply.command_id = command.id
                 value_reply.client_action.CopyFrom(client_action)
-
-                update = ValueEntityUpdate()
-                update.value.Pack(result)
-                state_action = ValueEntityAction(update=update)
-                value_reply.state_action.CopyFrom(state_action)
+                value_reply.state_action.CopyFrom(ctx.create_state_action())
                 value_reply.side_effects.extend(ctx.effects)
 
                 output = ValueEntityStreamOut()
