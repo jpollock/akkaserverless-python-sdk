@@ -41,7 +41,6 @@ class ValueEntityCommandContext(ClientActionContext):
 
         self.state = state
 
-
     def create_state_action(self):
         update = ValueEntityUpdate()
         update.value.Pack(self.state)
