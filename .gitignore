@@ -18,3 +18,4 @@ protobuf/protocol
 protobuf/example/shoppingcart
 akkaserverless/akkaserverless
 akkaserverless/google
+.DS_Store
