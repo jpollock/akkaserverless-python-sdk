@@ -1,19 +1,21 @@
-# Akka Serverless Python documentation
+# Python SDK docs
 
-The Akka Serverless documentation is built using [Antora](https://antora.org) with Asciidoc sources.
 
-The build is defined in the [Makefile](Makefile) and requires `make`, `bash`, and `docker`.
+## Building docs
 
-To build the documentation run:
+To build the docs, run `make` in the `docs` directory:
 
 ```
 make
 ```
 
-The generated documentation site will be available in the `build/site` directory:
+Dynamically-generated and managed sources will be created in `build/src/managed`.
+
+
+## Deploying docs
+
+Docs are automatically published on releases. To deploy the docs manually run:
 
 ```
-open build/site/index.html
+make deploy
 ```
-
-Documentation will be automatically deployed on tagged versions, in the Travis CI builds.

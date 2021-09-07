@@ -1,55 +1,78 @@
-# Make Akka Serverless Python documentation
+# Make Akka Serverless Python SDK documentation
 
 module   := python
-upstream := akkaserverlessio/python-support
+upstream := lightbend/akkaserverless-python-sdk
 branch   := docs/current
 sources  := src build/src/managed
 
-akkaserverless_antora_download := https://github.com/akkaserverlessio/akkaserverless-antora/raw/master/akkaserverless-antora
-akkaserverless_antora := .cache/bin/akkaserverless-antora
-descriptor := build/site.yml
 src_managed := build/src/managed
-managed_partials := ${src_managed}/modules/python/partials
+managed_attachments := ${src_managed}/modules/${module}/attachments
+managed_examples := ${src_managed}/modules/${module}/examples
+managed_partials := ${src_managed}/modules/${module}/partials
+
+antora_docker_image := gcr.io/akkaserverless-public/akkaserverless-docbuilder
+antora_docker_image_tag := 0.0.5
+root_dir := $(shell git rev-parse --show-toplevel)
+base_path := $(shell git rev-parse --show-prefix)
+
 
 .SILENT:
 
-build: clean managed validate html
+build: dev managed
 
-${akkaserverless_antora}:
-	mkdir -p $$(dirname ${akkaserverless_antora})
-	curl -Lo ${akkaserverless_antora} ${akkaserverless_antora_download}
-	chmod +x ${akkaserverless_antora}
+clean:
+	rm -rf build
 
-clean-cache:
-	rm -rf .cache
-
-update: clean-cache ${akkaserverless_antora}
-
-clean: ${akkaserverless_antora}
-	${akkaserverless_antora} clean
-
-managed: attributes
+managed: attributes examples
 	mkdir -p "${src_managed}"
 	cp src/antora.yml "${src_managed}/antora.yml"
 
-attributes: ${akkaserverless_antora}
+attributes:
 	mkdir -p "${managed_partials}"
-	${akkaserverless_antora} version | xargs -0  printf ":akkaserverless-python-version: %s" \
+	bin/version.sh | xargs -0  printf ":akkaserverless-python-sdk-version: %s" \
 		> "${managed_partials}/attributes.adoc"
+	echo ":minimum_python_version: 3" \
+		>> "${managed_partials}/attributes.adoc"
 
-${descriptor}: ${akkaserverless_antora}
-	mkdir -p $$(dirname ${descriptor})
-	${akkaserverless_antora} source --preview --upstream ${upstream} ${sources} > build/source.yml
-	${akkaserverless_antora} site --preview --exclude ${module} build/source.yml > ${descriptor}
+apidocs:
+	cd ../sdk && npm ci && npm run jsdoc
+	mkdir -p "${managed_attachments}"
+	rsync -a ../sdk/apidocs/ "${managed_attachments}/api/"
 
-validate: ${descriptor}
-	${akkaserverless_antora} validate ${descriptor}
+examples:
+	mkdir -p "${managed_examples}"
+	rsync -a --exclude-from=.examplesignore ../samples/python-customer-registry/ "${managed_examples}/python-customer-registry/"
+	rsync -a --exclude-from=.examplesignore ../samples/python-valueentity-shopping-cart/ "${managed_examples}/python-valueentity-shopping-cart/"
+	rsync -a --exclude-from=.examplesignore ../samples/python-valueentity-counter/ "${managed_examples}/python-valueentity-counter/"
+	rsync -a --exclude-from=.examplesignore ../samples/python-eventsourced-shopping-cart/ "${managed_examples}/python-eventsourced-shopping-cart/"
 
-html: ${descriptor}
-	${akkaserverless_antora} build ${descriptor}
 
-validate-links: ${akkaserverless_antora}
-	${akkaserverless_antora} validate --no-xrefs --links
+dev: clean managed validate-xrefs dev-html
+
+dev-html:
+	docker run \
+		-v ${root_dir}:/antora \
+		--rm \
+		--entrypoint /bin/sh \
+		-t ${antora_docker_image}:${antora_docker_image_tag} \
+		-c "cd /antora/${base_path} && antora --cache-dir=.cache/antora --stacktrace --log-failure-level=warn dev/antora.yml"
+	@echo "Generated docs at dev/build/site/python/index.html"
+
+validate-xrefs:
+	docker run \
+		-v ${root_dir}:/antora \
+		--rm \
+		--entrypoint /bin/sh \
+		-t ${antora_docker_image}:${antora_docker_image_tag} \
+		-c 'cd /antora/${base_path} && NODE_PATH="$$(npm -g root)" antora --generator @antora/xref-validator dev/antora.yml'
+
+validate-links:
+	docker run \
+		-v ${root_dir}:/antora \
+		--rm \
+		--entrypoint /bin/sh \
+		-t ${antora_docker_image}:${antora_docker_image_tag} \
+		-c "cd /antora/${base_path} && find src -name '*.adoc' -print0 | xargs -0 -n1 asciidoc-link-check --progress"
 
 deploy: clean managed
-	${akkaserverless_antora} deploy --module ${module} --upstream ${upstream} --branch ${branch} ${sources}
+	bin/deploy.sh --module ${module} --upstream ${upstream} --branch ${branch} ${sources}

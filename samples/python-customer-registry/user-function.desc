@@ -1,0 +1,74 @@
+
+Ô
+customer_view.protocustomer.viewcustomer_domain.proto akkaserverless/annotations.protogoogle/protobuf/any.proto"4
+ByNameRequest#
+customer_name (	RcustomerName"&
+ByEmailRequest
+email (	Remail"5
+CustomerSummary
+id (	Rid
+name (	Rname"M
+CustomersResponse8
+results (2.customer.domain.CustomerStateRresults2—
+CustomerByNamev
+UpdateCustomer.customer.domain.CustomerState.customer.domain.CustomerState"$ÂC
+
+"	customersÂC
+
+	customersŒ
+GetCustomers.customer.view.ByNameRequest.customer.domain.CustomerState"<ÂC9753SELECT * FROM customers WHERE name = :customer_name02
+CustomerByEmailv
+UpdateCustomer.customer.domain.CustomerState.customer.domain.CustomerState"$ÂC
+
+"	customersÂC
+
+	customersƒ
+GetCustomer.customer.view.ByEmailRequest.customer.domain.CustomerState"5ÂC20.,SELECT * FROM customers WHERE email = :email2´
+CustomerSummaryByName¢
+GetCustomers.customer.view.ByNameRequest.customer.view.CustomerSummary"RÂCOMKISELECT customer_id AS id, name FROM customers WHERE name = :customer_name0v
+UpdateCustomer.customer.domain.CustomerState.customer.domain.CustomerState"$ÂC
+
+"	customersÂC
+
+	customers2«
+CustomersResponseByName—
+GetCustomers.customer.view.ByNameRequest .customer.view.CustomersResponse"GÂCDB@>SELECT * AS results FROM customers WHERE name = :customer_namev
+UpdateCustomer.customer.domain.CustomerState.customer.domain.CustomerState"$ÂC
+
+"	customersÂC
+
+	customers2¨
+CustomerByNameView‚
+ProcessCustomerCreated .customer.domain.CustomerCreated.customer.domain.CustomerState"&ÂC
+
+	customersÂC
+
+	customersŠ
+ProcessCustomerNameChanged$.customer.domain.CustomerNameChanged.customer.domain.CustomerState"&ÂC
+
+	customersÂC
+
+	customersq
+IgnoreOtherEvents.google.protobuf.Any.customer.domain.CustomerState"&ÂC
+
+	customersÂC
+
+	customersŒ
+GetCustomers.customer.view.ByNameRequest.customer.domain.CustomerState"<ÂC9753SELECT * FROM customers WHERE name = :customer_name02±
+CustomerByNameViewFromTopic‚
+ProcessCustomerCreated .customer.domain.CustomerCreated.customer.domain.CustomerState"&ÂC
+
+	customersÂC
+
+	customersŠ
+ProcessCustomerNameChanged$.customer.domain.CustomerNameChanged.customer.domain.CustomerState"&ÂC
+
+	customersÂC
+
+	customersq
+IgnoreOtherEvents.google.protobuf.Any.customer.domain.CustomerState"&ÂC
+
+	customersÂC
+
+	customersŒ
+GetCustomers.customer.view.ByNameRequest.customer.domain.CustomerState"<ÂC9753SELECT * FROM customers WHERE name = :customer_name0bproto3
