@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Process overview :: Akka Serverless Documentation</title>
+    <link rel="prev" href="../python/index.html">
+    <link rel="next" href="../python/kickstart.html">
+    <meta name="generator" content="Antora 3.0.0-alpha.7">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <script>var uiRootPath = '../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="..">Akka Serverless Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Resources</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Resource A</a>
+            <a class="navbar-item" href="#">Resource B</a>
+            <a class="navbar-item" href="#">Resource C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html"></a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../python/index.html">Developing with Python</a>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="development-process-js.html">Process overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../python/kickstart.html">Kickstart a Python module</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../python/proto.html">Writing gRPC descriptors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../python/eventsourced.html">Implementing Event Sourced Entities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../python/value-entity.html">Implementing Value Entities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../python/actions.html">Implementing Actions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../python/forwarding.html">Forwarding and effects</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../python/entity-eventing.html">Subscribing to a Journal</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../python/topic-eventing.html">Publishing and Subscribing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../python/views.html">Creating Views</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../python/serialization.html">Handling Serialization</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../python/run-locally.html">Run a service locally</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title"></span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html"></a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../python/index.html">Developing with Python</a></li>
+    <li><a href="development-process-js.html">Process overview</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="file:///antora/docs/src/modules/developing/pages/development-process-js.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="On This Page" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Process overview</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The main steps in developing a service include:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><a href="#_specify_service_interface_and_domain_model">Specify service interface and domain model</a></p>
+</li>
+<li>
+<p><a href="#_implement_components">Implement components</a></p>
+</li>
+<li>
+<p><a href="#_create_unit_tests">Create unit tests</a></p>
+</li>
+<li>
+<p><a href="#_package_service">Package service</a></p>
+</li>
+<li>
+<p><a href="#_run_locally">Run locally</a></p>
+</li>
+<li>
+<p><a href="#_deploy_to_akka_serverless">Deploy to Akka Serverless</a></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_specify_service_interface_and_domain_model"><a class="anchor" href="#_specify_service_interface_and_domain_model"></a>Specify service interface and domain model</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The main components of an Akka Serverless service are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Stateful <a href="https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#entity">Entities</a></p>
+</li>
+<li>
+<p>Stateless <a href="https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#action">Actions</a></p>
+</li>
+<li>
+<p><a href="https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#view">Views</a>, which return the state of multiple instances of a stateful entity.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The service interface and the domain data model (for Entities), are contained in individual <code>.proto</code> files, as <a href="https://grpc.io">gRPC</a> descriptors. Separating the service interface and data model in different files allows you to evolve them independently.</p>
+</div>
+<div class="paragraph">
+<p>The gRPC definitions in <code>.proto</code> files describe the external interface, messages, and events. From the <code>.proto</code> files, the gRPC CLI (<code>protoc</code>), generates the code framework for remote procedure calls, data access, and serialization. Take a look at <a href="../python/proto.html" class="page">Writing gRPC descriptors</a> for more information about defining messages and events.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Kickstart a project using the <a href="../python/kickstart.html" class="page">Python code generation tool</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_implement_components"><a class="anchor" href="#_implement_components"></a>Implement components</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Stateful services can implement <a href="https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#value_entity">Value Entity</a> or <a href="https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#event_sourced_entity">Event Sourced Entity</a> components. Stateless services implement Actions. Typically, a stateful service should only have one Entity type, but can also include Actions.</p>
+</div>
+<div class="sect2">
+<h3 id="_actions"><a class="anchor" href="#_actions"></a>Actions</h3>
+<div class="paragraph">
+<p>Actions are stateless functions that can be triggered by gRPC or HTTP calls. They can also subscribe to published events, and they can send commands to other services based on the events they receive. For more information about writing actions see <a href="../python/actions.html" class="page">Implementing Actions</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_entities"><a class="anchor" href="#_entities"></a>Entities</h3>
+<div class="paragraph">
+<p>Stateful services encapsulate business logic in in Value Entities or Event Sourced Entities. At runtime, command messages invoke operations on Entities. A command may only act on one Entity at a time.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+To learn more about Akka Serverless entities see <a href="../python/value-entity.html" class="page">Implement a Value Entity</a> and <a href="../python/eventsourced.html" class="page">Implement an Event Sourced Entity</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To update multiple Entities from a single command use forwarding and effects.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+For more information see <a href="../python/forwarding.html" class="page">Forwarding and effects in Python</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Services can interact asynchronously with other services and with external systems. Event Sourced Entities emit events to a journal, to which other services can subscribe. By configuring your own publish/subscribe (pub/sub) mechanism, any service can publish their own events and subscribe to events published by other services or external systems.</p>
+</div>
+<div class="paragraph">
+<p>For more details and examples take a look at the following topics:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Event Sourced Entities in <a href="../python/eventsourced.html" class="page">Python</a></p>
+</li>
+<li>
+<p>Value Entities in <a href="../python/value-entity.html" class="page">Python</a></p>
+</li>
+<li>
+<p>Subscribe to a journal in <a href="../python/entity-eventing.html" class="page">Python</a></p>
+</li>
+<li>
+<p>Set up pub/sub for <a href="../python/topic-eventing.html" class="page">Python</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_create_unit_tests"><a class="anchor" href="#_create_unit_tests"></a>Create unit tests</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It is good practice to write unit tests as you implement your services. The Python kickstart codegen project packages Mocha and Chai and is configured for test-driven development. For implementation details see the <a href="https://developer.lightbend.com/docs/akka-serverless/tutorial/node-cart-test.html#_ii_add_unit_tests">Shopping cart tutorial - Create unit tests</a> topic.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_package_service"><a class="anchor" href="#_package_service"></a>Package service</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Use a Docker image to package your service and any of its dependencies. See the following pages for more information:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://developer.lightbend.com/docs/akka-serverless/getting-started/set-up-development-env.html#_docker">Installing Docker</a></p>
+</li>
+<li>
+<p><a href="https://developer.lightbend.com/docs/akka-serverless/deploying/docker.html">Packaging with Docker</a></p>
+</li>
+<li>
+<p><a href="https://developer.lightbend.com/docs/akka-serverless/deploying/registries.html">Configuring registries</a></p>
+</li>
+<li>
+<p><a href="https://developer.lightbend.com/docs/akka-serverless/tutorial/node-cart-package-deploy.html">Example of how to package a service</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_run_locally"><a class="anchor" href="#_run_locally"></a>Run locally</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can test and debug your services by
+<a href="../python/run-locally.html" class="page">running them locally</a> before deploying to Akka Serverless.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_deploy_to_akka_serverless"><a class="anchor" href="#_deploy_to_akka_serverless"></a>Deploy to Akka Serverless</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>After testing locally, deploy your service to Akka Serverless using the CLI or the Console. The following pages provide information about deployment:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://developer.lightbend.com/docs/akka-serverless/getting-started/projects.html">Working with Akka Serverless deployment projects</a></p>
+</li>
+<li>
+<p><a href="https://developer.lightbend.com/docs/akka-serverless/deploying/deploying.html">Deploying a packaged service</a></p>
+</li>
+<li>
+<p><a href="https://developer.lightbend.com/docs/akka-serverless/tutorial/index.html">Examples of how to deploy</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="../python/index.html">Developing with Python</a></span>
+  <span class="next"><a href="../python/kickstart.html">Kickstart a Python module</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

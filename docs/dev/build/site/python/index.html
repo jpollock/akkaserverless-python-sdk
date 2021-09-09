@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Developing with Python :: Akka Serverless Documentation</title>
+    <link rel="prev" href="../index.html">
+    <link rel="next" href="../developing/development-process-js.html">
+    <meta name="generator" content="Antora 3.0.0-alpha.7">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <script>var uiRootPath = '../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="..">Akka Serverless Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Resources</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Resource A</a>
+            <a class="navbar-item" href="#">Resource B</a>
+            <a class="navbar-item" href="#">Resource C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html"></a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">Developing with Python</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../developing/development-process-js.html">Process overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="kickstart.html">Kickstart a Python module</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="proto.html">Writing gRPC descriptors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="eventsourced.html">Implementing Event Sourced Entities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="value-entity.html">Implementing Value Entities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="actions.html">Implementing Actions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="forwarding.html">Forwarding and effects</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="entity-eventing.html">Subscribing to a Journal</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="topic-eventing.html">Publishing and Subscribing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="views.html">Creating Views</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="serialization.html">Handling Serialization</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="run-locally.html">Run a service locally</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title"></span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html"></a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Developing with Python</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="file:///antora/docs/src/modules/python/pages/index.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="On This Page" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Developing with Python</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Akka Serverless Python SDK offers an idiomatic Python language SDK for writing components. This page describes prerequisites for Python development and basic requirements for a development project. It is recommended that you check out the <a href="https://developer.lightbend.com/docs/akka-serverless">Akka Serverless documentation</a> site for introduction to the product itself, including the concepts.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Lightbend provides Tier 3 support for the Python SDK. See <a href="https://developer.lightbend.com/docs/akka-serverless/developing/sdk-support.html">an explanation of support tiers</a> for more information. Further development will need to happen to take the Python support to Tier 2
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Your development project needs to include the Akka Serverless Python SDK. You define API components using <a href="https://developers.google.com/protocol-buffers">protobuf</a> and use <code>protoc</code> to compile them. Finally, you implement business logic for service components.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following are required to develop Akka Serverless services in Python:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Python</dt>
+<dd>
+<p>Akka Serverless requires at least Python 3. Download and install Python <a href="https://www.python.org/" target="new">here <span class="image"><img src="../_images/new-tab.svg" alt="new tab" width="12"></span></a>.</p>
+</dd>
+<dt class="hdlist1">Docker</dt>
+<dd>
+<p>Akka Serverless requires <a href="https://docs.docker.com/get-docker/" target="new">Docker <span class="image"><img src="../_images/new-tab.svg" alt="new tab" width="12"></span></a> 19.03 for building your service images. Most popular build tools have plugins that assist in building Docker images.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_development_project_requirements"><a class="anchor" href="#_development_project_requirements"></a>Development project requirements</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following examples show how to install the SDK for use in your Python code.</p>
+</div>
+<div class="paragraph">
+<p>If you are starting from scratch, you will need to add configuration and code to:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#_add_sdk_libraries">Add SDK libraries</a></p>
+</li>
+<li>
+<p><a href="#_define_grpc_descriptors_and_compile">Define gRPC descriptors and compile</a></p>
+</li>
+<li>
+<p><a href="#_create_and_start_the_grpc_server">Create and start the gRPC server</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_add_sdk_libraries"><a class="anchor" href="#_add_sdk_libraries"></a>Add SDK libraries</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Once you have the prerequisites, you need to add the <code>@lightbend/akkaserverless-python-sdk</code> package to your service development project, which can be done by running:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">pip install akkaserverless</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">pip install -r requirements.txt</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To create a basic service, you need to include the <code>akkaserverless</code> package dependencies in your project, define gRPC descriptors in <code>.proto</code> files and reference them in your project, compile the <code>.proto</code> files, and have logic to start the gRPC server in your source code.</p>
+</div>
+<div class="sect2">
+<h3 id="_define_grpc_descriptors_and_compile"><a class="anchor" href="#_define_grpc_descriptors_and_compile"></a>Define gRPC descriptors and compile</h3>
+<div class="paragraph">
+<p>Descriptors for gRPC are defined in <code>protobuf</code> files. You can place <code>protobuf</code> files in your project wherever you like, for example, in the root directory, or in a directory named <code>protos</code>. In the <code>package.json</code> example, above we&#8217;ve placed the service descriptor in a file in the root folder called <code>shoppingcart.proto</code>. See <a href="proto.html" class="page">Writing gRPC descriptors</a> for more details.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_precompile_the_protobuf_descriptor_set"><a class="anchor" href="#_precompile_the_protobuf_descriptor_set"></a>Precompile the protobuf descriptor set</h3>
+<div class="paragraph">
+<p>The gRPC descriptor is serialized to binary using the Protobuf <a href="https://developers.google.com/protocol-buffers/docs/techniques#self-description"><code>FileDescriptorSet</code> message type</a>. Akka Serverless requires that you precompile this descriptor using <code>protoc</code>. We provide a utility that does this for you. It downloads the <code>protoc</code> binary for your platform, and runs it with the necessary arguments and include paths. You can run the utility manually, or we recommend adding it as a script to the build.</p>
+</div>
+<div class="paragraph">
+<p>To run the utility manually, invoke <code>node_modules/@lightbend/akkaserverless-python-sdk/bin/compile-descriptor.py</code>.</p>
+</div>
+<div class="paragraph">
+<p>Or, add a <code>prestart</code> script to your <code>npm</code> build:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+  "scripts": {
+    "prestart": "compile-descriptor my-descriptor.proto"
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_create_and_start_the_grpc_server"><a class="anchor" href="#_create_and_start_the_grpc_server"></a>Create and start the gRPC server</h3>
+<div class="paragraph">
+<p>To create a server, you can use the <a href="_attachments/api/module-akkaserverless.AkkaServerless.html" target="new"><code>AkkaServerless</code><span class="image"><img src="../_images/new-tab.svg" alt="new tab" width="12"></span></a> class, add one or more entities to it, and then invoke <a href="_attachments/api/module-akkaserverless.AkkaServerless.html#start" target="new"><code>start</code><span class="image"><img src="../_images/new-tab.svg" alt="new tab" width="12"></span></a>, like so:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python"># create service and add components
+service = AkkaServerlessService()
+service.add_component(customer_value_entity)
+service.add_component(customer_value_entity_view)
+service.add_component(customer_eventsourced_entity)
+service.add_component(customer_eventsourced_entity_view)
+service.start()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_whats_next"><a class="anchor" href="#_whats_next"></a>What&#8217;s next</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section includes information on the following topics:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="proto.html" class="page">Writing gRPC descriptors</a></p>
+</li>
+<li>
+<p><a href="eventsourced.html" class="page">Event Sourced Entities</a></p>
+</li>
+<li>
+<p><a href="value-entity.html" class="page">Implementing Value Entities in Python</a></p>
+</li>
+<li>
+<p><a href="views.html" class="page">Implementing Views</a></p>
+</li>
+<li>
+<p><a href="forwarding.html" class="page">Forwarding and effects</a></p>
+</li>
+<li>
+<p><a href="topic-eventing.html" class="page">Publishing and subscribing to topics on a broker</a></p>
+</li>
+<li>
+<p><a href="serialization.html" class="page">Serialization</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="../index.html"></a></span>
+  <span class="next"><a href="../developing/development-process-js.html">Process overview</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

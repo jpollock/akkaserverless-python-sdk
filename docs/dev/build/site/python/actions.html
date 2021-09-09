@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Actions :: Akka Serverless Documentation</title>
+    <link rel="prev" href="value-entity.html">
+    <link rel="next" href="forwarding.html">
+    <meta name="generator" content="Antora 3.0.0-alpha.7">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <script>var uiRootPath = '../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="..">Akka Serverless Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Resources</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Resource A</a>
+            <a class="navbar-item" href="#">Resource B</a>
+            <a class="navbar-item" href="#">Resource C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html"></a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">Developing with Python</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../developing/development-process-js.html">Process overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="kickstart.html">Kickstart a Python module</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="proto.html">Writing gRPC descriptors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="eventsourced.html">Implementing Event Sourced Entities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="value-entity.html">Implementing Value Entities</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="actions.html">Implementing Actions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="forwarding.html">Forwarding and effects</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="entity-eventing.html">Subscribing to a Journal</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="topic-eventing.html">Publishing and Subscribing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="views.html">Creating Views</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="serialization.html">Handling Serialization</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="run-locally.html">Run a service locally</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title"></span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html"></a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Developing with Python</a></li>
+    <li><a href="actions.html">Implementing Actions</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="file:///antora/docs/src/modules/python/pages/actions.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="On This Page" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Actions</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Actions are stateless functions that can be triggered in multiple ways. For example, by</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>a gRPC service call</p>
+</li>
+<li>
+<p>an HTTP service call</p>
+</li>
+<li>
+<p>a new item in an Event Sourced Entity&#8217;s journal</p>
+</li>
+<li>
+<p>a forwarded call from another component</p>
+</li>
+</ul>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Use case: request conversion</div>
+<div class="paragraph">
+<p>You can use Actions to convert incoming data into a different format before forwarding a call to a different component.</p>
+</div>
+<div class="paragraph">
+<p>A service might need to offer a request data format that does not correspond directly with the commands of an Event Sourced Entity. By exposing a service implemented by an Action, the Action implementation can adapt the data format to the command (or commands) expected by the Event Sourced Entity. The incoming requests get forwarded to the target component.</p>
+</div>
+</div>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Use case: listening to a journal</div>
+<div class="paragraph">
+<p>To listen to an Event Sourced Entity&#8217;s journal, an Action can be set up for Eventing.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The Event Sourced Entity journal contains events that capture all state changes.
+By subscribing to the journal with the Event Sourced Entity name, another component can receive all events of that type emitted by an Event Sourced Entity.</p>
+</div>
+<div class="paragraph">
+<p>Together with <a href="topic-eventing.html" class="page">Topic publishing</a>, this may be used to inform other services asynchronously about certain events.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_implementing_actions"><a class="anchor" href="#_implementing_actions"></a>Implementing Actions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following example shows a <code>.proto</code> file for an action:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">// Copyright 2021 Lightbend Inc.
+
+syntax = "proto3";
+
+package perf.action;
+
+import "perf_domain.proto";
+import "perf_api.proto";
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "akkaserverless/annotations.proto";
+
+message PingRequest {}
+
+message PongResponse {}
+
+service PingActionService {
+  rpc Ping(PingRequest) returns (PongResponse) {
+    option (google.api.http) = {
+      get: "/action/ping"
+    };
+  }
+}
+
+service FromValueActionService {
+  rpc Consume(domain.ValueState) returns (google.protobuf.Empty) {
+    option (akkaserverless.method).eventing.in = {
+      value_entity: "values"
+    };
+  }
+}
+
+service FromTopicActionService {
+  rpc Consume(domain.ValueState) returns (google.protobuf.Empty) {
+    option (akkaserverless.method).eventing.in = {
+      topic: "values"
+    };
+  }
+}
+
+message ToTopicRequest {
+  string id = 1;
+  int32 payload_size = 2;
+}
+
+service ToTopicActionService {
+  rpc ProduceToValues(ToTopicRequest) returns (domain.ValueState) {
+    option (akkaserverless.method).eventing.out = {
+      topic: "values"
+    };
+  }
+
+  rpc ProduceToIncrements(api.IncrementRequest) returns (api.IncrementRequest) {
+    option (akkaserverless.method).eventing.out = {
+      topic: "increments"
+    };
+  }
+}
+
+service FromValueToTopicActionService {
+  rpc Produce(domain.ValueState) returns (domain.ValueState) {
+    option (akkaserverless.method).eventing.in = {
+      value_entity: "values"
+    };
+    option (akkaserverless.method).eventing.out = {
+      topic: "values"
+    };
+  }
+}
+
+service FromTopicForwardToEntityActionService {
+  rpc Forward(api.IncrementRequest) returns (google.protobuf.Empty) {
+    option (akkaserverless.method).eventing.in = {
+      topic: "increments"
+    };
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The following shows the implementation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">/*
+ * Copyright 2019 Lightbend Inc.
+ */
+
+const Action = require("@lightbend/akkaserverless-python-sdk").Action
+
+const tckModel = new Action(
+  "proto/action.proto",
+  "akkaserverless.tck.model.action.ActionTckModel"
+);
+
+const Response = tckModel.lookupType("akkaserverless.tck.model.action.Response");
+
+tckModel.commandHandlers = {
+  ProcessUnary: processUnary,
+  ProcessStreamedIn: processStreamedIn,
+  ProcessStreamedOut: processStreamedOut,
+  ProcessStreamed: processStreamed
+};
+
+function processUnary(request, context) {
+  respondWith(singleResponse(createResponses(request)), context);
+}
+
+function processStreamedIn(context) {
+  const responses = [];
+  context.on("data", request =&gt; responses.push(...createResponses(request)));
+  context.on("end", () =&gt; respondWith(singleResponse(responses), context));
+}
+
+function processStreamedOut(request, context) {
+  createResponses(request).forEach(response =&gt; respondWith(response, context));
+  context.end();
+}
+
+function processStreamed(context) {
+  context.on("data", request =&gt; createResponses(request).forEach(response =&gt; respondWith(response, context)));
+  context.on("end", () =&gt; context.end());
+}
+
+function respondWith(response, context) {
+  // need to accumulate effects, before replying, forwarding, or failing
+  response.effects.forEach(effect =&gt; context.effect(two.service.methods.Call, { id: effect.id }, effect.synchronous));
+  if (response.fail) context.fail(response.fail);
+  else if (response.forward) context.forward(two.service.methods.Call, { id: response.forward });
+  else if (response.reply) context.write(Response.create({ message: response.reply }));
+  else context.write(); // empty message
+}
+
+function createResponses(request) {
+  return request.groups.map(createResponse);
+}
+
+function createResponse(group) {
+  const response = {
+    effects: []
+  };
+  group.steps.forEach(step =&gt; {
+    if (step.reply) {
+      response.reply = step.reply.message;
+    } else if (step.forward) {
+      response.forward = step.forward.id;
+    } else if (step.effect) {
+      response.effects.push({ id: step.effect.id, synchronous: step.effect.synchronous });
+    } else if (step.fail) {
+      response.fail = step.fail.message;
+    }
+  });
+  return response;
+}
+
+function singleResponse(responses) {
+  return responses.reduce((response, next) =&gt; ({
+    reply: next.reply || response.reply,
+    forward: next.forward || response.forward,
+    fail: next.fail || response.fail,
+    effects: response.effects.concat(next.effects)
+  }), { effects: [] });
+}
+
+const two = new Action(
+  "proto/action.proto",
+  "akkaserverless.tck.model.action.ActionTwo"
+);
+
+two.commandHandlers = {
+  Call: request =&gt; Response.create()
+};</code></pre>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="value-entity.html">Implementing Value Entities</a></span>
+  <span class="next"><a href="forwarding.html">Forwarding and effects</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

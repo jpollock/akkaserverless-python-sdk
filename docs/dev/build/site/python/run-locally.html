@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Run a service locally :: Akka Serverless Documentation</title>
+    <link rel="prev" href="serialization.html">
+    <meta name="generator" content="Antora 3.0.0-alpha.7">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <script>var uiRootPath = '../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="..">Akka Serverless Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Resources</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Resource A</a>
+            <a class="navbar-item" href="#">Resource B</a>
+            <a class="navbar-item" href="#">Resource C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html"></a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">Developing with Python</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../developing/development-process-js.html">Process overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="kickstart.html">Kickstart a Python module</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="proto.html">Writing gRPC descriptors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="eventsourced.html">Implementing Event Sourced Entities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="value-entity.html">Implementing Value Entities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="actions.html">Implementing Actions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="forwarding.html">Forwarding and effects</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="entity-eventing.html">Subscribing to a Journal</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="topic-eventing.html">Publishing and Subscribing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="views.html">Creating Views</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="serialization.html">Handling Serialization</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="run-locally.html">Run a service locally</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title"></span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html"></a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Developing with Python</a></li>
+    <li><a href="run-locally.html">Run a service locally</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="file:///antora/docs/src/modules/python/pages/run-locally.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="On This Page" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Run a service locally</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Running a service locally is helpful to test and debug. The following sections provide commands for starting and stopping a single service locally.</p>
+</div>
+<div class="paragraph">
+<p>In order to run your service locally, you must run the Akka Serverless proxy, which we provide as a Docker image. The examples include <code>docker compose</code> files with the configuration required to run the proxy for a locally running application.
+It also contains the configuration to start a local Google Pub/Sub emulator that the Akka Serverless proxy will connect to when you make use of <a href="topic-eventing.html" class="page">Publishing and subscribing to topics on a broker</a> in your service.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_pre_requisites"><a class="anchor" href="#_pre_requisites"></a>Pre-requisites</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Docker 19.03 or higher installed and accessible on your local computer</p>
+</li>
+<li>
+<p>Access to the <code>gcr.io/akkaserverless-public</code> docker registry from your local computer</p>
+</li>
+<li>
+<p>Your service container image.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_starting_the_service"><a class="anchor" href="#_starting_the_service"></a>Starting the service</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To start the proxy, run the following command from the directory with the <code>docker-compose.yml</code> file:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Start the proxy</p>
+<div class="dlist tabset">
+<dl>
+<dt class="hdlist1">macOS and Windows</dt>
+<dd>
+<div class="openblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command line hljs" data-lang="command line">docker compose up</code></pre>
+</div>
+</div>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Linux</dt>
+<dd>
+<div class="openblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command line hljs" data-lang="command line">docker-compose -f docker-compose.yml -f docker-compose.linux.yml up</code></pre>
+</div>
+</div>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+</li>
+<li>
+<p>Start the service</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command line hljs" data-lang="command line">npm start</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_exercise_the_service"><a class="anchor" href="#_exercise_the_service"></a>Exercise the service</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now the service is ready to accept commands on <code>localhost:9000</code>.</p>
+</div>
+<div class="paragraph">
+<p>Use curl to call your service via HTTP, or <a href="https://github.com/fullstorydev/grpcurl">grpcurl</a> to use the gRPC endpoints directly.</p>
+</div>
+<div class="paragraph">
+<p>This <code>curl</code> command calls the "CounterService" from the kickstart example, you will need to adapt it depending on the API of your service.</p>
+</div>
+<div class="dlist tabset">
+<dl>
+<dt class="hdlist1">Linux or macOS</dt>
+<dd>
+<div class="openblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command line hljs" data-lang="command line">curl \
+  -XPOST \ <i class="conum" data-value="1"></i><b>(1)</b>
+  -H "Content-Type: application/json" \ <i class="conum" data-value="2"></i><b>(2)</b>
+  -d '{"counterId": "foo"}' \ <i class="conum" data-value="3"></i><b>(3)</b>
+  localhost:9000/com.example.CounterService/GetCurrentCounter <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
+</div>
+</div>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Windows 10+</dt>
+<dd>
+<div class="openblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command line hljs" data-lang="command line">curl ^
+  -XPOST ^ <i class="conum" data-value="1"></i><b>(1)</b>
+  -H "Content-Type: application/json" ^ <i class="conum" data-value="2"></i><b>(2)</b>
+  -d '{"counterId": "foo"}' ^ <i class="conum" data-value="3"></i><b>(3)</b>
+  localhost:9000/com.example.CounterService/GetCurrentCounter <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
+</div>
+</div>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>The <code>curl</code> command takes</p>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>a flag to send a POST request,</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>set the content type to JSON,</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>the message in JSON format,</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>the URL with the RPC procedure name which deducts from the protobuf definition of the component we&#8217;re calling.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>All Akka Serverless APIs are exposed as regular HTTP endpoints which you can call with <code>curl</code>. Protobuf annotations allow controlling the mapping to HTTP as discussed in <a href="proto.html#_transcoding_http" class="page">Transcoding HTTP</a>.</p>
+</div>
+<div class="paragraph">
+<p>This <code>grpcurl</code> command line calls the same "Counter Service", from the kickstart example, you will need to adapt it depending on the API of your service.</p>
+</div>
+<div class="dlist tabset">
+<dl>
+<dt class="hdlist1">Linux or macOS</dt>
+<dd>
+<div class="openblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command line hljs" data-lang="command line">grpcurl \
+  -d '{"counterId": "foo"}' \ <i class="conum" data-value="1"></i><b>(1)</b>
+  -plaintext localhost:9000 \ <i class="conum" data-value="2"></i><b>(2)</b>
+  com.example.CounterService/GetCurrentCounter <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
+</div>
+</div>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Windows 10+</dt>
+<dd>
+<div class="openblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command line hljs" data-lang="command line">grpcurl ^
+  -d '{"counterId": "foo"}' ^ <i class="conum" data-value="1"></i><b>(1)</b>
+  -plaintext localhost:9000 ^ <i class="conum" data-value="2"></i><b>(2)</b>
+  com.example.CounterService/GetCurrentCounter <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
+</div>
+</div>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>The <code>grpcurl</code> command takes</p>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>the message in JSON format with <code>-d</code>,</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>the address to the proxy (using plain text instead of TLS),</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>and the RPC procedure name which deducts from the protobuf definition of the component we&#8217;re calling.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_shut_down_the_proxy"><a class="anchor" href="#_shut_down_the_proxy"></a>Shut down the proxy</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The command below shows how to shut down the proxy. Shutting down the proxy removes all data, which is kept in memory.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command line hljs" data-lang="command line">docker stop akkaserverless-proxy</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To delete the proxy container</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command line hljs" data-lang="command line">docker rm akkaserverless-proxy</code></pre>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="serialization.html">Handling Serialization</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

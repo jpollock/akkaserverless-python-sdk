@@ -8,6 +8,8 @@ colorama==0.4.4
 deprecation==2.1.0
 docker==5.0.0
 docutils==0.17.1
+gitdb==4.0.7
+GitPython==3.1.18
 google-api==0.1.12
 googleapis-common-protos==1.53.0
 grpcio==1.39.0

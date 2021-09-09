@@ -1,4 +1,4 @@
-./bin/prepare.sh
+prepare.sh
 
 for file in *_pb2*; do rm "$file"; done
 

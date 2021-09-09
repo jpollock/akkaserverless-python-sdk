@@ -65,7 +65,7 @@ setup(
     #long_description=open("Description.md", "r").read(),
     #long_description_content_type="text/markdown",
     zip_safe=False,
-    scripts=["scripts/fetch-akkaserverless-pb.sh"],
+    scripts=["bin/fetch-akkaserverless-pb.sh", "bin/compile.sh", "bin/prepare.sh", "bin/start.sh", "bin/docker_build.sh", "bin/docker_push.sh"],
     install_requires=[
         "attrs>=19.3.0",
         "google-api>=0.1.12",
