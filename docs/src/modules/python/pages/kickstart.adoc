@@ -1,0 +1,14 @@
+= Kickstart a Python module
+
+include::ROOT:partial$include.adoc[]
+include::partial$attributes.adoc[]
+
+
+The Python SDK for Akka Serverless does not provide a code generation tool (yet). The best way to kickstart a new Python application/API/service is to use one of the template projects on github.
+
+https://github.com/jpollock/akka-serverless-starter-python-eventsourcedentity
+
+https://github.com/jpollock/akka-serverless-starter-python-valueentity
+
+https://github.com/jpollock/akka-serverless-starter-python-action
+

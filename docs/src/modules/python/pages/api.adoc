@@ -1,0 +1,5 @@
+= Python API docs
+
+include::ROOT:partial$include.adoc[]
+
+The Python API docs can be found link:{attachmentsdir}/api/index.html[here{tab-icon}, window="new"].

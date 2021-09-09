@@ -1,1 +1,2 @@
-:cloudstate-python-version: 0.1.1
+:akkaserverless-python-sdk-version: 0.1.1
+:minimum_python_version: 3

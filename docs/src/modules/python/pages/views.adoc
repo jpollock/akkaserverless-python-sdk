@@ -1,0 +1,305 @@
+= Implementing Views
+
+include::ROOT:partial$include.adoc[]
+
+You can access a single https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#entity[Entity] with its https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#entity_key[Entity key]. You might want to retrieve multiple Entities, or retrieve them using an attribute other than the key. Akka Serverless https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#view[Views] allow you achieve this. By creating multiple Views, you can optimize for query performance against each one.
+
+Views can be defined from any of the following:
+
+* xref:value-entity[Value Entity state changes]
+* xref:event-sourced-entity[Event Sourced Entity events]
+* xref:topic-view[Messages received from subscribing to topics on a broker]
+
+In addition, this page describes:
+
+* <<_how_to_transform_results>>
+* xref:testing[How to test a View]
+* xref:changing[How to modify a View]
+* xref:query[Query reference]
+
+IMPORTANT: Be aware that Views are not updated immediately when Entity state changes. Akka Serverless does update Views as quickly as possible, but it is not instant and can take up to a few seconds for the changes to become visible in the query results. View updates might also take more time during failure scenarios than during normal operation.
+
+https://github.com/lightbend/akkaserverless-python-sdk/tree/main/samples/js-customer-registry[The `akkaserverless-python-sdk` GitHub repository] includes an example of all views described on this page.
+[#value-entity]
+== View from a Value Entity
+
+Consider an example of a Customer Registry service with a `customer` Value Entity. When `customer` state changes, the entire state is emitted as a value change. Value changes update any associated Views. To create a View that lists customers by their name:
+
+. <<_define_the_view_service_descriptor>> for a service that selects customers by name and associates a table name with the View. The table is created and used by Akka Serverless to store the View, use any name for the table.
+. <<#register-view>>.
+
+This example assumes the following `customer` state is defined in a `customer_domain.proto` file:
+
+[source,proto,indent=0]
+----
+include::example$python-customer-registry/customer_domain.proto[tags=declarations;domain]
+----
+
+=== Define the View service descriptor
+
+To get a view of multiple customers by their name, define the View as a `service` in Protobuf. The descriptor defines:
+
+* How to update the View
+* The source of View data
+* A `table` attribute that can be any name. Use this name in the query `SELECT` statement for the View.
+* The query that returns customers by name
+
+[source,proto,indent=0]
+----
+include::example$python-customer-registry/customer_view.proto[tags=declarations;service]
+----
+
+<1> The `UpdateCustomer` method defines how Akka Serverless will update the view.
+<2> The source of the View is the `"customers"` Value Entity. This identifier is defined in the `@ValueEntity(entityType = "customers")` annotation of the Value Entity.
+<3> The `(akkaserverless.method).view.update` annotation defines that this method is used for updating the View. You must define the `table` attribute for the table to be used in the query. Pick any name and use it in the query `SELECT` statement.
+<4> The `GetCustomers` method defines the query to retrieve a stream of customers.
+<5> The `(akkaserverless.method).view.query` annotation defines that this method is used as a query of the View.
+
+[NOTE]
+====
+If the query should return only one result, `stream` can be removed from the return type:
+
+[source,proto,indent=0]
+----
+include::example$python-customer-registry/customer_view.proto[tag=unary]
+----
+
+<1> Without `stream` when expecting single result.
+
+When no result is found, the request fails with gRPC status code `NOT_FOUND`. A streamed call completes with an empty stream when no result is found.
+====
+
+See <<#query>> for examples of valid query syntax.
+
+[#register-view]
+=== Register the View
+
+In the View implementation, register the View with Akka Serverless. In addition to passing the service descriptor and a unique identifier, pass any descriptors that define state. In this example, the `customer_domain.proto` descriptor defines the Value Entity state:
+
+.customer_value_entity_view.py
+[source,js,indent=0]
+----
+include::example$python-customer-registry/customer_value_entity_view.py[tag=register]
+----
+
+Invoke the `addComponent` function to register the view with the service. For example:
+
+.index.py
+[source,js,indent=0]
+----
+include::example$python-customer-registry/index.py[tag=register]
+----
+
+[#event-sourced-entity]
+== View from Event Sourced Entity
+
+Construct Event Sourced Entity Views from the events that the Entity emits. Build a state representation from the events and Query them. Using a Customer Registry service example, to create a View for querying customers by name:
+
+. <<_define_the_view_descriptor>>.
+. <<_implement_transformation_functions>>.
+. <<#ES_register>>.
+
+
+The example assumes a `customer_domain.proto` file that defines the events that
+will update the View when a name changes:
+
+[source,proto,indent=0]
+----
+include::example$python-customer-registry/customer_domain.proto[tags=declarations;events]
+----
+
+=== Define the View descriptor
+
+A view descriptor:
+
+* Defines update methods for events.
+* Provides the source of the View.
+* Enables transformation updates.
+* Specifies a `table` attribute used by Akka Serverless to store the View. Pick any name and use it in the Query `SELECT` statement for the View.
+
+The following example `customer_view.proto` file defines a View to consume the `CustomerCreated` and `CustomerNameChanged` events. It must ignore all other events.
+
+[source,proto,indent=0]
+----
+include::example$python-customer-registry/customer_view.proto[tags=declarations;service-event-sourced]
+----
+
+<1> Define an update method for each event.
+<2> The source of the View is from the journal of the `"customers"` Event Sourced Entity. This identifier is defined in the `@EventSourcedEntity(entityType = "customers")` annotation of the Event Sourced Entity.
+<3> Enable `transform_updates` to be able to build the View state from the events.
+<4> One method for each event.
+<5> The same `event_sourced_entity` for all update methods. Note the required `table` attribute. Use any name, which you will reference in the query `SELECT` statement.
+<6> Enable `transform_updates` for all update methods.
+<7> Ignore events not relevant to this view.
+
+See <<#query>> for more examples of valid query syntax.
+
+=== Implement transformation functions
+
+Implement the View by defining the functions that transform events to View state and ignore other events:
+
+.customer_eventsourced_view.py
+[source,js,indent=0]
+----
+include::example$python-customer-registry/customer_eventsourced_view.py[tag=process-events]
+----
+
+<1> Each update method in the Protobuf definition should have a corresponding Python function in `view.setUpdateHandlers`.
+
+The first function parameter should correspond to the parameter in the Protobuf service call, that is, the event. You can optionally define a second parameter for the previous state. For the first event of an Event Sourced Entity or for the first change of a Value Entity there is no previous state and `null` is used for the state parameter. The function may also take a `UpdateHandlerContext` parameter.
+
+NOTE: This type of update transformation is a natural fit for Events emitted by an Event Sourced Entity, but it can also be used for Value Entities. For example, if the View representation is different from the Entity state you might want to transform it before presenting the View to the client.
+
+[#ES_register]
+=== Register the View
+
+In the implementation, register the View with `AkkaServerless`:
+
+.customer_eventsourced_view.py
+[source,js,indent=0]
+----
+include::example$python-customer-registry/customer_eventsourced_view.py[tag=register]
+----
+
+Invoke the `addComponent` function to register the view with the service. For example:
+
+.index.py
+[source,js,indent=0]
+----
+include::example$python-customer-registry/index.py[tags=register-event-sourced]
+----
+
+[#topic-view]
+== View from a topic
+
+The source of a View can be an eventing topic. You define it in the same way as described in <<event-sourced-entity>> or <<value-entity>>, but leave out the `eventing.in` annotation in the Protobuf.
+
+[source,proto,indent=0]
+----
+include::example$python-customer-registry/customer_view.proto[tags=declarations;service-topic]
+----
+
+<1> This is the only difference from <<event-sourced-entity>>.
+
+== How to transform results
+
+To obtain different results than shown in the examples above, you can transform them:
+
+* As a <<_relational_projection>>
+* As a <<_response_message_including_the_result>>
+
+=== Relational projection
+
+Instead of using `SELECT *` you can define the columns to use in the response message:
+[source,proto,indent=0]
+----
+include::example$python-customer-registry/customer_view.proto[tags=declarations;summary]
+----
+
+Similarly, you can include values from the request message in the response, such as `:request_id`:
+
+[source,proto,indent=0]
+----
+SELECT :request_id, customer_id as id, name FROM customers WHERE name = :customer_name
+----
+
+=== Response message including the result
+
+Instead of streamed results, you can include the results in a repeated field in the response message:
+
+[source,proto,indent=0]
+----
+include::example$python-customer-registry/customer_view.proto[tag=wrap-repeated]
+----
+
+<1> The response message contains a `repeated` field.
+<2> The return type is not `streamed`.
+<3> The `repeated` field is referenced in the query with `* AS results`.
+
+[#testing]
+== How to test a View
+
+TO-DO
+
+[#changing]
+== How to modify a View
+
+Akka Serverless creates indexes for the View based on the query. For example, the following query will result in a View with an index on the `name` column:
+
+[source,proto,indent=0]
+----
+SELECT * FROM customers WHERE name = :customer_name
+----
+
+If the query is changed, Akka Serverless might need to add other indexes. For example, changing the above query to filter on the `city` would mean that Akka Serverless needs to build a View with the index on the `city` column.
+
+[source,proto,indent=0]
+----
+SELECT * FROM customers WHERE address.city = :city
+----
+
+Such changes require you to define a new View. Akka Serverless will then rebuild it from the source event log or value changes.
+
+WARNING: Views from topics cannot be rebuilt from the source messages, because it's not possible to consume all events from the topic again. The new View will be built from new messages published to the topic.
+
+Rebuilding a new View may take some time if there are many events that have to be processed. The recommended way when changing a View is multi-step, with two deployments:
+
+. Define the new View, and keep the old View intact. A new View is defined by a new `service` in Protobuf and different `viewId` when <<register-view>>. Keep the old `registerView`.
+. Deploy the new View, and let it rebuild. Verify that the new query works as expected. The old View can still be used.
+. Remove the old View definition and rename the `service` to the old name if the public API is compatible.
+. Deploy the second change.
+
+The View definitions are stored and validated when a new version is deployed. There will be an error message if the changes are not compatible.
+
+[#query]
+== Query syntax reference
+
+Define View queries in a language that is similar to SQL. The following examples illustrate the syntax for a `customers` entity, where the `.proto` file defines the `table` attribute as `customers`. To retrieve:
+
+* All customers without any filtering conditions (no WHERE clause):
++
+[source,proto,indent=0]
+----
+SELECT * FROM customers
+----
+
+* Customers with a name matching the `customer_name` property of the request:
++
+[source,proto,indent=0]
+----
+SELECT * FROM customers WHERE name = :customer_name
+----
+
+* Customers with matching `customer_name` AND `city` properties of the request:
++
+[source,proto,indent=0]
+----
+SELECT * FROM customers WHERE name = :customer_name AND address.city = :city
+----
+
+* Customers in a city matching a literal value:
++
+[source,proto,indent=0]
+----
+SELECT * FROM customers WHERE address.city = 'New York'
+----
+
+=== Query filter predicates
+
+Filter predicates include:
+
+* `=` equals
+* `!=` not equals
+* `>` greater than
+* `>=` greater than or equals
+* `<` less than
+* `\<=` less than or equals
+
+The filter conditions can be combined with `AND`/`OR`.
+
+[source,proto,indent=0]
+----
+SELECT * FROM customers WHERE
+  name = :customer_name AND address.city = 'New York' OR
+  name = :customer_name AND address.city = 'San Francisco'
+----
