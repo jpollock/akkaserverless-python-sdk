@@ -1,0 +1,36 @@
+// This is the public API offered by your entity.
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "akkaserverless/annotations.proto";
+import "google/api/annotations.proto";
+
+import "product_domain.proto";
+
+package com.example.eventsourced;
+
+message ProductsResponse {
+  repeated ProductState results = 1; 
+}
+
+service ProductView {
+    rpc UpdateThing(ProductState) returns (ProductState) {
+        option (akkaserverless.method).eventing = {
+          in: {
+            event_sourced_entity: "products"
+          }
+        };
+        option (akkaserverless.method).view.update = {
+          table: "products"
+        };
+    }
+
+    rpc GetThings(google.protobuf.Empty) returns (ProductsResponse) {
+        option (akkaserverless.method).view.query = {
+          query: "SELECT * AS results FROM products"
+        };
+        option (google.api.http) = {
+            get: "/akkaccino/event/products"
+          };  
+    }
+}

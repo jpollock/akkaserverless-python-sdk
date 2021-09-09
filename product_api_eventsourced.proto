@@ -1,0 +1,60 @@
+// This is the public API offered by your entity.
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "akkaserverless/annotations.proto";
+import "google/api/annotations.proto";
+
+import "product_domain.proto";
+
+package com.example.eventsourced;
+
+
+message Product {
+  string product_id = 1 [(akkaserverless.field).entity_key = true];
+  string name = 2;
+}
+
+message GetProductCommand {
+  string product_id = 1 [(akkaserverless.field).entity_key = true];
+}
+
+message IncrementCartsCommand {
+  string product_id = 1 [(akkaserverless.field).entity_key = true];
+}
+
+message DecrementCartsCommand {
+  string product_id = 1 [(akkaserverless.field).entity_key = true];
+}
+
+
+service ProductService {
+
+    rpc AddProduct(Product) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+        post: "/akkaccino/event/products"
+            body: "*"
+        };
+    }
+
+    rpc IncrementActiveCarts(GetProductCommand) returns (ProductState) {
+        option (google.api.http) = {
+        put: "/akkaccino/products/{product_id}/active-carts"
+        };
+    }
+
+    rpc DecrementActiveCarts(GetProductCommand) returns (ProductState) {
+        option (google.api.http) = {
+        delete: "/akkaccino/products/{product_id}/active-carts"
+        };
+    }
+
+    rpc GetProduct(GetProductCommand) returns (ProductState) {
+        option (google.api.http) = {
+        get: "/akkaccino/event/products/{product_id}"
+        };
+    }
+
+    
+}
+

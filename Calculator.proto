@@ -1,0 +1,83 @@
+// This is the public API offered by the shopping cart entity.
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "akkaserverless/annotations.proto";
+import "google/api/annotations.proto";
+import "google/api/http.proto";
+
+package com.example.calculator;
+
+message CalculatorState {
+    string calculator_id = 1 [(akkaserverless.field).entity_key = true];
+    int32 value = 2;
+    repeated int32 history = 3;
+
+}
+
+
+message Add {
+    string calculator_id = 1 [(akkaserverless.field).entity_key = true];
+    int32 amount = 2;
+}
+
+message Subtract {
+    string calculator_id = 1 [(akkaserverless.field).entity_key = true];
+    int32 amount = 2;
+}
+
+message Multiply {
+    string calculator_id = 1 [(akkaserverless.field).entity_key = true];
+    int32 amount = 2;
+}
+
+message Divide {
+    string calculator_id = 1 [(akkaserverless.field).entity_key = true];
+    int32 amount = 2;
+}
+
+message GetValue {
+    string calculator_id = 1 [(akkaserverless.field).entity_key = true];
+}
+
+message Value {
+    int32 amount = 1;
+}
+
+service Calculator {
+
+    rpc AddToValue(Add) returns (CalculatorState) {
+        option (google.api.http) = {
+            post: "/calculators/{calculator_id}/add",
+            body: "*",
+        };
+    }
+
+    rpc SubtractFromValue(Subtract) returns (CalculatorState) {
+        option (google.api.http) = {
+            post: "/calculators/{calculator_id}/subtract",
+            body: "*",
+        };
+    }
+
+    rpc MultiplyValue(Multiply) returns (CalculatorState) {
+        option (google.api.http) = {
+            post: "/calculators/{calculator_id}/multiply",
+            body: "*",
+        };
+    }
+
+    rpc DivideValue(Divide) returns (CalculatorState) {
+        option (google.api.http) = {
+            post: "/calculators/{calculator_id}/divide",
+            body: "*",
+        };
+    }
+
+    rpc GetCurrentValue(GetValue) returns (Value) {
+        option (google.api.http) = {
+          get: "/calculators/{calculator_id}"
+        };
+    }
+
+}
