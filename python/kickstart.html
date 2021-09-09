@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Kickstart a Python module :: Akka Serverless Documentation</title>
+    <link rel="prev" href="../developing/development-process-js.html">
+    <link rel="next" href="proto.html">
+    <meta name="generator" content="Antora 3.0.0-alpha.7">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <script>var uiRootPath = '../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="..">Akka Serverless Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Resources</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Resource A</a>
+            <a class="navbar-item" href="#">Resource B</a>
+            <a class="navbar-item" href="#">Resource C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html"></a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">Developing with Python</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../developing/development-process-js.html">Process overview</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="kickstart.html">Kickstart a Python module</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="proto.html">Writing gRPC descriptors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="eventsourced.html">Implementing Event Sourced Entities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="value-entity.html">Implementing Value Entities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="actions.html">Implementing Actions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="forwarding.html">Forwarding and effects</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="entity-eventing.html">Subscribing to a Journal</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="topic-eventing.html">Publishing and Subscribing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="views.html">Creating Views</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="serialization.html">Handling Serialization</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="run-locally.html">Run a service locally</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title"></span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html"></a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Developing with Python</a></li>
+    <li><a href="kickstart.html">Kickstart a Python module</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="file:///antora/docs/src/modules/python/pages/kickstart.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="On This Page" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Kickstart a Python module</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Unresolved include directive in modules/python/pages/kickstart.adoc - include::https://raw.githubusercontent.com/settermjd mezzio-expressive-book-code-examples-manual-build/iteration-one/config/routes.php[]</p>
+</div>
+<div class="paragraph">
+<p>The Akka Serverless code generation tool for Python helps you to get started quickly with a project that you can build using npm or Yarn. The tool generates the recommended project structure (including <code>package.json</code>), a Value Entity, unit tests, and a <code>README.md</code> that explains what was created and how to work with the newly created service.</p>
+</div>
+<div class="paragraph">
+<p>You can modify the <code>.proto</code> and source files, and the tools will generate code stubs for the elements you changed or added. The generated project also contains scripts for running the service locally and for packaging into a container and deploying on Akka Serverless</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The term "project" used in connection with code generation is a development project that contains your service implementation. This differs from an Akka Serverless project, which is where you deploy one or more packaged services.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Before running the code generation tools, make sure that you have the following:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Node &gt;= {minimum_node_version}</p>
+</li>
+<li>
+<p><code>npm</code> or <code>yarn</code></p>
+</li>
+<li>
+<p>Docker &gt;= 19.03 (to run locally)</p>
+</li>
+<li>
+<p>The <a href="https://developer.lightbend.com/docs/akka-serverless/getting-started/set-up-development-env.html#_akka_serverless_cli"><code>akkasls</code> CLI downloaded</a></p>
+</li>
+<li>
+<p>A configured Docker Registry</p>
+</li>
+<li>
+<p>An <a href="https://developer.lightbend.com/docs/akka-serverless/getting-started/lightbend-account.html">Akka Serverless account</a></p>
+</li>
+<li>
+<p>An <a href="https://developer.lightbend.com/docs/akka-serverless/getting-started/projects.html">Akka Serverless deployment project</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_prepare_the_development_project"><a class="anchor" href="#_prepare_the_development_project"></a>1. Prepare the development project</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The code generation tools create a new development project named <code>my-entity</code>, that contains build configuration and the <a href="https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#gRPC">gRPC Protobuf specifications</a> for a <a href="https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#value_entity">Value Entity</a>.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>To create the initial codebase, from a command window enter the following:</p>
+<div class="dlist tabset">
+<dl>
+<dt class="hdlist1">npm</dt>
+<dd>
+<div class="openblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command window hljs" data-lang="command window">npx @lightbend/create-akkasls-entity my-entity</code></pre>
+</div>
+</div>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">yarn</dt>
+<dd>
+<div class="openblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command window hljs" data-lang="command window">yarn create @lightbend/akkasls-entity my-entity</code></pre>
+</div>
+</div>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+</li>
+<li>
+<p>Change directories to the newly created folder:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command window hljs" data-lang="command window">cd my-entity</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Prepare the build unit by installing all the required dependencies and tools:</p>
+<div class="dlist tabset">
+<dl>
+<dt class="hdlist1">npm</dt>
+<dd>
+<div class="openblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command window hljs" data-lang="command window">npm install</code></pre>
+</div>
+</div>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">yarn</dt>
+<dd>
+<div class="openblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command window hljs" data-lang="command window">yarn</code></pre>
+</div>
+</div>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Take a look at the initial structure. The project contains the following directories:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>lib</code> - typescript files that allow IDEs to provide better highlighting and validation.</p>
+</li>
+<li>
+<p><code>proto</code> - files containing domain and api Protobuf definitions for a <code>Counter</code> Value Entity.</p>
+</li>
+<li>
+<p><code>test</code> - testkit file</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To understand how the Protobuf definitions relate to the implementation files, see <a href="https://developer.lightbend.com/docs/akka-serverless/designing/working.html#dev-process">The development process</a> and <a href="https://developer.lightbend.com/docs/akka-serverless/designing/programming-model.html">Understanding the programming model</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_build_and_generate_code"><a class="anchor" href="#_build_and_generate_code"></a>2. Build and generate code</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>During the build process, the tools generates source files and unit test templates for a Value Entity. You can change or add to the <code>.proto</code> and source files. The next build will generate classes and tests for your additions if they do not exist, but will not overwrite existing classes or tests.</p>
+</div>
+<div class="paragraph">
+<p>Build the project to generate source code:</p>
+</div>
+<div class="dlist tabset">
+<dl>
+<dt class="hdlist1">npm</dt>
+<dd>
+<div class="openblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command window hljs" data-lang="command window">npm run build</code></pre>
+</div>
+</div>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">yarn</dt>
+<dd>
+<div class="openblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command window hljs" data-lang="command window">yarn build</code></pre>
+</div>
+</div>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>You should now see the following source files in your project:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>src/counter.py</code> - the implementation of the <code>counter</code> Value Entity.</p>
+</li>
+<li>
+<p><code>src/index.py</code> - a convenience file that starts the Akka Serverless proxy for running locally</p>
+</li>
+<li>
+<p><code>test/counter.test.py</code> - a test for the <code>counter</code> Value Entity.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <code>lib/generated</code> directory contains files used by the tools. Any changes made to files in this folder are overwritten on the next build.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_unit_and_integration_tests"><a class="anchor" href="#_unit_and_integration_tests"></a>2.1. Unit and integration tests</h3>
+<div class="paragraph">
+<p>Akka Serverless codegen creates a unit test stub for each class within <code>counter.test.py</code>. Use these stubs as a starting point to test the logic in your implementation. You can use any of the common Node.py testing tools, such as Mocha or Jest.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">Unresolved include directive in modules/python/pages/kickstart.adoc - include::example$python-valueentity-counter/test/counter.test.py[]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The entity used by <code>counter.test.py</code> is contained within <code>testkit.py</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">Unresolved include directive in modules/python/pages/kickstart.adoc - include::example$python-valueentity-counter/test/testkit.py[]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_run_locally"><a class="anchor" href="#_run_locally"></a>3. Run locally</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can run your services locally and test them manually with HTTP or gRPC requests. To run locally, you need to initiate the Akka Serverless <a href="https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#proxy">proxy</a>. The <code>docker-compose</code> file contains the configuration required to run the proxy.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>To start the proxy, run the following command from the top-level project directory:</p>
+<div class="dlist tabset">
+<dl>
+<dt class="hdlist1">macOS, Windows</dt>
+<dd>
+<div class="openblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">docker compose up</code></pre>
+</div>
+</div>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Linux</dt>
+<dd>
+<div class="openblock">
+<div class="content">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+On Linux this requires Docker 20.10 or later (<a href="https://github.com/moby/moby/pull/40007" class="bare">https://github.com/moby/moby/pull/40007</a>), or for a <code>USER_FUNCTION_HOST</code> environment variable to be set manually.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">docker compose -f docker-compose.yml -f docker-compose.linux.yml up</code></pre>
+</div>
+</div>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+</li>
+<li>
+<p>Start the application locally with the following command:</p>
+<div class="dlist tabset">
+<dl>
+<dt class="hdlist1">npm</dt>
+<dd>
+<div class="openblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command window hljs" data-lang="command window">npm run start</code></pre>
+</div>
+</div>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">yarn</dt>
+<dd>
+<div class="openblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command window hljs" data-lang="command window">yarn start</code></pre>
+</div>
+</div>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+</li>
+</ol>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+For more details see <a href="run-locally.html" class="page">Run a service locally</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>TODO: we need to add how to exercise the counter with gRPC or HTTP.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_package_service"><a class="anchor" href="#_package_service"></a>4. Package service</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The project contains configuration files for packaging the service into a Docker image, which can then be deployed to Akka Serverless. The Docker image name can be changed in the <code>package.json</code> <code>config.dockerImage</code> string value. Update this configuration to publish your image to your Docker repository.</p>
+</div>
+<div class="paragraph">
+<p>The recommended version is Node {minimum_node_version} and the image is based on the official <a href="https://hub.docker.com/_/node">Node Docker Image</a>. Choose a different image in the <code>Dockerfile</code> placed in the root folder of the development project.</p>
+</div>
+<div class="dlist tabset">
+<dl>
+<dt class="hdlist1">npm</dt>
+<dd>
+<div class="openblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command window hljs" data-lang="command window">npm run package</code></pre>
+</div>
+</div>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">yarn</dt>
+<dd>
+<div class="openblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command window hljs" data-lang="command window">yarn package</code></pre>
+</div>
+</div>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_deploy_to_akka_serverless"><a class="anchor" href="#_deploy_to_akka_serverless"></a>5. Deploy to Akka Serverless</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The build tool script conveniently packages and publishes the Docker image prior to deployment.</p>
+</div>
+<div class="paragraph">
+<p>To deploy your service:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Update the <code>dockerImage</code> property in the project&#8217;s <code>package.json</code> file.</p>
+<div class="paragraph">
+<p>Refer to <a href="https://developer.lightbend.com/docs/akka-serverless/deploying/registries.html">Configuring registries</a> for more information on how to make your docker image available to Akka Serverless.</p>
+</div>
+</li>
+<li>
+<p>In your command window, set your Akka Serverless project to be the current project:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command window hljs" data-lang="command window">akkasls config set project &lt;project-name&gt;</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Run the deployment scripts:</p>
+<div class="dlist tabset">
+<dl>
+<dt class="hdlist1">npm</dt>
+<dd>
+<div class="openblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command window hljs" data-lang="command window">npm run deploy</code></pre>
+</div>
+</div>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">yarn</dt>
+<dd>
+<div class="openblock">
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command window hljs" data-lang="command window">yarn deploy</code></pre>
+</div>
+</div>
+</div>
+</div>
+</dd>
+</dl>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_summary"><a class="anchor" href="#_summary"></a>Summary</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The code generation tools created a project and supporting resources to kickstart your development. Modify the <code>.proto</code> and implementations or replace them with your own and take advantage of the generated resources. To learn more about the generated Counter Service, see <a href="value-entity.html" class="page">Implementing Value Entities in Python</a>.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="../developing/development-process-js.html">Process overview</a></span>
+  <span class="next"><a href="proto.html">Writing gRPC descriptors</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

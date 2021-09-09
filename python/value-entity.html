@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Implementing Value Entities in Python :: Akka Serverless Documentation</title>
+    <link rel="prev" href="eventsourced.html">
+    <link rel="next" href="actions.html">
+    <meta name="generator" content="Antora 3.0.0-alpha.7">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <script>var uiRootPath = '../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="..">Akka Serverless Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Resources</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Resource A</a>
+            <a class="navbar-item" href="#">Resource B</a>
+            <a class="navbar-item" href="#">Resource C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html"></a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">Developing with Python</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../developing/development-process-js.html">Process overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="kickstart.html">Kickstart a Python module</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="proto.html">Writing gRPC descriptors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="eventsourced.html">Implementing Event Sourced Entities</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="value-entity.html">Implementing Value Entities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="actions.html">Implementing Actions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="forwarding.html">Forwarding and effects</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="entity-eventing.html">Subscribing to a Journal</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="topic-eventing.html">Publishing and Subscribing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="views.html">Creating Views</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="serialization.html">Handling Serialization</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="run-locally.html">Run a service locally</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title"></span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html"></a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Developing with Python</a></li>
+    <li><a href="value-entity.html">Implementing Value Entities</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="file:///antora/docs/src/modules/python/pages/value-entity.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="On This Page" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Implementing Value Entities in Python</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#value_entity">Value Entities</a> persist their state on every change, and Akka Serverless needs to serialize their data to send it to the underlying data store. The most straight forward way to persist the state is to use <code>protobuf</code> types. Akka Serverless will automatically detect if an updated state is <code>protobuf</code>, and serialize it using <code>protobufjs</code>. See <a href="https://www.npmjs.com/package/protobufjs" class="bare">https://www.npmjs.com/package/protobufjs</a> for more information on <code>protobufjs</code>. For other serialization options, including JSON, see <a href="serialization.html" class="page">Serialization</a>.</p>
+</div>
+<div class="paragraph">
+<p>While protocol buffers are the recommended format for persisting state, we recommend that you do not persist your service&#8217;s protobuf messages. While this may introduce some overhead to convert from one type to the other, it will allow the service&#8217;s public interface to evolve independent of the data storage format, which should be private.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+For value entities, you modify the state and then trigger a save of that state. Both the Python and the Java SDK have a <code>context.updateState(newState)</code> method for this purpose. If you change the state but do not call <code>updateState</code>, that state change will be lost.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The steps necessary to implement a Value Entity include:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Defining the API and domain messages in <code>.proto</code> files.</p>
+</li>
+<li>
+<p>Implementing behavior in command handlers.</p>
+</li>
+<li>
+<p>Creating and initializing the Entity.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The sections on this page describe a <code>Counter</code> Value Entity as an example. Follow the steps on the <a href="kickstart.html" class="page">Kickstart a Python module</a> page to create a <code>Counter</code> entity using the code generation tools.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_defining_the_proto_files"><a class="anchor" href="#_defining_the_proto_files"></a>Defining the <code>proto</code> files</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following <code>counter_domain.proto</code> file defines a "Counter" Value Entity. The entity stores an integer value as defined in the <code>CounterState</code> message.  A typical entity stores more data than what is required for a counter.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">syntax = "proto3";
+
+package com.example.domain; <i class="conum" data-value="1"></i><b>(1)</b>
+
+import "akkaserverless/annotations.proto"; <i class="conum" data-value="2"></i><b>(2)</b>
+
+option (akkaserverless.file).value_entity = { <i class="conum" data-value="3"></i><b>(3)</b>
+    name: "Counter" <i class="conum" data-value="4"></i><b>(4)</b>
+    entity_type: "counter" <i class="conum" data-value="5"></i><b>(5)</b>
+    state: "CounterState" <i class="conum" data-value="6"></i><b>(6)</b>
+};
+
+message CounterState { <i class="conum" data-value="7"></i><b>(7)</b>
+    int32 value = 1;
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Any classes generated from this protobuf file will be nested in the package heirarchy of: <code>com.example.domain</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Import the Akka Serverless protobuf annotations, or options.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The protobuf option <code>(akkaserverless.file).value_entity</code> is specific to code-generation as provided by the Akka Serverless plugin.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td><code>name</code> denotes the base name for the Value entity, the code-generation will create initial sources <code>CounterImpl</code>, <code>CounterTest</code> and <code>CounterIntegrationTest</code>. Once these files exist, they are not overwritten, so you can freely add logic to them.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td><code>enity_type</code> is a unique identifier of the "state storage". The entity name may be changed even after data has been created, the <code>entity_type</code> can&#8217;t. This value shows in the <code>@ValueEnity</code> annotation of your entity implementation.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td><code>state</code> points to the protobuf message representing the Value entity&#8217;s state which is kept by Akka Serverless</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td>The <code>CounterState</code> protobuf message is what Akka Serverless stores for this entity.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The <code>counter_api.proto</code> file defines the commands we can send to the Counter service to manipulate or access the Counter`s state. They make up the service API:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">// This is the public API offered by your entity.
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "akkaserverless/annotations.proto"; <i class="conum" data-value="1"></i><b>(1)</b>
+import "google/api/annotations.proto";
+
+package com.example; <i class="conum" data-value="2"></i><b>(2)</b>
+
+message IncreaseValue { <i class="conum" data-value="3"></i><b>(3)</b>
+    string counter_id = 1 [(akkaserverless.field).entity_key = true]; <i class="conum" data-value="4"></i><b>(4)</b>
+    int32 value = 2;
+}
+
+message DecreaseValue {
+    string counter_id = 1 [(akkaserverless.field).entity_key = true];
+    int32 value = 2;
+}
+
+message ResetValue {
+    string counter_id = 1 [(akkaserverless.field).entity_key = true];
+}
+
+message GetCounter {
+    string counter_id = 1 [(akkaserverless.field).entity_key = true];
+}
+
+message CurrentCounter { <i class="conum" data-value="5"></i><b>(5)</b>
+    int32 value = 1;
+}
+
+service CounterService { <i class="conum" data-value="6"></i><b>(6)</b>
+    option (akkaserverless.service) = { <i class="conum" data-value="7"></i><b>(7)</b>
+        type : SERVICE_TYPE_ENTITY
+        component : ".domain.Counter"
+    };
+
+    rpc Increase(IncreaseValue) returns (google.protobuf.Empty);
+    rpc Decrease(DecreaseValue) returns (google.protobuf.Empty);
+    rpc Reset(ResetValue) returns (google.protobuf.Empty);
+    rpc GetCurrentCounter(GetCounter) returns (CurrentCounter);
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Import the Akka Serverless protobuf annotations, or options.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Any classes generated from this protobuf file will be be nested in the package heirarchy: <code>com.example</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Protobuf messages describe the Commands that the service handles. They may contain other messages to represent structured data.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Every Command must contain a <code>string</code> field that contains the entity ID and is marked with the <code>(akkaserverless.field).entity_key</code> option.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Messages describe the return value for the API. For methods that don&#8217;t have return values, you should use <code>google.protobuf.Empty</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>The service descriptor shows the API of the entity. It lists the methods a client can use to issue Commands to the entity.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td>The protobuf option <code>(akkaserverless.service)</code> is specific to code-generation as provided by Akka Serverless and points to the protobuf definition <code>Counter</code> shown above (in <code>com.example.domain</code>).</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_creating_an_entity"><a class="anchor" href="#_creating_an_entity"></a>Creating an Entity</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following code creates the Value Entity with the <a href="_attachments/api/module-akkaserverless.ValueEntity.html" target="new"><code>ValueEntity</code><span class="image"><img src="../_images/new-tab.svg" alt="new tab" width="12"></span></a> class. It passes in:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The protobuf files, <code>counter_api.proto</code> and <code>counter_domain.proto</code>, define the service and the domain protocol. Akka Serverless uses the service protobuf file to load and read the service. It uses the definitions in <code>counter_domain.proto</code> to serialize state it receives from the <a href="https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#proxy">proxy</a>.</p>
+</li>
+<li>
+<p>The fully qualified name of the service the Value Entity implements, <code>com.example.CounterService</code>. The <code>entityType</code> is used to namespace the state in the journal.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js"># imports fom Akka Serverless SDK
+from akkaserverless.value_context import ValueEntityCommandContext
+from akkaserverless.value_entity import ValueEntity          
+
+from google.protobuf.empty_pb2 import Empty
+from counter_api_pb2 import (IncreaseValue, DecreaseValue, ResetValue, GetCounter, CurrentCounter, _COUNTERSERVICE, DESCRIPTOR as API_DESCRIPTOR)
+from counter_domain_pb2 import (CounterState)
+
+entity = ValueEntity(_COUNTERSERVICE, [API_DESCRIPTOR], 'counters', init)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_protobuf_types"><a class="anchor" href="#_using_protobuf_types"></a>Using protobuf types</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When passing state to Akka Serverless  the persisted data must be serialized and accessable.  To request state types, lookup the protobuf type then use the <code>create</code> method.</p>
+</div>
+<div class="paragraph">
+<p>Use the <code>ValueEntity</code> <a href="_attachments/api/module-akkaserverless.ValueEntity.html#lookupType" target="new"><code>lookupType</code><span class="image"><img src="../_images/new-tab.svg" alt="new tab" width="12"></span></a> helper to look up these types so we can use them later.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js"></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_initial_state"><a class="anchor" href="#_initial_state"></a>Initial state</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>An Entity must have an initial state when it is created and no state has been persisted for it yet. Value Entities are not explicitly created, they are implicitly created when a command arrives for them. Nothing is persisted on creation. So, if user "X" opens their counter for the first time, an entity will be created, but it will have no state stored yet, and just be in the initial state.</p>
+</div>
+<div class="paragraph">
+<p>To create the initial state, set the <a href="_attachments/api/module-akkaserverless.ValueEntity.html#initial" target="new"><code>initial</code><span class="image"><img src="../_images/new-tab.svg" alt="new tab" width="12"></span></a> callback. This takes the ID of the entity being created, and returns a new empty state, in this case, an empty counter state:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">def init(entity_id: str) -&gt; CounterState:
+    return CounterState()</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <code>CounterState.create()</code> method creates a protobuf message using the <code>CounterState</code> protobuf message type.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_behavior"><a class="anchor" href="#_behavior"></a>Behavior</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Value Entity behavior is defined in command handlers. A <a href="_attachments/api/module-akkaserverless.ValueEntity.html#~commandHandler" target="new">command handler<span class="image"><img src="../_images/new-tab.svg" alt="new tab" width="12"></span></a> is a function that takes a command, the current state, and a <a href="_attachments/api/module-akkaserverless.ValueEntity.ValueEntityCommandContext.html" target="new"><code>ValueEntityCommandContext</code><span class="image"><img src="../_images/new-tab.svg" alt="new tab" width="12"></span></a>. The function executes a service call on the Entity gRPC interface.</p>
+</div>
+<div class="paragraph">
+<p>The command is the input message type for the gRPC service call. For example, the <code>GetCurrentCounter</code> service call has an input type of <code>GetCounter</code>, while the <code>Increase</code> service call has an input type of <code>IncreaseValue</code>. The command will be an object that matches the structure of these protobuf types.</p>
+</div>
+<div class="paragraph">
+<p>The command handler must return a message of the same type as the output type of the gRPC service call, in the case of the <code>GetCurrentCounter</code> command, this must be a <code>CurrentCounter</code> message. In this case, the message does not need to be created using a looked up protobuf message type because Akka Serverless is already aware of the output type of the gRPC service call. Use a Python object that matches the structure of the protobuf type.</p>
+</div>
+<div class="sect2">
+<h3 id="_retrieving_state"><a class="anchor" href="#_retrieving_state"></a>Retrieving state</h3>
+<div class="paragraph">
+<p>The following example shows the implementation of a <code>GetCurrentCounter</code> command handler. This command handler is a read-only command handler, it doesn&#8217;t update the state, it just returns it:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">@entity.command_handler("GetCurrentCounter")
+def get_counter(state: CounterState, command: GetCounter, context: ValueEntityCommandContext):
+    return CurrentCounter(value=state.value)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_updating_state"><a class="anchor" href="#_updating_state"></a>Updating state</h3>
+<div class="paragraph">
+<p>When updating the state, a command handler MUST persist that change by calling the <a href="_attachments/api/module-akkaserverless.ValueEntity.ValueEntityCommandContext.html#updateState" target="new"><code>updateState</code><span class="image"><img src="../_images/new-tab.svg" alt="new tab" width="12"></span></a> method on the <code>ValueEntityCommandContext</code>. If it does not, any change to the state will be <strong>lost</strong> when the next command arrives.</p>
+</div>
+<div class="paragraph">
+<p>The following command handler updates the state. It also validates the command, ensuring the quantity of items added is greater than zero. Invoking <a href="_attachments/api/module-akkaserverless.ValueEntity.ValueEntityCommandContext.html#fail" target="new"><code>fail</code><span class="image"><img src="../_images/new-tab.svg" alt="new tab" width="12"></span></a> fails the command. This method throws, so there&#8217;s no need to explicitly throw an exception.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">@entity.command_handler("Increase")
+def increase_value(state: CounterState, command: IncreaseValue, context: ValueEntityCommandContext):
+    state.value += command.value
+    context.update_state(state)
+    return Empty()</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_starting_the_entity"><a class="anchor" href="#_starting_the_entity"></a>Starting the entity</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A helper method for listing the components declared in the current project is provided by the code generator. It also creates the relevant code for starting all of the components:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">from akkaserverless.akkaserverless_service import AkkaServerlessService
+from api_impl import entity as myapi
+import logging
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+    
+    # create service and add components
+    service = AkkaServerlessService()
+    service.add_component(myapi)
+    service.start()</code></pre>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="eventsourced.html">Implementing Event Sourced Entities</a></span>
+  <span class="next"><a href="actions.html">Implementing Actions</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

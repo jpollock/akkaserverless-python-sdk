@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Implementing Views :: Akka Serverless Documentation</title>
+    <link rel="prev" href="topic-eventing.html">
+    <link rel="next" href="serialization.html">
+    <meta name="generator" content="Antora 3.0.0-alpha.7">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <script>var uiRootPath = '../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="..">Akka Serverless Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Resources</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Resource A</a>
+            <a class="navbar-item" href="#">Resource B</a>
+            <a class="navbar-item" href="#">Resource C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html"></a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">Developing with Python</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../developing/development-process-js.html">Process overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="kickstart.html">Kickstart a Python module</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="proto.html">Writing gRPC descriptors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="eventsourced.html">Implementing Event Sourced Entities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="value-entity.html">Implementing Value Entities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="actions.html">Implementing Actions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="forwarding.html">Forwarding and effects</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="entity-eventing.html">Subscribing to a Journal</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="topic-eventing.html">Publishing and Subscribing</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="views.html">Creating Views</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="serialization.html">Handling Serialization</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="run-locally.html">Run a service locally</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title"></span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html"></a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Developing with Python</a></li>
+    <li><a href="views.html">Creating Views</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="file:///antora/docs/src/modules/python/pages/views.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="On This Page" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Implementing Views</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can access a single <a href="https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#entity">Entity</a> with its <a href="https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#entity_key">Entity key</a>. You might want to retrieve multiple Entities, or retrieve them using an attribute other than the key. Akka Serverless <a href="https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#view">Views</a> allow you achieve this. By creating multiple Views, you can optimize for query performance against each one.</p>
+</div>
+<div class="paragraph">
+<p>Views can be defined from any of the following:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#value-entity">Value Entity state changes</a></p>
+</li>
+<li>
+<p><a href="#event-sourced-entity">Event Sourced Entity events</a></p>
+</li>
+<li>
+<p><a href="#topic-view">Messages received from subscribing to topics on a broker</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In addition, this page describes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#_how_to_transform_results">How to transform results</a></p>
+</li>
+<li>
+<p><a href="#testing">How to test a View</a></p>
+</li>
+<li>
+<p><a href="#changing">How to modify a View</a></p>
+</li>
+<li>
+<p><a href="#query">Query reference</a></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Be aware that Views are not updated immediately when Entity state changes. Akka Serverless does update Views as quickly as possible, but it is not instant and can take up to a few seconds for the changes to become visible in the query results. View updates might also take more time during failure scenarios than during normal operation.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/lightbend/akkaserverless-python-sdk/tree/main/samples/js-customer-registry">The <code>akkaserverless-python-sdk</code> GitHub repository</a> includes an example of all views described on this page.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="value-entity"><a class="anchor" href="#value-entity"></a>View from a Value Entity</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Consider an example of a Customer Registry service with a <code>customer</code> Value Entity. When <code>customer</code> state changes, the entire state is emitted as a value change. Value changes update any associated Views. To create a View that lists customers by their name:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><a href="#_define_the_view_service_descriptor">Define the View service descriptor</a> for a service that selects customers by name and associates a table name with the View. The table is created and used by Akka Serverless to store the View, use any name for the table.</p>
+</li>
+<li>
+<p><a href="#register-view">Register the View</a>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>This example assumes the following <code>customer</code> state is defined in a <code>customer_domain.proto</code> file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">syntax = "proto3";
+
+package customer.domain;
+
+message CustomerState {
+  string customer_id = 1;
+  string email = 2;
+  string name = 3;
+  Address address = 4;
+}
+
+message Address {
+  string street = 1;
+  string city = 2;
+}</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_define_the_view_service_descriptor"><a class="anchor" href="#_define_the_view_service_descriptor"></a>Define the View service descriptor</h3>
+<div class="paragraph">
+<p>To get a view of multiple customers by their name, define the View as a <code>service</code> in Protobuf. The descriptor defines:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>How to update the View</p>
+</li>
+<li>
+<p>The source of View data</p>
+</li>
+<li>
+<p>A <code>table</code> attribute that can be any name. Use this name in the query <code>SELECT</code> statement for the View.</p>
+</li>
+<li>
+<p>The query that returns customers by name</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">syntax = "proto3";
+
+package customer.view;
+
+import "customer_domain.proto";
+import "akkaserverless/annotations.proto";
+import "google/protobuf/any.proto";
+
+service CustomerByName {
+  rpc UpdateCustomer(domain.CustomerState) returns (domain.CustomerState) { <i class="conum" data-value="1"></i><b>(1)</b>
+    option (akkaserverless.method).eventing.in = { <i class="conum" data-value="2"></i><b>(2)</b>
+      value_entity: "customers"
+    };
+    option (akkaserverless.method).view.update = { <i class="conum" data-value="3"></i><b>(3)</b>
+      table: "customers"
+    };
+  }
+
+  rpc GetCustomers(ByNameRequest) returns (stream domain.CustomerState) { <i class="conum" data-value="4"></i><b>(4)</b>
+    option (akkaserverless.method).view.query = { <i class="conum" data-value="5"></i><b>(5)</b>
+      query: "SELECT * FROM customers WHERE name = :customer_name"
+    };
+  }
+}
+
+message ByNameRequest {
+  string customer_name = 1;
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The <code>UpdateCustomer</code> method defines how Akka Serverless will update the view.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The source of the View is the <code>"customers"</code> Value Entity. This identifier is defined in the <code>@ValueEntity(entityType = "customers")</code> annotation of the Value Entity.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The <code>(akkaserverless.method).view.update</code> annotation defines that this method is used for updating the View. You must define the <code>table</code> attribute for the table to be used in the query. Pick any name and use it in the query <code>SELECT</code> statement.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>The <code>GetCustomers</code> method defines the query to retrieve a stream of customers.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>The <code>(akkaserverless.method).view.query</code> annotation defines that this method is used as a query of the View.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If the query should return only one result, <code>stream</code> can be removed from the return type:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">rpc GetCustomer(ByEmailRequest) returns (domain.CustomerState) { <i class="conum" data-value="1"></i><b>(1)</b>
+  option (akkaserverless.method).view.query = {
+    query: "SELECT * FROM customers WHERE email = :email"
+  };
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Without <code>stream</code> when expecting single result.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>When no result is found, the request fails with gRPC status code <code>NOT_FOUND</code>. A streamed call completes with an empty stream when no result is found.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>See <a href="#query">Query syntax reference</a> for examples of valid query syntax.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="register-view"><a class="anchor" href="#register-view"></a>Register the View</h3>
+<div class="paragraph">
+<p>In the View implementation, register the View with Akka Serverless. In addition to passing the service descriptor and a unique identifier, pass any descriptors that define state. In this example, the <code>customer_domain.proto</code> descriptor defines the Value Entity state:</p>
+</div>
+<div class="listingblock">
+<div class="title">customer_value_entity_view.py</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js"></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Invoke the <code>addComponent</code> function to register the view with the service. For example:</p>
+</div>
+<div class="listingblock">
+<div class="title">index.py</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js"></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="event-sourced-entity"><a class="anchor" href="#event-sourced-entity"></a>View from Event Sourced Entity</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Construct Event Sourced Entity Views from the events that the Entity emits. Build a state representation from the events and Query them. Using a Customer Registry service example, to create a View for querying customers by name:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><a href="#_define_the_view_descriptor">Define the View descriptor</a>.</p>
+</li>
+<li>
+<p><a href="#_implement_transformation_functions">Implement transformation functions</a>.</p>
+</li>
+<li>
+<p><a href="#ES_register">Register the View</a>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The example assumes a <code>customer_domain.proto</code> file that defines the events that
+will update the View when a name changes:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">syntax = "proto3";
+
+package customer.domain;
+
+message CustomerCreated {
+  CustomerState customer = 1;
+}
+
+message CustomerNameChanged {
+  string new_name = 1;
+}
+
+message CustomerAddressChanged {
+  Address new_address = 1;
+}</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_define_the_view_descriptor"><a class="anchor" href="#_define_the_view_descriptor"></a>Define the View descriptor</h3>
+<div class="paragraph">
+<p>A view descriptor:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Defines update methods for events.</p>
+</li>
+<li>
+<p>Provides the source of the View.</p>
+</li>
+<li>
+<p>Enables transformation updates.</p>
+</li>
+<li>
+<p>Specifies a <code>table</code> attribute used by Akka Serverless to store the View. Pick any name and use it in the Query <code>SELECT</code> statement for the View.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The following example <code>customer_view.proto</code> file defines a View to consume the <code>CustomerCreated</code> and <code>CustomerNameChanged</code> events. It must ignore all other events.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">syntax = "proto3";
+
+package customer.view;
+
+import "customer_domain.proto";
+import "akkaserverless/annotations.proto";
+import "google/protobuf/any.proto";
+
+service CustomerByNameView {
+  rpc ProcessCustomerCreated(domain.CustomerCreated) returns (domain.CustomerState) { <i class="conum" data-value="1"></i><b>(1)</b>
+    option (akkaserverless.method).eventing.in = {
+      event_sourced_entity: "customers" <i class="conum" data-value="2"></i><b>(2)</b>
+    };
+    option (akkaserverless.method).view.update = {
+      table: "customers"
+      transform_updates: true <i class="conum" data-value="3"></i><b>(3)</b>
+    };
+  }
+
+  rpc ProcessCustomerNameChanged(domain.CustomerNameChanged) returns (domain.CustomerState) { <i class="conum" data-value="4"></i><b>(4)</b>
+    option (akkaserverless.method).eventing.in = {
+      event_sourced_entity: "customers" <i class="conum" data-value="5"></i><b>(5)</b>
+    };
+    option (akkaserverless.method).view.update = {
+      table: "customers"
+      transform_updates: true <i class="conum" data-value="6"></i><b>(6)</b>
+    };
+  }
+
+  rpc IgnoreOtherEvents(google.protobuf.Any) returns (domain.CustomerState) { <i class="conum" data-value="7"></i><b>(7)</b>
+    option (akkaserverless.method).eventing.in = {
+      event_sourced_entity: "customers"
+     };
+     option (akkaserverless.method).view.update = {
+       table: "customers"
+       transform_updates: true
+     };
+  };
+
+  rpc GetCustomers(ByNameRequest) returns (stream domain.CustomerState) {
+    option (akkaserverless.method).view.query = {
+      query: "SELECT * FROM customers WHERE name = :customer_name"
+    };
+  }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Define an update method for each event.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The source of the View is from the journal of the <code>"customers"</code> Event Sourced Entity. This identifier is defined in the <code>@EventSourcedEntity(entityType = "customers")</code> annotation of the Event Sourced Entity.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Enable <code>transform_updates</code> to be able to build the View state from the events.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>One method for each event.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>The same <code>event_sourced_entity</code> for all update methods. Note the required <code>table</code> attribute. Use any name, which you will reference in the query <code>SELECT</code> statement.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Enable <code>transform_updates</code> for all update methods.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td>Ignore events not relevant to this view.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>See <a href="#query">Query syntax reference</a> for more examples of valid query syntax.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_implement_transformation_functions"><a class="anchor" href="#_implement_transformation_functions"></a>Implement transformation functions</h3>
+<div class="paragraph">
+<p>Implement the View by defining the functions that transform events to View state and ignore other events:</p>
+</div>
+<div class="listingblock">
+<div class="title">customer_eventsourced_view.py</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">Unresolved include directive in modules/python/pages/views.adoc - include::example$python-customer-registry/customer_eventsourced_view.py[]</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Each update method in the Protobuf definition should have a corresponding Python function in <code>view.setUpdateHandlers</code>.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The first function parameter should correspond to the parameter in the Protobuf service call, that is, the event. You can optionally define a second parameter for the previous state. For the first event of an Event Sourced Entity or for the first change of a Value Entity there is no previous state and <code>null</code> is used for the state parameter. The function may also take a <code>UpdateHandlerContext</code> parameter.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This type of update transformation is a natural fit for Events emitted by an Event Sourced Entity, but it can also be used for Value Entities. For example, if the View representation is different from the Entity state you might want to transform it before presenting the View to the client.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ES_register"><a class="anchor" href="#ES_register"></a>Register the View</h3>
+<div class="paragraph">
+<p>In the implementation, register the View with <code>AkkaServerless</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">customer_eventsourced_view.py</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">Unresolved include directive in modules/python/pages/views.adoc - include::example$python-customer-registry/customer_eventsourced_view.py[]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Invoke the <code>addComponent</code> function to register the view with the service. For example:</p>
+</div>
+<div class="listingblock">
+<div class="title">index.py</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js"></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="topic-view"><a class="anchor" href="#topic-view"></a>View from a topic</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The source of a View can be an eventing topic. You define it in the same way as described in <a href="#event-sourced-entity">View from Event Sourced Entity</a> or <a href="#value-entity">View from a Value Entity</a>, but leave out the <code>eventing.in</code> annotation in the Protobuf.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">syntax = "proto3";
+
+package customer.view;
+
+import "customer_domain.proto";
+import "akkaserverless/annotations.proto";
+import "google/protobuf/any.proto";
+
+service CustomerByNameViewFromTopic {
+  rpc ProcessCustomerCreated(domain.CustomerCreated) returns (domain.CustomerState) {
+    option (akkaserverless.method).eventing.in = {
+      topic: "customers" <i class="conum" data-value="1"></i><b>(1)</b>
+    };
+    option (akkaserverless.method).view.update = {
+      table: "customers"
+      transform_updates: true
+    };
+  }
+
+  rpc ProcessCustomerNameChanged(domain.CustomerNameChanged) returns (domain.CustomerState) {
+    option (akkaserverless.method).eventing.in = {
+      topic: "customers"
+    };
+    option (akkaserverless.method).view.update = {
+      table: "customers"
+      transform_updates: true
+    };
+  }
+
+  rpc IgnoreOtherEvents(google.protobuf.Any) returns (domain.CustomerState) {
+    option (akkaserverless.method).eventing.in = {
+      event_sourced_entity: "customers"
+     };
+     option (akkaserverless.method).view.update = {
+       table: "customers"
+       transform_updates: true
+     };
+  };
+
+  rpc GetCustomers(ByNameRequest) returns (stream domain.CustomerState) {
+    option (akkaserverless.method).view.query = {
+      query: "SELECT * FROM customers WHERE name = :customer_name"
+    };
+  }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>This is the only difference from <a href="#event-sourced-entity">View from Event Sourced Entity</a>.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_to_transform_results"><a class="anchor" href="#_how_to_transform_results"></a>How to transform results</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To obtain different results than shown in the examples above, you can transform them:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>As a <a href="#_relational_projection">Relational projection</a></p>
+</li>
+<li>
+<p>As a <a href="#_response_message_including_the_result">Response message including the result</a></p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_relational_projection"><a class="anchor" href="#_relational_projection"></a>Relational projection</h3>
+<div class="paragraph">
+<p>Instead of using <code>SELECT *</code> you can define the columns to use in the response message:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">syntax = "proto3";
+
+package customer.view;
+
+import "customer_domain.proto";
+import "akkaserverless/annotations.proto";
+import "google/protobuf/any.proto";
+
+message CustomerSummary {
+  string id = 1;
+  string name = 2;
+}
+
+service CustomerSummaryByName {
+  rpc GetCustomers(ByNameRequest) returns (stream CustomerSummary) {
+    option (akkaserverless.method).view.query = {
+      query: "SELECT customer_id AS id, name FROM customers WHERE name = :customer_name"
+    };
+  }
+
+  rpc UpdateCustomer(domain.CustomerState) returns (domain.CustomerState) {
+    option (akkaserverless.method).eventing.in = {
+      value_entity: "customers"
+    };
+    option (akkaserverless.method).view.update = {
+      table: "customers"
+    };
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Similarly, you can include values from the request message in the response, such as <code>:request_id</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">SELECT :request_id, customer_id as id, name FROM customers WHERE name = :customer_name</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_response_message_including_the_result"><a class="anchor" href="#_response_message_including_the_result"></a>Response message including the result</h3>
+<div class="paragraph">
+<p>Instead of streamed results, you can include the results in a repeated field in the response message:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">message CustomersResponse {
+  repeated domain.CustomerState results = 1; <i class="conum" data-value="1"></i><b>(1)</b>
+}
+
+service CustomersResponseByName {
+  rpc GetCustomers(ByNameRequest) returns (CustomersResponse) { <i class="conum" data-value="2"></i><b>(2)</b>
+    option (akkaserverless.method).view.query = {
+      query: "SELECT * AS results FROM customers WHERE name = :customer_name" <i class="conum" data-value="3"></i><b>(3)</b>
+    };
+  }
+
+  rpc UpdateCustomer(domain.CustomerState) returns (domain.CustomerState) {
+    option (akkaserverless.method).eventing.in = {
+      value_entity: "customers"
+    };
+    option (akkaserverless.method).view.update = {
+      table: "customers"
+    };
+  }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The response message contains a <code>repeated</code> field.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The return type is not <code>streamed</code>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The <code>repeated</code> field is referenced in the query with <code>* AS results</code>.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="testing"><a class="anchor" href="#testing"></a>How to test a View</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>TO-DO</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="changing"><a class="anchor" href="#changing"></a>How to modify a View</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Akka Serverless creates indexes for the View based on the query. For example, the following query will result in a View with an index on the <code>name</code> column:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">SELECT * FROM customers WHERE name = :customer_name</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the query is changed, Akka Serverless might need to add other indexes. For example, changing the above query to filter on the <code>city</code> would mean that Akka Serverless needs to build a View with the index on the <code>city</code> column.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">SELECT * FROM customers WHERE address.city = :city</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Such changes require you to define a new View. Akka Serverless will then rebuild it from the source event log or value changes.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Views from topics cannot be rebuilt from the source messages, because it&#8217;s not possible to consume all events from the topic again. The new View will be built from new messages published to the topic.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Rebuilding a new View may take some time if there are many events that have to be processed. The recommended way when changing a View is multi-step, with two deployments:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Define the new View, and keep the old View intact. A new View is defined by a new <code>service</code> in Protobuf and different <code>viewId</code> when <a href="#register-view">Register the View</a>. Keep the old <code>registerView</code>.</p>
+</li>
+<li>
+<p>Deploy the new View, and let it rebuild. Verify that the new query works as expected. The old View can still be used.</p>
+</li>
+<li>
+<p>Remove the old View definition and rename the <code>service</code> to the old name if the public API is compatible.</p>
+</li>
+<li>
+<p>Deploy the second change.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The View definitions are stored and validated when a new version is deployed. There will be an error message if the changes are not compatible.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="query"><a class="anchor" href="#query"></a>Query syntax reference</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Define View queries in a language that is similar to SQL. The following examples illustrate the syntax for a <code>customers</code> entity, where the <code>.proto</code> file defines the <code>table</code> attribute as <code>customers</code>. To retrieve:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>All customers without any filtering conditions (no WHERE clause):</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">SELECT * FROM customers</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Customers with a name matching the <code>customer_name</code> property of the request:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">SELECT * FROM customers WHERE name = :customer_name</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Customers with matching <code>customer_name</code> AND <code>city</code> properties of the request:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">SELECT * FROM customers WHERE name = :customer_name AND address.city = :city</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Customers in a city matching a literal value:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">SELECT * FROM customers WHERE address.city = 'New York'</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_query_filter_predicates"><a class="anchor" href="#_query_filter_predicates"></a>Query filter predicates</h3>
+<div class="paragraph">
+<p>Filter predicates include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>=</code> equals</p>
+</li>
+<li>
+<p><code>!=</code> not equals</p>
+</li>
+<li>
+<p><code>&gt;</code> greater than</p>
+</li>
+<li>
+<p><code>&gt;=</code> greater than or equals</p>
+</li>
+<li>
+<p><code>&lt;</code> less than</p>
+</li>
+<li>
+<p><code>&lt;=</code> less than or equals</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The filter conditions can be combined with <code>AND</code>/<code>OR</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">SELECT * FROM customers WHERE
+  name = :customer_name AND address.city = 'New York' OR
+  name = :customer_name AND address.city = 'San Francisco'</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="topic-eventing.html">Publishing and Subscribing</a></span>
+  <span class="next"><a href="serialization.html">Handling Serialization</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

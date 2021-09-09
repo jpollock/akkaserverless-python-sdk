@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Implementing Event Sourced Entities in Python :: Akka Serverless Documentation</title>
+    <link rel="prev" href="proto.html">
+    <link rel="next" href="value-entity.html">
+    <meta name="generator" content="Antora 3.0.0-alpha.7">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <script>var uiRootPath = '../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="..">Akka Serverless Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Resources</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Resource A</a>
+            <a class="navbar-item" href="#">Resource B</a>
+            <a class="navbar-item" href="#">Resource C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html"></a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">Developing with Python</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../developing/development-process-js.html">Process overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="kickstart.html">Kickstart a Python module</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="proto.html">Writing gRPC descriptors</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="eventsourced.html">Implementing Event Sourced Entities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="value-entity.html">Implementing Value Entities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="actions.html">Implementing Actions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="forwarding.html">Forwarding and effects</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="entity-eventing.html">Subscribing to a Journal</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="topic-eventing.html">Publishing and Subscribing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="views.html">Creating Views</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="serialization.html">Handling Serialization</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="run-locally.html">Run a service locally</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title"></span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html"></a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Developing with Python</a></li>
+    <li><a href="eventsourced.html">Implementing Event Sourced Entities</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="file:///antora/docs/src/modules/python/pages/eventsourced.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="On This Page" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Implementing Event Sourced Entities in Python</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Event Sourced Entities persist their state with <a href="https://en.wikipedia.org/wiki/ACID" target="new">ACID semantics <span class="image"><img src="../_images/new-tab.svg" alt="new tab" width="12"></span></a>, scale horizontally, and isolate failures. They use the Event Sourcing Model&#8212;&#8203;rather than persisting the current state, they persist all of the events that led to the current state. Akka Serverless stores these events in a <a href="https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#journal">journal</a>.</p>
+</div>
+<div class="paragraph">
+<p>An Event Sourced Entity must not update its in-memory state directly as a result of a <a href="https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#command"><em>command</em></a>. The handling of a command, if it results in changes being required to state, should emit <a href="https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#event"><em>events</em></a>. These events will then be received, at which point the in-memory state can and should be changed in response.</p>
+</div>
+<div class="paragraph">
+<p>When you need to read state in your service, ask yourself <em>what events should I be listening to</em>?. When you need to write state, ask yourself <em>what events should I be emitting</em>?</p>
+</div>
+<div class="paragraph">
+<p>TODO: add an illustration</p>
+</div>
+<div class="paragraph">
+<p>To load an Entity, Akka Serverless reads the journal and replays events to compute the Entity&#8217;s current state. As an optimization, by default, Event Sourced Entities persist state snapshots periodically. This allows Akka Serverless to recreate an Entity from the most recent snapshot plus any events saved after the snapshot.</p>
+</div>
+<div class="paragraph">
+<p>In contrast with typical create, read, update (CRUD) systems, event sourcing allows the state of the Entity to be reliably replicated to other services. Event Sourced Entities use offset tracking in the journal to record which portions of the system have replicated which events.</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+Event Sourced Entities offer strong consistency guarantees. Akka Serverless distributes Entities across every node in a stateful service deployment&#8212;&#8203;at any given time, each Entity will live on exactly one node. If a command for an Entity arrives to a node not hosting that Entity, the command is forwarded by the proxy to the node that contains that particular Entity. This forwarding is done transparently, your code does not need to know. Because each Entity lives on exactly one node, that node can handle messages for each Entity sequentially. Hence, there are no concurrency concerns relating to Event Sourced Entities, each Entity handles one message at a time.
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+To learn more about event sourcing, check out the free Lightbend Academy course, <a href="https://academy.lightbend.com/courses/course-v1:lightbend+LRA-CQRSandEventSourcing+v1/about" target="new">Reactive Architecture: CQRS &amp; Event Sourcing <span class="image"><img src="../_images/new-tab.svg" alt="new tab" width="12"></span></a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_persistence_types_and_serialization"><a class="anchor" href="#_persistence_types_and_serialization"></a>Persistence types and serialization</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Event Sourced Entities persist events and snapshots in the journal, so Akka Serverless must serialize them.  Akka Serverless will automatically detect if an emitted event or snapshot is a <code>protobuf</code> type, and serialize it using <code>protobufjs</code>. However, as a Python developer, you may find it more natural to use JSON. <a href="serialization.html" class="page">Serialization options for Python services</a> describes how to do that. See the <a href="https://www.npmjs.com/package/protobufjs" target="new">protobuf documentation<span class="image"><img src="../_images/new-tab.svg" alt="new tab" width="12"></span></a> for more information on <code>protobufjs</code>.</p>
+</div>
+<div class="paragraph">
+<p>While <code>protobuf</code> is the recommended format for persisting events, we recommend that you do not persist your service&#8217;s <code>protobuf</code> messages, rather, you should create new messages, even if they are identical. While this may introduce some overhead in converting from one type to the other, it will allow the service&#8217;s public interface to evolve independently from its data storage format, which should be private.</p>
+</div>
+<div class="paragraph">
+<p>The following shows an example shopping cart definition in a <code>domain.proto</code> file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">syntax = "proto3";
+
+package example.shoppingcart.domain;
+
+message LineItem {
+  string productId = 1;
+  string name = 2;
+  int32 quantity = 3;
+}
+
+message ItemAdded {
+  LineItem item = 1;
+}
+
+message ItemRemoved {
+  string productId = 1;
+}
+
+message CheckedOut {}
+
+message Cart {
+  repeated LineItem items = 1;
+  bool checkedout = 2;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this file, the <code>Cart</code> message represents the state snapshot, while <code>ItemAdded</code> and <code>ItemRemoved</code> are events. Note the event names are in past tense&#8212;&#8203;events are facts, indisputable things that happened in the past. A fact never becomes false: after an item has been added to a shopping cart, it never becomes untrue that that item was added to the cart. It can be removed, but that doesn&#8217;t change the fact that it was added, it only changes the current state of the cart. The names of events should always be in past tense to reflect the indisputable fact that they represent.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_creating_an_entity"><a class="anchor" href="#_creating_an_entity"></a>Creating an entity</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Create an Event Sourced Entity with the <a href="_attachments/api/module-akkaserverless.EventSourcedEntity.html" target="new">EventSourcedEntity<span class="image"><img src="../_images/new-tab.svg" alt="new tab" width="12"></span></a> class.</p>
+</div>
+<div class="paragraph">
+<p>TODO: update with new SDK names.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js"># imports fom Akka Serverless SDK
+from akkaserverless.event_sourced_context import EventSourcedCommandContext
+from akkaserverless.event_sourced_entity import EventSourcedEntity
+
+entity = EventSourcedEntity(_SHOPPINGCARTSERVICE, [API_DESCRIPTOR], 'carts', init)</code></pre>
+</div>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Example details:</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The example passes in the <code>protobuf</code> files that contain the service and the domain protocols: <code>shoppingcart.proto</code> and <code>domain.proto</code>. Akka Serverless will load and read these <code>protobuf</code> files. The domain event and snapshot definitions in <code>domain.proto</code> allow Akka Serverless to deserialize these messages when it receives them.</p>
+</li>
+<li>
+<p>The example defines the fully qualified name of the service the Event Sourced Entity implements, <code>example.shoppingcart.ShoppingCartService</code> and specifies options:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Akka Serverless uses the <code>persistenceId</code> to namespace events in the journal.</p>
+</li>
+<li>
+<p>The <code>snapshotEvery</code> parameter controls how often Akka Serverless takes snapshots, so that the entity doesn&#8217;t need to be recovered from the whole journal each time it&#8217;s loaded. If left unset, it defaults to every 100 events. Setting it to a negative number disables snapshots. Typically, the default works well, we only recommend changing it if you have specific data from performance tests to justify a change.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_protobuf_types"><a class="anchor" href="#_using_protobuf_types"></a>Using protobuf types</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When you pass an event or snapshot to persist, Akka Serverless needs to know how to serialize it. Simply passing a regular object does not provide enough information to know how <code>protobuf</code> should serialize the objects. To emit an event or snapshot, you first must lookup the <code>protobuf</code> types, and then use the <code>create</code> method to create them.</p>
+</div>
+<div class="paragraph">
+<p>The <code>EventSourced</code> class provides a helper method called <a href="_attachments/api/module-akkaserverless.EventSourcedEntity.html#lookupType" target="new"><code>lookupType</code><span class="image"><img src="../_images/new-tab.svg" alt="new tab" width="12"></span></a>. So before implementing, we&#8217;ll use <code>lookupType</code> to get these types to use later.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js"># import from generated GRPC file(s)
+from shoppingcart_api_pb2 import (GetShoppingCart, Cart, AddLineItem, _SHOPPINGCARTSERVICE, DESCRIPTOR as API_DESCRIPTOR)
+from shoppingcart_domain_pb2 import (ItemAdded, LineItem)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_initial_state"><a class="anchor" href="#_initial_state"></a>Initial state</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When there are no snapshots persisted for an entity (such as when the entity is first created), the entity needs to have an initial state. Note that Event Sourced Entities are not explicitly created, they are implicitly created when a command arrives for them. And, nothing is persisted until an event is created for that Entity. So, if user "X" opens their shopping cart for the first time, an Entity will be created for them, with no events in the log. It will just be in the initial state.</p>
+</div>
+<div class="paragraph">
+<p>To create the initial state, we set the <a href="_attachments/api/module-akkaserverless.EventSourcedEntity.html#initial" target="new"><code>initial</code><span class="image"><img src="../_images/new-tab.svg" alt="new tab" width="12"></span></a> callback. This takes the id of the entity being created, and returns a new empty state, in this case, an empty shopping cart:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">def init(entity_id: str) -&gt; Cart:
+    return Cart()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note the use of <code>Cart.create()</code>, this creates a <code>protobuf</code> message using the <code>Cart</code> <code>protobuf</code> message type that we looked up earlier.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_behavior"><a class="anchor" href="#_behavior"></a>Behavior</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now we need to define the behavior for our entity. The behavior consists of two parts, <a href="https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#command_handler"><em>command handlers</em></a>, and <a href="https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#event_handler"><em>event handlers</em></a>.</p>
+</div>
+<div class="sect2">
+<h3 id="_command_handlers"><a class="anchor" href="#_command_handlers"></a>Command handlers</h3>
+<div class="paragraph">
+<p>A <a href="_attachments/api/module-akkaserverless.EventSourcedEntity.html#~commandHandler" target="new">command handler<span class="image"><img src="../_images/new-tab.svg" alt="new tab" width="12"></span></a> is a function that takes a command, the current state, and an <a href="_attachments/api/module-akkaserverless.EventSourcedEntity.EventSourcedEntityCommandContext.html" target="new"><code>EventSourcedEntityCommandContext</code><span class="image"><img src="../_images/new-tab.svg" alt="new tab" width="12"></span></a>. It implements a service call on the Entity&#8217;s gRPC interface.</p>
+</div>
+<div class="paragraph">
+<p>The command is the input message type for the gRPC service call. For example, the <code>GetCart</code> service call has an input type of <code>GetShoppingCart</code>, while the <code>AddItem</code> service call has an input type of <code>AddLineItem</code>. The command will be an object that matches the structure of these protobuf types.</p>
+</div>
+<div class="paragraph">
+<p>The command handler must return a message of the same type as the output type of the gRPC service call, in the case of our <code>GetCart</code> command, this must be a <code>Cart</code> message. Note that unlike for the state and events, this message does not need to be created using a looked up protobuf message type&#8212;&#8203;Akka Serverless already knows the output type of the gRPC service call and so can infer it. It only has to be a plain Python object that matches the structure of the protobuf type.</p>
+</div>
+<div class="paragraph">
+<p>The following shows the implementation of the <code>GetCart</code> command handler. This command handler is a read-only command handler, it doesn&#8217;t emit any events, it just returns some state:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">@entity.command_handler("GetCart")
+def get(state: Cart, command: GetShoppingCart):
+    return state</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_emitting_events_from_commands"><a class="anchor" href="#_emitting_events_from_commands"></a>Emitting events from commands</h3>
+<div class="paragraph">
+<p>Commands that modify the state MUST do so by emitting events.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+The <strong>only</strong> way a command handler may modify its state is by emitting an event. Any modifications made directly to the state from the command handler will not be persisted, and will be lost as soon as the command handler finishes executing.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>A command handler may emit an event by using the <a href="_attachments/api/module-akkaserverless.EventSourcedEntity.EventSourcedEntityCommandContext.html#emit" target="new"><code>emit</code><span class="image"><img src="../_images/new-tab.svg" alt="new tab" width="12"></span></a> method on the <code>EventSourcedEntityCommandContext</code>.</p>
+</div>
+<div class="paragraph">
+<p>The following command handler example emits an event:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">@entity.command_handler("AddItem")
+def add(state: Cart, command: AddLineItem, context: EventSourcedCommandContext):
+    context.emit(ItemAdded(LineItem(productId= command.product_id, name=command.name)))
+    return Empty()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This command handler also validates the command by ensuring that the quantity of items added is greater than zero. Invoking <a href="_attachments/api/module-akkaserverless.EventSourcedEntity.EventSourcedEntityCommandContext.html#fail" target="new"><code>fail</code><span class="image"><img src="../_images/new-tab.svg" alt="new tab" width="12"></span></a> fails the command - this method throws so there&#8217;s no need to explicitly throw an exception.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_event_handlers"><a class="anchor" href="#_event_handlers"></a>Event handlers</h3>
+<div class="paragraph">
+<p>An <a href="_attachments/api/module-akkaserverless.EventSourcedEntity.html#~eventHandler" target="new">event handler<span class="image"><img src="../_images/new-tab.svg" alt="new tab" width="12"></span></a> is invoked at two points:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>When restoring Entities from the journal, before any commands are handled</p>
+</li>
+<li>
+<p>Each time a new event is emitted</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>An event handler&#8217;s responsibility is to update the state of the entity according to the event. Event handlers are the only place where its safe to mutate the state of an Entity.</p>
+</div>
+<div class="paragraph">
+<p>An event handler must be declared for each type of event that gets emitted. The type is defined by the protobuf message type in the case of <code>protobuf</code> events, or the <code>type</code> property on a JSON object in the case of JSON events. The mapping for these type names to functions will be discussed later, for now we&#8217;ll just look at the functions.</p>
+</div>
+<div class="paragraph">
+<p>Event handlers take the event they are handling, and the state, and must return the new state. The handler may update the existing state passed in, but it still has to return that state as its return value. The command handler accumulates the emitted events and applies the events to the managed state after command processing.</p>
+</div>
+<div class="paragraph">
+<p>Here&#8217;s an example event handler for the <code>ItemAdded</code> event:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">@entity.event_handler(Cart)
+def added(state: Cart, event: ItemAdded ):
+    state.product_id = event.product_id
+    state.name = event.name
+    return state</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_setting_the_behavior"><a class="anchor" href="#_setting_the_behavior"></a>Setting the behavior</h3>
+<div class="paragraph">
+<p>Once you have command handler and event handler functions implemented, you can set your behavior. The <a href="_attachments/api/module-akkaserverless.EventSourcedEntity.html#~behaviorCallback" target="new">behavior callback<span class="image"><img src="../_images/new-tab.svg" alt="new tab" width="12"></span></a> takes the current state of the entity, and returns an object with two properties: <code>commandHandlers</code> and <code>eventHandlers</code>. The callback may return different sets of handlers according to the current state, this will be explored more later, for now we&#8217;ll just implement an entity with one set of handlers.</p>
+</div>
+<div class="paragraph">
+<p>The behavior callback can be set by setting the <a href="_attachments/api/module-akkaserverless.EventSourcedEntity.html#behavior" target="new"><code>behavior</code><span class="image"><img src="../_images/new-tab.svg" alt="new tab" width="12"></span></a> property on the entity:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js">@entity.command_handler("AddItem")</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The command handlers are a mapping of the gRPC service call names to the command handler functions we implemented. Note the names, as in the gRPC convention for service call names, are uppercase.</p>
+</div>
+<div class="paragraph">
+<p>The event handlers are a mapping of event names to the event handler functions that we implemented. The event names must match the type of the events that are being persisted. In the case of protobuf messages, this is either the fully qualified name of the protobuf message, or the unqualified name of the protobuf message. For JSON messages, this is the value of the <code>type</code> property in the message.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_starting_the_entity"><a class="anchor" href="#_starting_the_entity"></a>Starting the entity</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can let Akka Serverless start entities by adding the entities to an <code>Akka Serverless server</code> instance:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-js hljs" data-lang="js"># create service and add components
+service = AkkaServerlessService()
+service.add_component(myapi)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="proto.html">Writing gRPC descriptors</a></span>
+  <span class="next"><a href="value-entity.html">Implementing Value Entities</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

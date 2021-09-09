@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Subscribing to a journal :: Akka Serverless Documentation</title>
+    <link rel="prev" href="forwarding.html">
+    <link rel="next" href="topic-eventing.html">
+    <meta name="generator" content="Antora 3.0.0-alpha.7">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <script>var uiRootPath = '../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="..">Akka Serverless Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Resources</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Resource A</a>
+            <a class="navbar-item" href="#">Resource B</a>
+            <a class="navbar-item" href="#">Resource C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html"></a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">Developing with Python</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../developing/development-process-js.html">Process overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="kickstart.html">Kickstart a Python module</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="proto.html">Writing gRPC descriptors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="eventsourced.html">Implementing Event Sourced Entities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="value-entity.html">Implementing Value Entities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="actions.html">Implementing Actions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="forwarding.html">Forwarding and effects</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="entity-eventing.html">Subscribing to a Journal</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="topic-eventing.html">Publishing and Subscribing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="views.html">Creating Views</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="serialization.html">Handling Serialization</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="run-locally.html">Run a service locally</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title"></span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html"></a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Developing with Python</a></li>
+    <li><a href="entity-eventing.html">Subscribing to a Journal</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="file:///antora/docs/src/modules/python/pages/entity-eventing.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="On This Page" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Subscribing to a journal</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Event Sourced Entity journal contains events that capture all state changes. By subscribing to the journal, with the Event Sourced Entity type name, another component can receive all events emitted of that type.</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Use case: send asynchronous messages</div>
+<div class="paragraph">
+<p>By combining the processing of a journal with <a href="topic-eventing.html" class="page">publishing to brokers</a>, a service can trigger other services asynchronously via messaging.
+To achieve this, create an <a href="actions.html" class="page">Action</a> that subscribes to a journal and publishes messages to a topic.</p>
+</div>
+</div>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Use case: external calls</div>
+<div class="paragraph">
+<p>A service might need to trigger other systems when certain events happened to an Entity. An Action can be connected to the Entity&#8217;s journal and react on certain events to issue calls (eg. via HTTP or gRPC).
+To achieve this, create an <a href="actions.html" class="page">Action</a> that subscribes to a journal and let the implementation call other services.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_subscribing"><a class="anchor" href="#_subscribing"></a>Subscribing</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To subscribe to an Event Sourced Entity log, define Protobuf rpc methods for each Journal event that you want to receive. Annotate these methods with the <code>(akkaserverless.method).eventing</code> annotation and specify the Entity type name of the Event Sourced Entity.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-protobuf hljs" data-lang="protobuf">syntax = "proto3";
+
+package shopping.product.actions;
+
+import "akkaserverless/annotations.proto";
+import "cart/shopping_cart_domain.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/any.proto";
+
+service ToProductPopularityService {
+
+  <i class="conum" data-value="1"></i><b>(1)</b>
+  rpc ForwardAdded(shopping.cart.domain.ItemAdded) returns (google.protobuf.Empty) {
+    option (akkaserverless.method).eventing.in = { <i class="conum" data-value="2"></i><b>(2)</b>
+      event_sourced_entity: "eventsourced-shopping-cart" <i class="conum" data-value="3"></i><b>(3)</b>
+    };
+  }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>create rpc methods for all Protobuf types in the journal</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>annotate the methods with <code>(akkaserverless.method).eventing</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>specify the Event Sourced Entity&#8217;s type name as journal source</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>There is nothing specific required in the implementation of these methods. The implementation usually is an Action that forwards a converted message to a different component (e.g. an Event Sourced Entity).</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_subscribing_to_events_from_a_different_service"><a class="anchor" href="#_subscribing_to_events_from_a_different_service"></a>Subscribing to events from a different service</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The approach described above works within a service. To subscribe to
+events from a different service, you would use <a href="topic-eventing.html" class="page">Publishing and subscribing</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_ignoring_events"><a class="anchor" href="#_ignoring_events"></a>Ignoring events</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When listening to an event log, <strong>all</strong> events emitted by the Event Sourced entity must be matched by a Protobuf service method. In case your component is interested only in certain events, you may declare a method to receive all events that are not received by the other methods.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-protobuf hljs" data-lang="protobuf">  // handle other events which are not managed above
+  rpc CatchOthers(google.protobuf.Any) returns (google.protobuf.Empty) {
+    option (akkaserverless.method).eventing.in = {
+      event_sourced_entity:  "eventsourced-shopping-cart"
+    };
+  }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The corresponding implementation must exist in the component.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="forwarding.html">Forwarding and effects</a></span>
+  <span class="next"><a href="topic-eventing.html">Publishing and Subscribing</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
