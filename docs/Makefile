@@ -1,7 +1,7 @@
 # Make Akka Serverless Python SDK documentation
 
 module   := python
-upstream := lightbend/akkaserverless-python-sdk
+upstream := jpollock/akkaserverless-python-sdk
 branch   := docs/current
 sources  := src build/src/managed
 
