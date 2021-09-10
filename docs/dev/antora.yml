@@ -3,13 +3,16 @@ site:
 
 content:
   sources:
-  - url: https://github.com/jpollock/akkaserverless-python-sdk.git
-    branches: main
-    start_paths: [docs/src, docs/build/src/managed, docs/dev/src]    
-  #- url: ..
-  #  branches: [HEAD]
-  #  start_paths: [docs/src, docs/build/src/managed, docs/dev/src]
+  #- url: https://github.com/jpollock/akkaserverless-python-sdk.git
+  #  branches: main
+  #  start_paths: [docs/src, docs/build/src/managed, docs/dev/src]  
+  - url: ..
+    branches: [HEAD]
+    start_paths: [docs/src, docs/build/src/managed, docs/dev/src]
+  #- url: /Users/jeremypollock/development/lightbend/projects/starter_apps/akka-serverless-getting-started-python
+  #  start_paths: [docs]
 
+  #- url: https://github.com/jpollock/akka-serverless-getting-started-python.git
 ui:
   bundle:
     url: https://lightbend.github.io/antora-supplemental-ui-lightbend-theme/default_ui/ui-bundle-1023155878.zip

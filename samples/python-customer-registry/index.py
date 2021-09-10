@@ -20,10 +20,16 @@ if __name__ == '__main__':
     
     # tag::start[]    
     # create service and add components
+    # tag::register[]
     service = AkkaServerlessService()
+    # end::register[]
     service.add_component(customer_value_entity)
+    # tag::register[]
     service.add_component(customer_value_entity_view)
+    # end::register[]
+    # tag::register-event-sourced[]
     service.add_component(customer_eventsourced_entity)
     service.add_component(customer_eventsourced_entity_view)
+    # end::register-event-sourced[]
     service.start()
     # end::start[]    

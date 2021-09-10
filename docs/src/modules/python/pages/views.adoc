@@ -136,19 +136,7 @@ See <<#query>> for more examples of valid query syntax.
 
 === Implement transformation functions
 
-Implement the View by defining the functions that transform events to View state and ignore other events:
-
-.customer_eventsourced_view.py
-[source,js,indent=0]
-----
-include::example$python-customer-registry/customer_eventsourced_view.py[tag=process-events]
-----
-
-<1> Each update method in the Protobuf definition should have a corresponding Python function in `view.setUpdateHandlers`.
-
-The first function parameter should correspond to the parameter in the Protobuf service call, that is, the event. You can optionally define a second parameter for the previous state. For the first event of an Event Sourced Entity or for the first change of a Value Entity there is no previous state and `null` is used for the state parameter. The function may also take a `UpdateHandlerContext` parameter.
-
-NOTE: This type of update transformation is a natural fit for Events emitted by an Event Sourced Entity, but it can also be used for Value Entities. For example, if the View representation is different from the Entity state you might want to transform it before presenting the View to the client.
+IMPORTANT: This is a feature that needs to be added to the SDK.
 
 [#ES_register]
 === Register the View
@@ -158,7 +146,7 @@ In the implementation, register the View with `AkkaServerless`:
 .customer_eventsourced_view.py
 [source,js,indent=0]
 ----
-include::example$python-customer-registry/customer_eventsourced_view.py[tag=register]
+include::example$python-customer-registry/customer_eventsourced_entity_view.py[tag=register]
 ----
 
 Invoke the `addComponent` function to register the view with the service. For example:

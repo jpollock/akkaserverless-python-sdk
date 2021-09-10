@@ -1,5 +1,6 @@
 ** xref:python:index.adoc[]
-*** xref:developing:development-process-js.adoc[]
+*** xref:developing:development-process-python.adoc[]
+*** xref:python:getting-started.adoc[Getting Started]
 *** xref:python:kickstart.adoc[]
 *** xref:python:proto.adoc[]
 *** xref:python:eventsourced.adoc[Implementing Event Sourced Entities]

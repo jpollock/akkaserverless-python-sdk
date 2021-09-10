@@ -33,6 +33,8 @@ attributes:
 		> "${managed_partials}/attributes.adoc"
 	echo ":minimum_python_version: 3" \
 		>> "${managed_partials}/attributes.adoc"
+	echo ":minimum_docker_version: 19.03" \
+		>> "${managed_partials}/attributes.adoc"
 
 apidocs:
 	cd ../sdk && npm ci && npm run jsdoc

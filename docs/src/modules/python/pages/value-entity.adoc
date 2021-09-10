@@ -62,17 +62,6 @@ include::example$python-valueentity-counter/counter.py[tag=entity-class]
 ----
 
 
-== Using protobuf types
-
-When passing state to Akka Serverless  the persisted data must be serialized and accessable.  To request state types, lookup the protobuf type then use the `create` method.
-
-Use the `ValueEntity` link:{attachmentsdir}/api/module-akkaserverless.ValueEntity.html#lookupType[`lookupType`{tab-icon}, window="new"] helper to look up these types so we can use them later.
-
-[source,js]
-----
-include::example$python-valueentity-counter/counter.py[tag=lookup-type]
-----
-
 == Initial state
 
 An Entity must have an initial state when it is created and no state has been persisted for it yet. Value Entities are not explicitly created, they are implicitly created when a command arrives for them. Nothing is persisted on creation. So, if user "X" opens their counter for the first time, an entity will be created, but it will have no state stored yet, and just be in the initial state.
