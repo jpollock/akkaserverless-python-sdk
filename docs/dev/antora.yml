@@ -1,6 +1,6 @@
 site:
-  title: "Akka Serverless Documentation"
-
+  title: "Akka Serverless Python SDK Documentation"
+r
 content:
   sources:
   - url: ..
@@ -11,12 +11,11 @@ ui:
   bundle:
     url: https://lightbend.github.io/antora-supplemental-ui-lightbend-theme/default_ui/ui-bundle-1023155878.zip
     snapshot: true
-  supplemental_files:
-  - path: ui.yml
-    contents: |
-      static_files: [ .nojekyll ]
-  - path: .nojekyll
+  default_layout: default-prod
+  supplemental_files: ./supplemental_ui
   
+
+
 runtime:
   fetch: true
 
