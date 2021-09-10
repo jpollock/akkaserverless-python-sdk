@@ -3,67 +3,76 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Forwarding and effects in Python :: Akka Serverless Documentation</title>
+    <title>Forwarding and effects in Python :: Akka Serverless Python SDK Documentation</title>
     <link rel="prev" href="actions.html">
     <link rel="next" href="entity-eventing.html">
-    <meta name="generator" content="Antora 3.0.0-alpha.7">
-    <link rel="stylesheet" href="../_/css/site.css">
-    <script>var uiRootPath = '../_'</script>
-  </head>
-  <body class="article">
-<header class="header">
+    <meta name="generator" content="Antora 2.3.4">
+    <link rel="stylesheet" href="../_/css/theme.1.1.0.min.css">
+
+	<meta property="og:site_name" content="Lightbend Documentation" />
+	<meta name="author" content="Lightbend Documentation">
+	<link rel="shortcut icon" type="image/x-icon" href="../_/img/favicons/favicon.ico" />
+	<meta itemprop="image" content="https://downloads.lightbend.com/website/social/lightbend-logo-orange-twitter.jpg">
+	<meta name="twitter:image:src" content="https://downloads.lightbend.com/website/social/lightbend-logo-orange-twitter.jpg">
+	<meta property="og:image" content="https://downloads.lightbend.com/website/social/lightbend-logo-orange-twitter.jpg" />
+	<meta property="og:image:secure_url" content="https://downloads.lightbend.com/website/social/lightbend-logo-orange-twitter.jpg" />	<script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"  type="text/javascript" charset="UTF-8" data-domain-script="2f79688f-bddc-4793-a394-7539cef20516" ></script>  </head>
+  <body class="article production hide-versions ">
+<header class="header" role="banner">
   <nav class="navbar">
-    <div class="navbar-brand">
-      <a class="navbar-item" href="..">Akka Serverless Documentation</a>
-      <button class="navbar-burger" data-target="topbar-nav">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-    </div>
-    <div id="topbar-nav" class="navbar-menu">
-      <div class="navbar-end">
-        <a class="navbar-item" href="#">Home</a>
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link" href="#">Products</a>
-          <div class="navbar-dropdown">
-            <a class="navbar-item" href="#">Product A</a>
-            <a class="navbar-item" href="#">Product B</a>
-            <a class="navbar-item" href="#">Product C</a>
+      <div class="navbar-brand">
+        <a class="navbar-item" href="https://console.akkaserverless.com" target="_blank">
+          <img class="header-logo lightbend-logo" src="../_/img/lightbend-reverse.svg">
+        </a>
+      </div>
+      <div id="topbar-nav" class="navbar-menu">
+        <div class="navbar-end">
+            <div class="navbar-item has-dropdown is-hoverable">
+            <span class="navbar-link">Console</span>
+            <div class="navbar-dropdown">
+              <section>
+                <a data-category="Link - Drop Down Link - Lightbend Docs" href="https://console.akkaserverless.com/p/login/" target="_blank">Register or Log in</a>
+                <a data-category="Link - Drop Down Link - Lightbend Docs" href="https://status.akkaserverless.com/" target="_blank">Akka Serverless Status</a>
+              </section>
+            </div>
           </div>
-        </div>
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link" href="#">Services</a>
-          <div class="navbar-dropdown">
-            <a class="navbar-item" href="#">Service A</a>
-            <a class="navbar-item" href="#">Service B</a>
-            <a class="navbar-item" href="#">Service C</a>
+          <div class="navbar-item has-dropdown is-hoverable">
+            <span class="navbar-link">Resources</span>
+            <div class="navbar-dropdown">
+              <section>
+                  <a data-category="Link - Drop Down Link - Lightbend Docs" href="https://discuss.lightbend.com/c/akka-serverless/40" target="
+                  ">Discussion Forum</a>
+                  <a data-category="Link - Drop Down Link - Lightbend Docs" href="https://www.lightbend.com/blog" target="_blank">Lightbend Blog</a>
+                  <a data-category="Link - Drop Down Link - Lightbend Docs" href="https://academy.lightbend.com/" target="_blank">Lightbend Academy</a>
+                  <a data-category="Link - Drop Down Link - Lightbend Docs" href="https://academy.lightbend.com/courses?search_query=FILTER_TYPE_FREE" target="_blank">Free Training</a>
+              </section>
+            </div>
           </div>
-        </div>
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link" href="#">Resources</a>
-          <div class="navbar-dropdown">
-            <a class="navbar-item" href="#">Resource A</a>
-            <a class="navbar-item" href="#">Resource B</a>
-            <a class="navbar-item" href="#">Resource C</a>
+          <div class="navbar-item has-dropdown is-hoverable">
+            <span class="navbar-link">Lightbend</span>
+            <div class="navbar-dropdown">
+              <section>
+                  <a data-category="Link - Drop Down Link - Lightbend Docs" href="https://www.lightbend.com/about-lightbend" target="_blank">Who Is Lightbend?</a>
+                  <a data-category="Link - Drop Down Link - Lightbend Docs" href="https://www.lightbend.com/customers" target="_blank">Who Uses Lightbend?</a>
+                  <a data-category="Link - Drop Down Link - Lightbend Docs" href="https://www.lightbend.com/certified-reactive-architect" target="_blank">Certification</a>
+                  <a data-category="Link - Drop Down Link - Lightbend Docs" href="https://www.lightbend.com/company/news" target="_blank">News & Press</a>
+                  <a data-category="Link - Drop Down Link - Lightbend Docs" href="https://www.lightbend.com/contact" target="_blank">Get In Contact</a>
+              </section>
+            </div>
           </div>
-        </div>
-        <div class="navbar-item">
-          <span class="control">
-            <a class="button is-primary" href="#">Download</a>
-          </span>
         </div>
       </div>
-    </div>
+
   </nav>
 </header>
 <div class="body">
 <div class="nav-container" data-component="" data-version="master">
   <aside class="nav">
     <div class="panels">
+<div class="nav-panel-brand">
+	<img class="akka-logo akka-logo-serverless" src="../_/img/akka-serverless-full-color.svg">
+</div>
 <div class="nav-panel-menu is-active" data-panel="menu">
   <nav class="nav-menu">
-    <h3 class="title"><a href="../index.html"></a></h3>
 <ul class="nav-list">
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
@@ -142,15 +151,24 @@
     <li><a href="forwarding.html">Forwarding and effects</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="file:///antora/docs/src/modules/python/pages/forwarding.adoc">Edit this Page</a></div>
-</div>
+  <div class="edit-this-page"><a href="https://github.com/jpollock/akkaserverless-python-sdk/edit/main/docs/src/modules/python/pages/forwarding.adoc">Edit this Page</a></div>
+  </div>
   <div class="content">
 <aside class="toc sidebar" data-title="On This Page" data-levels="2">
   <div class="toc-menu"></div>
 </aside>
-<article class="doc">
+<article id="page-content" class="doc">
 <h1 class="page">Forwarding and effects in Python</h1>
-<div id="preamble">
+<fieldset class="supergroup-switch">
+	
+
+
+
+
+	
+
+
+</fieldset><div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>A command can only act on one <a href="https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#component"><em>component</em></a> at a time&#8212;&#8203;the component that received the command. For certain use cases, you might want a different component to handle the command.  Rather than sending an immediate reply to a command, the receiving component can <em>forward</em> the command to another component. In cases where you want other components to be aware that a component processed a command, you can emit an <em>effect</em>.</p>
@@ -263,10 +281,128 @@ See the documentation on <a href="topic-eventing.html" class="page">Publishing a
 </main>
 </div>
 <footer class="footer">
-  <p>This page was built using the Antora default UI.</p>
-  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
-</footer>
+	<nav>
+	<section>
+		<h3>Lightbend Docs</h3>
+		<ul>
+			<li><a data-category="Link - Footer - Lightbend Docs" href="https://developer.lightbend.com/docs/akka-platform-guide/">Akka Platform Guide</a></li>
+            <li><a data-category="Link - Footer - Lightbend Docs" href="https://developer.lightbend.com/docs/cloudflow/current/index.html">Akka Data Pipelines</a></li>
+            <li><a data-category="Link - Footer - Lightbend Docs" href="https://developer.lightbend.com/docs/akka-serverless/">Akka Serverless</a></li>
+			<li><a data-category="Link - Footer - Lightbend Docs" href="https://developer.lightbend.com/docs/fortify/current/">Fortify SCA for Scala</a></li>	
+			<li><a data-category="Link - Footer - Lightbend Docs" href="https://developer.lightbend.com/docs/console/current/">Lightbend Console</a></li>
+			<li><a data-category="Link - Footer - Lightbend Docs" href="https://developer.lightbend.com/docs/telemetry/current/home.html">Lightbend Telemetry</a></li>
+		</ul>
+	</section>
+	<section>
+		<h3>Open Source Docs</h3>
+		<ul>
+			<li><a data-category="Link - Footer - Lightbend Docs" href="https://akka.io/docs/">Akka</a></li>
+    		<li><a data-category="Link - Footer - Lightbend Docs" href="https://doc.akka.io/docs/alpakka/current/">Alpakka</a></li>
+			<li><a data-category="Link - Footer - Lightbend Docs" href="https://cloudflow.io/docs/current/">Cloudflow</a></li>	
+			<li><a data-category="Link - Footer - Lightbend Docs" href="https://cloudstate.io/docs/">Cloudstate</a></li>	
+			<li><a data-category="Link - Footer - Lightbend Docs" href="https://www.scala-sbt.org/1.x/docs/">sbt</a></li>
+			<li><a data-category="Link - Footer - Lightbend Docs" href="https://docs.scala-lang.org/">Scala</a></li>
+		</ul>
+	</section>
+	<section>
+		<h3>Resources</h3>
+		<ul>
+			<li><a data-category="Link - Footer - Lightbend Docs" href="https://portal.lightbend.com/">Customer Portal</a></li>
+			<li><a data-category="Link - Footer - Lightbend Docs" href="https://discuss.lightbend.com">Discussion Forums</a></li>
+			<li><a data-category="Link - Footer - Lightbend Docs" href="https://www.lightbend.com/blog">Lightbend Blog</a></li>
+			<li><a data-category="Link - Footer - Lightbend Docs" href="https://academy.lightbend.com/">Lightbend Academy</a></li>
+            <li><a data-category="Link - Footer - Lightbend Docs" href="https://academy.lightbend.com/courses?search_query=FILTER_TYPE_FREE">Free Training</a></li>
+			<li><a data-category="Link - Footer - Lightbend Docs" href="https://www.lightbend.com/resources">Latest Resources</a></li>
+		</ul>
+	</section>
+	<section>
+		<h3>Lightbend</h3>
+		<ul>
+			<li><a data-category="Link - Footer - Lightbend Docs" href="https://www.lightbend.com/about-lightbend">Who Is Lightbend?</a></li>
+			<li><a data-category="Link - Footer - Lightbend Docs" href="https://www.lightbend.com/customers">Who Uses Lightbend?</a></li>
+			<li><a data-category="Link - Footer - Lightbend Docs" href="https://www.lightbend.com/lightbend-subscription">Why Get A Subscription?</a></li>
+			<li><a data-category="Link - Footer - Lightbend Docs" href="https://www.lightbend.com/certified-reactive-architect">Certification</a></li>
+			<li><a data-category="Link - Footer - Lightbend Docs" href="https://www.lightbend.com/company/news">News & Press</a></li>
+			<li><a data-category="Link - Footer - Lightbend Docs" href="https://www.lightbend.com/contact">Get In Contact</a></li>
+		</ul>
+	</section>
+</nav>
+	<div class="docs-social-footer">
+	<!-- Go to www.addthis.com/dashboard to customize your tools --> 
+	<div class="addthis_inline_follow_toolbox_5vul"></div>
+</div>
+<div class="docs-legal-footer">
+	<div class="inner-wrapper">
+
+		<div class="links">
+			<p>© Lightbend 2021 | <a href="https://www.lightbend.com/legal/licenses">Licenses</a> | <a href="https://www.lightbend.com/legal/terms">Terms</a> | <a href="https://www.lightbend.com/legal/privacy">Privacy Policy</a> | <a href="https://www.lightbend.com/legal/cookie">Cookie Listing</a> | <a class="optanon-toggle-display">Cookie Settings</a> | <a rel="alternate" type="application/rss+xml" href="https://www.lightbend.com/blog/rss.xml" target="_blank">RSS</a></p>
+		</div>
+
+		<div class="brand">
+			<a href="https://www.lightbend.com" class="footer-logo">
+				<svg class="lightbend-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 372 80">
+					<title>lightbend-logo</title>
+					<g id="lightbend-logo">
+						<path d="M1,59V76a3,3,0,0,0,3,3H88a3,3,0,0,0,3-3V59a167.38,167.38,0,0,1-45,6A167.38,167.38,0,0,1,1,59Z" fill="#ffffff"></path>
+						<path d="M88,1H4A3,3,0,0,0,1,4V53c14.57,4.2,29.65,7,45,7s30.43-2.8,45-7V4A3,3,0,0,0,88,1Z" fill="#ffffff"></path>
+						<g id="original_weight" data-name="original weight">
+							<path d="M107.2,20.08a2.14,2.14,0,1,1,4.27,0v32h13.6A2,2,0,0,1,127,54a1.94,1.94,0,0,1-1.94,2H109.31a2.15,2.15,0,0,1-2.11-2.16Z" fill="#ffffff"></path>
+							<path d="M135,19.32a2.47,2.47,0,0,1,4.91,0V20A2.47,2.47,0,0,1,135,20Zm.38,10.59a2.08,2.08,0,1,1,4.16,0V54.15a2,2,0,0,1-2.06,2.11,2.08,2.08,0,0,1-2.1-2.11Z" fill="#ffffff"></path>
+							<path d="M150.8,61.44a1.91,1.91,0,0,1-1.08-1.73,2,2,0,0,1,1.89-1.83,1.69,1.69,0,0,1,.92.27,17.63,17.63,0,0,0,9.88,3c6.15,0,10.15-3.4,10.15-9.93v-3.3c-2.43,3.24-5.83,5.89-11,5.89a12.9,12.9,0,0,1-13.12-13.07v-.11a13.21,13.21,0,0,1,24-7.56V29.91a2.07,2.07,0,0,1,2.06-2.11,2.11,2.11,0,0,1,2.1,2.11V51.13c0,4.32-1.29,7.61-3.56,9.88-2.49,2.48-6.21,3.73-10.64,3.73A21.87,21.87,0,0,1,150.8,61.44Zm21.87-20.73V40.6c0-5.72-5-9.45-10.26-9.45s-9.67,3.67-9.67,9.4v.1a9.45,9.45,0,0,0,9.67,9.51C167.7,50.16,172.67,46.32,172.67,40.71Z" fill="#ffffff"></path>
+							<path d="M186.22,18.41a2.08,2.08,0,1,1,4.16,0V32.93a10.57,10.57,0,0,1,9.56-5.45c6.75,0,10.69,4.53,10.69,11.18V54.15a2.08,2.08,0,1,1-4.16,0V39.68c0-5.18-2.81-8.42-7.72-8.42s-8.37,3.51-8.37,8.75V54.15a2,2,0,0,1-2,2.11,2.08,2.08,0,0,1-2.11-2.11Z" fill="#ffffff"></path>
+							<path d="M220.46,48.59V31.74h-2.27a1.89,1.89,0,0,1-1.84-1.83,1.86,1.86,0,0,1,1.84-1.84h2.27V21.48a2.06,2.06,0,0,1,2-2.1,2.14,2.14,0,0,1,2.1,2.1v6.59h7.24a1.91,1.91,0,0,1,1.89,1.84,1.86,1.86,0,0,1-1.89,1.83h-7.24V48.05c0,3.4,1.89,4.64,4.7,4.64a12,12,0,0,0,2.54-.37,1.8,1.8,0,0,1,1.78,1.78,1.73,1.73,0,0,1-1.19,1.62,10.57,10.57,0,0,1-4.1.75C223.86,56.47,220.46,54.26,220.46,48.59Z" fill="#ffffff"></path>
+							<path d="M242.65,18.41a2.08,2.08,0,1,1,4.16,0V33.69c2.27-3.35,5.56-6.21,10.69-6.21,6.7,0,13.34,5.29,13.34,14.47v.11c0,9.12-6.59,14.52-13.34,14.52a12.6,12.6,0,0,1-10.69-5.94v3.51a2.07,2.07,0,0,1-2.05,2.11,2.11,2.11,0,0,1-2.11-2.11Zm23.92,23.7V42c0-6.58-4.53-10.8-9.83-10.8A10.41,10.41,0,0,0,246.65,42v.11c0,6.48,4.91,10.8,10.09,10.8C262.14,52.86,266.57,48.86,266.57,42.11Z" fill="#ffffff"></path>
+							<path d="M290.17,56.64c-7.67,0-13.93-5.89-13.93-14.53V42c0-8,5.67-14.52,13.39-14.52,8.26,0,13,6.75,13,14.15a1.94,1.94,0,0,1-1.95,1.94H280.45c.59,6,4.86,9.45,9.83,9.45a11.4,11.4,0,0,0,8-3.24,1.83,1.83,0,0,1,1.19-.49,1.81,1.81,0,0,1,1.84,1.78,1.78,1.78,0,0,1-.65,1.35A14.2,14.2,0,0,1,290.17,56.64Zm8.26-16.15c-.43-5.07-3.35-9.5-8.91-9.5-4.86,0-8.53,4.05-9.07,9.5Z" fill="#ffffff"></path>
+							<path d="M309.5,29.91a2.08,2.08,0,1,1,4.16,0v3a10.57,10.57,0,0,1,9.56-5.45c6.75,0,10.69,4.53,10.69,11.18V54.15a2.08,2.08,0,1,1-4.16,0V39.68c0-5.18-2.81-8.42-7.72-8.42s-8.37,3.51-8.37,8.75V54.15a2,2,0,0,1-2.05,2.11,2.08,2.08,0,0,1-2.11-2.11Z" fill="#ffffff"></path>
+							<path d="M368.68,54.15a2.08,2.08,0,1,1-4.15,0V50.37c-2.27,3.35-5.57,6.21-10.7,6.21-6.69,0-13.33-5.29-13.33-14.47V42c0-9.12,6.64-14.52,13.33-14.52a12.61,12.61,0,0,1,10.7,5.94v-15a2,2,0,0,1,2.05-2.11,2.07,2.07,0,0,1,2.1,2.11ZM344.76,42v.11c0,6.58,4.59,10.8,9.83,10.8a10.43,10.43,0,0,0,10.1-10.8V42a10.38,10.38,0,0,0-10.1-10.75C349.19,31.2,344.76,35.2,344.76,42Z" fill="#ffffff"></path>
+						</g>
+					</g>
+				</svg>
+			</a>
+		</div>
+
+	</div>
+</div></footer><script>window.uiRootPath = '../_'</script>
 <script src="../_/js/site.js"></script>
 <script async src="../_/js/vendor/highlight.js"></script>
-  </body>
+<script src="../_/js/dist/theme.1.0.3.min.js"></script>
+
+<!--Footer Scripts Lightbend Specific-->
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TGBHM8D');</script>
+<!-- End Google Tag Manager -->
+
+<!-- Aha Feedback Widget -->
+<script type="text/plain" class="optanon-category-3" async="async">
+	function createUUID() {
+		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+			var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+			return v.toString(16);
+		});
+	}
+
+	u = createUUID();
+
+	(function (w, d, s, o, f, js, fjs) {
+		w['aha-widget'] = o; w[o] = w[o] || function () { (w[o].q = w[o].q || []).push(arguments); };
+		js = d.createElement(s); fjs = d.getElementsByTagName(s)[0]; js.id = o; js.src = f; js.async = 1; fjs.parentNode.insertBefore(js, fjs);
+	})(window, document, 'script', 'aha', 'https://cdn.aha.io:443/assets/feedback/feedback.js');
+
+	aha('initialize', {
+		account: 'lightbend',
+		applicationId: '7000060812484679534',
+		user: {
+			id: u,
+			name: 'as-user-'+u,
+			email: 'as-user-'+u+'+docs@lightbend.com',
+		},
+	});
+</script>
+
+<!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/plain" class="optanon-category-4" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5528d33a542dd356" async="async">  </body>
 </html>
