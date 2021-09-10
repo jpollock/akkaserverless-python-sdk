@@ -10,6 +10,6 @@
 *** xref:python:entity-eventing.adoc[Subscribing to a Journal]
 *** xref:python:topic-eventing.adoc[Publishing and Subscribing]
 *** xref:python:views.adoc[Creating Views]
-*** xref:python:serialization.adoc[Handling Serialization]
+//*** xref:python:serialization.adoc[Handling Serialization]
 *** xref:python:run-locally.adoc[]
 //*** xref:python:api.adoc[python API docs]
