@@ -1,0 +1,76 @@
+// Copyright 2021 Lightbend Inc.
+
+// gRPC interface for Akka Serverless Views.
+
+syntax = "proto3";
+
+package akkaserverless.component.view;
+
+option go_package = "github.com/lightbend/akkaserverless-go-sdk/akkaserverless/view;view";
+option java_package = "com.akkaserverless.protocol";
+
+import "akkaserverless/component/component.proto";
+import "google/protobuf/any.proto";
+
+// Service that the SDK (in the user function) implements to make
+// views available to the proxy.
+//
+// TODO: It is currently only implemented to support one request (ReceiveEvent)
+// with one response (Upsert). The intention, and reason for full-duplex
+// streaming, is that there should be able to have an interaction with two main
+// types of operations, loads, and updates, and with each load there is an
+// associated continuation, which in turn may return more operations, including
+// more loads, and so on recursively.
+service Views {
+  rpc Handle(stream ViewStreamIn) returns (stream ViewStreamOut);
+}
+
+// Input message type for the gRPC stream in.
+message ViewStreamIn {
+  oneof message {
+    ReceiveEvent receive = 1;
+  }
+}
+
+message ReceiveEvent {
+  string service_name = 1;
+  string command_name = 2;
+  google.protobuf.Any payload = 3;
+  Metadata metadata = 4;
+  string initial_table = 5;
+  Key key = 6;
+  Row by_subject_lookup_result = 7;
+}
+
+// Output message type for the gRPC stream out.
+message ViewStreamOut {
+  oneof message {
+    Upsert upsert = 1;
+  }
+}
+
+// to ignore an event and do nothing, use Upsert, but no/empty/null value for row
+message Upsert {
+  Row row = 1;
+}
+
+// Common messages
+
+message Key {
+  repeated KeyPart parts = 1;
+}
+
+message KeyPart {
+  oneof part {
+    string string_part = 1;
+    bytes bytes_part = 2;
+    int64 integer_part = 3;
+    double float_part = 4;
+  }
+}
+
+message Row {
+  string index = 1;
+  Key key = 2;
+  google.protobuf.Any value = 3; // May be unset if a lookup found no row.
+}

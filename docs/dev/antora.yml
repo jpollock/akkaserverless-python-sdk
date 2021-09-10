@@ -3,9 +3,12 @@ site:
 
 content:
   sources:
-  - url: ..
-    branches: [HEAD]
-    start_paths: [docs/src, docs/build/src/managed, docs/dev/src]
+  - url: https://github.com/jpollock/akkaserverless-python-sdk.git
+    branches: main
+    start_paths: [docs/src, docs/build/src/managed, docs/dev/src]    
+  #- url: ..
+  #  branches: [HEAD]
+  #  start_paths: [docs/src, docs/build/src/managed, docs/dev/src]
 
 ui:
   bundle:
