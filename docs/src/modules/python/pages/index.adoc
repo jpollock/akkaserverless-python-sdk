@@ -3,7 +3,7 @@
 include::ROOT:partial$include.adoc[]
 include::partial$attributes.adoc[]
 
-The Akka Serverless Python SDK offers an idiomatic Python language SDK for writing components. This page describes prerequisites for Python development and basic requirements for a development project. It is recommended that you check out the https://developer.lightbend.com/docs/akka-serverless[Akka Serverless documentation] site for introduction to the product itself, including the concepts.
+The Akka Serverless Python SDK offers an idiomatic Python language SDK for writing APIs and Services that will run in the Akka Serverless Platform-as-a-Service product. This page describes prerequisites for Python development and basic requirements for a development project. It is recommended that you check out the https://developer.lightbend.com/docs/akka-serverless[Akka Serverless documentation] site for introduction to the product itself, including the concepts.
 
 NOTE: Lightbend provides Tier 3 support for the Python SDK. See https://developer.lightbend.com/docs/akka-serverless/developing/sdk-support.html[an explanation of support tiers] for more information. Further development will need to happen to take the Python support to Tier 2
 
@@ -40,6 +40,8 @@ Once you have the prerequisites, you need to add the `@lightbend/akkaserverless-
 pip install akkaserverless 
 ----
 
+You can also use the `requirements.txt` file found in the samples and starter projects.
+
 [source,sh,subs="attributes+"]
 ----
 pip install -r requirements.txt
@@ -49,24 +51,11 @@ To create a basic service, you need to include the `akkaserverless` package depe
 
 === Define gRPC descriptors and compile
 
-Descriptors for gRPC are defined in `protobuf` files. You can place `protobuf` files in your project wherever you like, for example, in the root directory, or in a directory named `protos`. In the `package.json` example, above we've placed the service descriptor in a file in the root folder called `shoppingcart.proto`. See xref:proto.adoc[] for more details.
+Descriptors for gRPC are defined in `protobuf` files. You can place `protobuf` files in your project wherever you like, for example, in the root directory, or in a directory named `protos`. For the Python SDK, right now, it is recommended to keep in the root directory. See xref:proto.adoc[] for more details.
 
 === Precompile the protobuf descriptor set
 
-The gRPC descriptor is serialized to binary using the Protobuf https://developers.google.com/protocol-buffers/docs/techniques#self-description[`FileDescriptorSet` message type]. Akka Serverless requires that you precompile this descriptor using `protoc`. We provide a utility that does this for you. It downloads the `protoc` binary for your platform, and runs it with the necessary arguments and include paths. You can run the utility manually, or we recommend adding it as a script to the build.
-
-To run the utility manually, invoke `node_modules/@lightbend/akkaserverless-python-sdk/bin/compile-descriptor.py`.
-
-Or, add a `prestart` script to your `npm` build:
-
-[source,json]
-----
-{
-  "scripts": {
-    "prestart": "compile-descriptor my-descriptor.proto"
-  }
-}
-----
+The gRPC descriptor is serialized to binary using the Protobuf https://developers.google.com/protocol-buffers/docs/techniques#self-description[`FileDescriptorSet` message type]. In order to use protobuf in the Python SDK you need to generate the Python stubs. This can be done by using the `compile.sh` script, which is located in the `bin` directory of the SDK repository itself; when installing the SDK, if you do so within a virtual environtment (using https://docs.python.org/3/library/venv.html or https://github.com/pyenv/pyenv-virtualenv), the script will be located in the path of your terminal and you should be able to type `compile.sh` directly, from the root of the project.
 
 === Create and start the gRPC server
 
