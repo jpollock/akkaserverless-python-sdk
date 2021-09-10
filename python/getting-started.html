@@ -193,7 +193,7 @@
 <p>You&#8217;ll also need install the <a href="https://developer.lightbend.com/docs/akka-serverless/akkasls/install-akkasls.html" target="new-doc">Akka Serverless CLI</a> if you want to deploy from a terminal window.</p>
 </li>
 <li>
-<p>For this quickstart, you&#8217;ll also need</p>
+<p>For this quickstart, you&#8217;ll also need:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -210,8 +210,11 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_simple_run_and_see"><a class="anchor" href="#_simple_run_and_see"></a>Simple Run And See</h2>
+<h2 id="_no_code_run_and_see"><a class="anchor" href="#_no_code_run_and_see"></a>No Code, Run and See</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>This is a quickest way to have an Akka Serverless Python API running locally. You won&#8217;t launch into coding (yet) but will have a fast path to making your first Akka Serverless-powered API call.</p>
+</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -242,29 +245,17 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_setup_for_developing"><a class="anchor" href="#_setup_for_developing"></a>Setup For Developing</h2>
+<h2 id="_now_lets_get_setup_for_developing"><a class="anchor" href="#_now_lets_get_setup_for_developing"></a>Now, Let&#8217;s Get Setup For Developing</h2>
 <div class="sectionbody">
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><code>virtual env: python3 -m venv myenv</code></p>
-</li>
-<li>
-<p>load env: <code>source myenv/bin/activate</code></p>
-</li>
-<li>
-<p><code>pip install -r requirements.txt</code></p>
-</li>
-<li>
-<p><code>docker-compose -f docker-compose-proxy.yml up -d</code></p>
-</li>
-<li>
-<p><code>./bin/start.sh</code></p>
-</li>
-<li>
-<p><code>curl -X POST -H "Content-Type: application/json" http://localhost:9000/hello -d '{"name": "My Name"}'</code></p>
-</li>
-</ol>
+<div class="paragraph">
+<p>Before launching into actual coding, let&#8217;s finish setting up our development environment.
+. <code>cd akka-serverless-getting-started-python</code> if not already there
+. <code>virtual env: python3 -m venv myenv</code>
+. load env: <code>source myenv/bin/activate</code>
+. <code>pip install -r requirements.txt</code>
+. <code>docker-compose -f docker-compose-proxy.yml up -d</code>
+. <code>start.sh</code>
+. <code>curl -X POST -H "Content-Type: application/json" http://localhost:9000/hello -d '{"name": "My Name"}'</code></p>
 </div>
 </div>
 </div>
