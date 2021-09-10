@@ -1,6 +1,6 @@
 site:
   title: "Akka Serverless Python SDK Documentation"
-r
+
 content:
   sources:
   - url: ..
