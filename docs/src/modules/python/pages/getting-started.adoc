@@ -4,11 +4,13 @@ include::ROOT:partial$include.adoc[]
 
 * If you're new to Akka Serverless, https://console.akkaserverless.com/[create an account, window="console"] so you can try out Akka Serverless for free.
 * You'll also need install the https://developer.lightbend.com/docs/akka-serverless/akkasls/install-akkasls.html[Akka Serverless CLI, window="new-doc"] if you want to deploy from a terminal window.
-* For this quickstart, you'll also need
+* For this quickstart, you'll also need:
 ** https://docs.docker.com/engine/install[Docker, window="new"] {minimum_docker_version} or higher
 ** Python 3 or higher
 
-== Simple Run And See
+== No Code, Run and See
+This is a quickest way to have an Akka Serverless Python API running locally. You won't launch into coding (yet) but will have a fast path to making your first Akka Serverless-powered API call.
+
 . `git clone git@github.com:jpollock/akka-serverless-getting-started-python.git`
 . `cd akka-serverless-getting-started-python`
 . `docker-compose up -d`
@@ -20,12 +22,14 @@ This should result in:
  {"text":"Do you want to play a game, My Name?"}
 ----
 
-== Setup For Developing
+== Now, Let's Get Setup For Developing
+Before launching into actual coding, let's finish setting up our development environment. 
+. `cd akka-serverless-getting-started-python` if not already there
 . `virtual env: python3 -m venv myenv`
 . load env: `source myenv/bin/activate`
 . `pip install -r requirements.txt`
 . `docker-compose -f docker-compose-proxy.yml up -d`
-. `./bin/start.sh`
+. `start.sh`
 . `+curl -X POST -H "Content-Type: application/json" http://localhost:9000/hello -d '{"name": "My Name"}'+`
 
 == Building Our First API
