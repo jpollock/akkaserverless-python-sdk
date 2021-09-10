@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Untitled :: Akka Serverless Python SDK Documentation</title>
+    <link rel="prev" href="../developing/development-process-python.html">
+    <link rel="next" href="kickstart.html">
+    <meta name="generator" content="Antora 2.3.4">
+    <link rel="stylesheet" href="../_/css/theme.1.1.0.min.css">
+    <style>
+        .article {
+            font-family: acumin-pro,Helvetica,Arial,sans-serif;
+        }
+        .navbar {
+            background-color: #0c323b4f;
+        }
+       .toolbar {
+           background-color: white;
+        }
+        .site-id {
+            left: 220px;
+            font-size: 18px;
+        }
+        .header-logo {
+            height: 80px;
+        }
+        .navbar .button {
+            background-color: #ff931dff;
+            color: white;
+        }
+    </style>
+
+	<meta property="og:site_name" content="Lightbend Documentation" />
+	<meta name="author" content="Lightbend Documentation">
+	<link rel="shortcut icon" type="image/x-icon" href="../_/img/favicons/favicon.ico" />
+	<meta itemprop="image" content="https://downloads.lightbend.com/website/social/lightbend-logo-orange-twitter.jpg">
+	<meta name="twitter:image:src" content="https://downloads.lightbend.com/website/social/lightbend-logo-orange-twitter.jpg">
+	<meta property="og:image" content="https://downloads.lightbend.com/website/social/lightbend-logo-orange-twitter.jpg" />
+	<meta property="og:image:secure_url" content="https://downloads.lightbend.com/website/social/lightbend-logo-orange-twitter.jpg" />  </head>
+  <body class="article production hide-versions ">
+<header class="header" role="banner">
+  <nav class="navbar">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="#">
+          <img class="header-logo lightbend-logo" src="../_/img/akka-serverless-full-color.svg">&nbsp;&nbsp;Python SDK Documentation
+        </a>
+      </div>
+      <div id="topbar-nav" class="navbar-menu">
+        <div class="navbar-end">
+            <div class="navbar-item has-dropdown is-hoverable">
+            <span class="navbar-link">Console</span>
+            <div class="navbar-dropdown">
+              <section>
+                <a data-category="Link - Drop Down Link - Lightbend Docs" href="https://console.akkaserverless.com/p/login/" target="_blank">Register or Log in</a>
+                <a data-category="Link - Drop Down Link - Lightbend Docs" href="https://status.akkaserverless.com/" target="_blank">Akka Serverless Status</a>
+              </section>
+            </div>
+          </div>
+          <div class="navbar-item has-dropdown is-hoverable">
+            <span class="navbar-link">Resources</span>
+            <div class="navbar-dropdown">
+              <section>
+                  <a data-category="Link - Drop Down Link - Lightbend Docs" href="https://discuss.lightbend.com/c/akka-serverless/40" target="
+                  ">Discussion Forum</a>
+                  <a data-category="Link - Drop Down Link - Lightbend Docs" href="https://www.lightbend.com/blog" target="_blank">Lightbend Blog</a>
+                  <a data-category="Link - Drop Down Link - Lightbend Docs" href="https://academy.lightbend.com/" target="_blank">Lightbend Academy</a>
+                  <a data-category="Link - Drop Down Link - Lightbend Docs" href="https://academy.lightbend.com/courses?search_query=FILTER_TYPE_FREE" target="_blank">Free Training</a>
+              </section>
+            </div>
+          </div>
+          <div class="navbar-item has-dropdown is-hoverable">
+            <span class="navbar-link">Lightbend</span>
+            <div class="navbar-dropdown">
+              <section>
+                  <a data-category="Link - Drop Down Link - Lightbend Docs" href="https://www.lightbend.com/about-lightbend" target="_blank">Who Is Lightbend?</a>
+                  <a data-category="Link - Drop Down Link - Lightbend Docs" href="https://www.lightbend.com/customers" target="_blank">Who Uses Lightbend?</a>
+                  <a data-category="Link - Drop Down Link - Lightbend Docs" href="https://www.lightbend.com/certified-reactive-architect" target="_blank">Certification</a>
+                  <a data-category="Link - Drop Down Link - Lightbend Docs" href="https://www.lightbend.com/company/news" target="_blank">News & Press</a>
+                  <a data-category="Link - Drop Down Link - Lightbend Docs" href="https://www.lightbend.com/contact" target="_blank">Get In Contact</a>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">Developing with Python</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../developing/development-process-python.html">Process overview</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="getting-started.html">Getting Started</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="kickstart.html">Kickstart a Python module</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="proto.html">Writing gRPC descriptors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="eventsourced.html">Implementing Event Sourced Entities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="value-entity.html">Implementing Value Entities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="actions.html">Implementing Actions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="forwarding.html">Forwarding and effects</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="entity-eventing.html">Subscribing to a Journal</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="topic-eventing.html">Publishing and Subscribing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="views.html">Creating Views</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="serialization.html">Handling Serialization</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="run-locally.html">Run a service locally</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title"></span>
+    <span class="version">master</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html"></a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">master</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Developing with Python</a></li>
+    <li><a href="getting-started.html">Getting Started</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/jpollock/akkaserverless-python-sdk/edit/main/docs/src/modules/python/pages/getting-started.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<aside class="toc sidebar" data-title="On This Page" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article id="page-content" class="doc">
+<fieldset class="supergroup-switch">
+	
+
+
+
+
+	
+
+
+</fieldset><div class="sect1">
+<h2 id="_before_you_begin"><a class="anchor" href="#_before_you_begin"></a>Before you begin</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>If you&#8217;re new to Akka Serverless, <a href="https://console.akkaserverless.com/" target="console">create an account</a> so you can try out Akka Serverless for free.</p>
+</li>
+<li>
+<p>You&#8217;ll also need install the <a href="https://developer.lightbend.com/docs/akka-serverless/akkasls/install-akkasls.html" target="new-doc">Akka Serverless CLI</a> if you want to deploy from a terminal window.</p>
+</li>
+<li>
+<p>For this quickstart, you&#8217;ll also need</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://docs.docker.com/engine/install" target="new">Docker</a> 19.03 or higher</p>
+</li>
+<li>
+<p>Python 3 or higher</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_simple_run_and_see"><a class="anchor" href="#_simple_run_and_see"></a>Simple Run And See</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>git clone <a href="mailto:git@github.com">git@github.com</a>:jpollock/akka-serverless-getting-started-python.git</code></p>
+</li>
+<li>
+<p><code>cd akka-serverless-getting-started-python</code></p>
+</li>
+<li>
+<p><code>docker-compose up -d</code></p>
+</li>
+<li>
+<p><code>curl -X POST -H "Content-Type: application/json" http://localhost:9000/hello -d '{"name": "My Name"}'</code></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>This should result in:</p>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre> {"text":"Do you want to play a game, My Name?"}</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_setup_for_developing"><a class="anchor" href="#_setup_for_developing"></a>Setup For Developing</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>virtual env: python3 -m venv myenv</code></p>
+</li>
+<li>
+<p>load env: <code>source myenv/bin/activate</code></p>
+</li>
+<li>
+<p><code>pip install -r requirements.txt</code></p>
+</li>
+<li>
+<p><code>docker-compose -f docker-compose-proxy.yml up -d</code></p>
+</li>
+<li>
+<p><code>./bin/start.sh</code></p>
+</li>
+<li>
+<p><code>curl -X POST -H "Content-Type: application/json" http://localhost:9000/hello -d '{"name": "My Name"}'</code></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_building_our_first_api"><a class="anchor" href="#_building_our_first_api"></a>Building Our First API</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We&#8217;re here to build something! Running the above was interesting, just to get a sense of what some aspects of the developer experience are, mainly:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>To run fully in local environment, running the Akka Serverless sidecar proxy will be critical; this was the <code>docker-compose -f docker-compose-proxy.yml up -d</code> above</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>For the rest of this quickstart, we&#8217;ll use a specific use case. We&#8217;ll build a system that is managing User Profiles that need to be directly incorporated into a run-time application, e.g. tracking last watched movies for a streaming video service User Profile or currently connected devices for a customer support User Profile. The objective of this first exercise will be to deliver on the following requirements:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>We want to fetch a User Profile given the identifier for a particular user using a standard API approach.</p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="_design_the_fetch_user_profile_api"><a class="anchor" href="#_design_the_fetch_user_profile_api"></a>Design the Fetch User Profile API</h3>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Goal is to make this a simple API that receives requests - in this case a GET of User Profile data with a result of some data, e.g. <code>GET /users/123</code>/</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The finished code is in the <code>fetch_user_profile</code> branch. <code>git checkout fetch_user_profile</code> to jump ahead to finished code.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open the <code>api_spec.proto</code> file.</p>
+</li>
+<li>
+<p>Define the schema of the request. The data sent to the API, in this case, is quite simple: a <code>name</code>. This data will either be part of a JSON payload or part of the URI or request parameters. Fetching User Profile data by a person&#8217;s name wouldn&#8217;t work n the real world - too many Jeremys out there! - so let&#8217;s change name to be a parameter more like an <code>id</code>. Let&#8217;s change <code>name</code> to <code>user_profile_id</code>.</p>
+<div class="listingblock">
+<div class="content">
+<pre> message MyRequest {
+    string user_profile_id = 1;
+ }</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Now let&#8217;s move on to what data we expect to send back as a response to this request for User Profile data. <code>text</code> seems to not be a great choice so let&#8217;s change that to <code>name</code> (which nows seems appropiate!). And a <code>name</code> for a User Profile is rather bare bones so we will add some other attributes of a User Profile that we would like to see.</p>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p>Change <code>text</code> to <code>name</code>.</p>
+</li>
+<li>
+<p>Add <code>string status = 2</code> on the line below.</p>
+</li>
+<li>
+<p>Add <code>bool online = 3</code> on the next line.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Your <code>MyResponse</code> should look like the below. Note that the numbers (<code>1</code>,<code>2</code>,<code>3</code>) indicate position in the returned response; the order of things matter.</p>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre> message MyResponse {
+    string name = 1;
+    string status = 2;
+    bool online = 3;
+ }</pre>
+</div>
+</div>
+</li>
+<li>
+<p>We have a request and a response. Now we need the API! The starter code in the file is for a <code>POST /hello</code> API call. We need to make some changes.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Change <code>Hello</code> to <code>GetUser</code>. We&#8217;ll use this identifier in the actual code that we write to implement the API logic.</p>
+</li>
+<li>
+<p>Change <code>post</code> to <code>get</code> since this is a fetch of data.</p>
+</li>
+<li>
+<p>Remove the <code>body: "*"</code> line.</p>
+</li>
+<li>
+<p>Change <code>/hello</code> to <code>/users/{user_profile_id}</code>; we&#8217;re putting the parameter, <code>user_profile_id</code>, from our <code>MyRequest</code> message directly into the URI path.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Finished API specification should look like:</p>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre> // boilerplate for a new action API
+ syntax = "proto3";
+
+ import "akkaserverless/annotations.proto";
+ import "google/api/annotations.proto";
+
+
+ message MyRequest {
+     string user_profile_id = 1;
+ }
+
+ message MyResponse {
+     string name = 1;
+     string status = 2;
+     bool online = 3;
+ }
+
+ service ThingActionService {
+     rpc Users(MyRequest) returns (MyResponse) {
+         option (google.api.http) = {
+             get: "/users/{user_profile_id}",
+             body: "*"
+         };
+     }
+ }</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Generate code by running, from terminal window, in the project directory: <code>./bin/compile.sh</code>.</p>
+</li>
+<li>
+<p>Open the <code>api_impl.py</code> so that we can add our business logic.</p>
+</li>
+<li>
+<p>Change <code>@action.unary_handler("Hello")</code> to <code>@action.unary_handler("GetUser")</code>. This essentially performs the routing logic, to map the incoming API request to the URI path specified in the <code>api_spec.proto</code> to the function that will handle the request.</p>
+</li>
+<li>
+<p>Change <code>def hello</code> to <code>def fetch_user</code>. This is not necessary since we already have the routing done through the above change but it makes our code more sensible to the reader.</p>
+</li>
+<li>
+<p>At the top of the file, right before <code># imports fom Akka Serverless SDK</code> add a new line: <code>import random</code>. We will just use some random data for fun.</p>
+</li>
+<li>
+<p>In the now named <code>users</code> function, change the line, <code>resp = MyResponse(text= "Do you want to play a game, " + command.name + "?")</code> to <code>resp = MyResponse(name= "My Name", status= random.choice(['active', 'inactive']), online= bool(random.getrandbits(1)))</code></p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>"""
+Copyright 2020 Lightbend Inc.
+Licensed under the Apache License, Version 2.0.
+"""
+
+from dataclasses import dataclass, field
+from typing import MutableSet
+import random
+
+from google.protobuf.empty_pb2 import Empty
+
+from akkaserverless.action_context import ActionContext
+from akkaserverless.action_protocol_entity import Actio
+from api_spec_pb2 import (MyRequest, MyResponse, _THINGACTIONSERVICE, DESCRIPTOR as API_DESCRIPTOR)
+
+
+action = Action(_THINGACTIONSERVICE, [API_DESCRIPTOR])
+
+@action.unary_handler("Hello")
+def hello(command: MyRequest, context: ActionContext):
+    resp = MyResponse(name= "My Name", status= random.choice(['active', 'inactive']), online= bool(random.getrandbits(1)))
+    return resp</pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>./bin/start.sh</p>
+</li>
+<li>
+<p><code>curl -X GET -H "Content-Type: application/json" http://localhost:9000/users/$\{uuidgen\}</code> should return</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>{"name":"My Name","status":"active","online":false}%</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>status</code> and <code>online</code> values should change randomly as you run that curl command repeatedly.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_design_the_createupdate_user_profile_api"><a class="anchor" href="#_design_the_createupdate_user_profile_api"></a>Design the Create/Update User Profile API</h3>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The finished code is in the <code>create_update_user</code> branch. <code>git checkout create_update_user</code> to jump ahead to finished code.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>So far we have built a simple API and one that has not stored any data or retrieved any either, from a database or elsewhere. For a system that is managing User Profiles that need to be directly incorporated into a run-time application, e.g. tracking last watched movies for a streaming video service User Profile or currently connected devices for a customer support User Profile.</p>
+</div>
+<div class="paragraph">
+<p>The objective of this exercise will be to deliver on the following requirements:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open the <code>api_spec.proto</code> file</p>
+</li>
+<li>
+<p>Add a new message request, to capture the information we want to pass into the API: name of the User, status of the User, e.g. a customer or not, and list of devices.</p>
+<div class="listingblock">
+<div class="content">
+<pre> message UserProfile {
+     string user_profile_id = 1;
+     string name = 2;
+     string status = 3;
+     repeated Device devices = 4;
+ }
+
+ message Device {
+     string id = 1;
+     string name = 2;
+ }</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Annotate the <code>user_profile_id</code> parameter in both the <code>UserProfile</code> and <code>MyRequest</code> messages such that the parameter, <code>user_profile_id</code>, is denoted as the identifier that Akka Serverless should use for Value Entity (KV) storage and manipulation. The annotation is: <code>[(akkaserverless.field).entity_key = true]</code>. See below for example on where to put.</p>
+<div class="listingblock">
+<div class="content">
+<pre> message UserProfile {
+     string user_profile_id = 1 [(akkaserverless.field).entity_key = true];
+     string name = 2;
+     string status = 3;
+     repeated Device devices = 4;
+ }
+
+ message Device {
+     string id = 1;
+     string name = 2;
+ }
+
+ message MyRequest {
+     string user_profile_id = 1 [(akkaserverless.field).entity_key = true];
+ }</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Update the <code>MyResponse</code> so that it can be used in this new API as well; we are just adding additional data parameters that we will include in the body of the response.</p>
+<div class="listingblock">
+<div class="content">
+<pre> message MyResponse {
+     string name = 1;
+     string status = 2;
+     bool online = 3;
+     repeated Device devices = 4;
+ }</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Add the API itself. We&#8217;ll two: a <code>POST /users</code> for creation of a UserProfle and <code>PUT /users/{user_profile_id}</code> for the update.</p>
+<div class="listingblock">
+<div class="content">
+<pre> service MyApi {
+     rpc GetUser(MyRequest) returns (MyResponse) {
+         option (google.api.http) = {
+             get: "/users/{user_profile_id}",
+         };
+     }
+     rpc CreateUser(UserProfile) returns (MyResponse) {
+         option (google.api.http) = {
+             post: "/users",
+             body: "*"
+         };
+     }
+     rpc UpdateUser(UserProfile) returns (MyResponse) {
+         option (google.api.http) = {
+             put: "/users/{user_profile_id}",
+             body: "*"
+         };
+     }
+
+ }</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Generate code by running, from terminal window, in the project directory: <code>./bin/compile.sh</code>.</p>
+</li>
+<li>
+<p>Open the <code>api_impl.py</code> so that we can add our business logic. First, change the implementation of our API from an Action to a Value Entity. Replace:</p>
+<div class="listingblock">
+<div class="content">
+<pre>   from akkaserverless.action_context import ActionContext
+   from akkaserverless.action_protocol_entity import Action</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>with</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>   from akkaserverless.value_context import ValueEntityCommandContext
+   from akkaserverless.value_entity import ValueEntity</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Add <code>UserProfile</code> in front of <code>MyRequest</code> in the import statement:
+<code>from api_spec_pb2 import (UserProfile, MyRequest, MyResponse, _MYAPI, DESCRIPTOR as API_DESCRIPTOR)</code>.</p>
+</li>
+<li>
+<p>Change the API implementation type from <code>Action</code> to <code>ValueEntity</code>. This is done in this line: <code>entity = Action(_MYAPI, [API_DESCRIPTOR])</code>. The new code should be <code>entity = ValueEntity(_MYAPI, [API_DESCRIPTOR])</code>.</p>
+</li>
+<li>
+<p>Add init, add entity type</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Since we&#8217;ve moved from <code>Action</code> to <code>ValueEntity</code> we need to change some things in our <code>GetUser</code> API code.</p>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p>Change <code>unary_handler</code> to <code>command_handler</code>.</p>
+</li>
+<li>
+<p>Change <code>command: MyRequest, context: ActionContext</code> to <code>state: UserProfile, command: MyRequest, context: ValueEntityCommandContext</code>.</p>
+</li>
+<li>
+<p>The api specification calls for a response of type <code>MyResponse</code>.Change</p>
+<div class="listingblock">
+<div class="content">
+<pre> resp = MyResponse(name= "My Name", status= random.choice(['active', 'inactive']), online= bool(random.getrandbits(1)))
+ return resp</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>to</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre> resp = MyResponse(name= state.name, status= state.status, online= bool(random.getrandbits(1)))
+ return resp</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Add a new command handler for <code>CreateUser</code>.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Add a new line after the <code>fetch_user</code> function: <code>@entity.command_handler("CreateUser")</code>.</p>
+</li>
+<li>
+<p>Define a function, called <code>create_user</code> with parameters of <code>state</code>, <code>command</code>, <code>context</code>. <strong>The Akka Serverless Python SDK depends on these exact names</strong>.</p>
+</li>
+<li>
+<p>Your code should look like:</p>
+<div class="listingblock">
+<div class="content">
+<pre> @entity.command_handler("CreateUser")
+ def create_user(state: UserProfile, command: UserProfile, context: ValueEntityCommandContext):
+ state = command
+ context.update_state(state)
+ return MyResponse(name= state.name, status= state.status, online= bool(random.getrandbits(1))ß)</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p><code>./bin/start.sh</code></p>
+</li>
+<li>
+<p><code>curl -X POST -H "Content-Type: application/json" http://localhost:9000/users -d '{"user_profile_id": "test", "name": "My Name", "status": "active", "devices":[]}'</code></p>
+</li>
+<li>
+<p><code>curl -X GET -H "Content-Type: application/json" http://localhost:9000/users/test</code></p>
+</li>
+<li>
+<p>Add a new command handler for <code>UpdateUser</code>.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Add a new line after the <code>create_user</code> function: <code>@entity.command_handler("UpdateUser")</code>.</p>
+</li>
+<li>
+<p>Define a function, called <code>update_user</code> with parameters of <code>state</code>, <code>command</code>, <code>context</code>.</p>
+</li>
+<li>
+<p>Let&#8217;s make it a bit more complex and do some basic testing. The idea is the same: select which data off of the command (request) that you want to map into the state.
+ <code>`</code>
+@entity.command_handler("UpdateUser")
+def update_user(state: UserProfile, command: UserProfile, context: ValueEntityCommandContext):
+ if command.name != state.name:
+   state.name = command.name
+ if command.status != state.status:
+   state.status = command.status</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>context.update_state(state)
+ return MyResponse(name= state.name, status= state.status, online= bool(random.getrandbits(1)))
+  <code>`</code></p>
+</div>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p><code>./bin/start.sh</code></p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_design_the_user_profile_query_api"><a class="anchor" href="#_design_the_user_profile_query_api"></a>Design the User Profile Query API</h3>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The finished code is in the <code>query_users</code> branch. <code>git checkout query_users</code> to jump ahead to finished code.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open up proto file</p>
+</li>
+</ol>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="olist upperalpha">
+<ol class="upperalpha" type="A">
+<li>
+<p>First, we have to know that Akka Serverless users (CQRS)][<a href="https://martinfowler.com/bliki/CQRS.html" class="bare">https://martinfowler.com/bliki/CQRS.html</a>] for supporting querying capabilities; the query mechanism always resides in a separate service/API, even if running within the same container environment. This ultimately gives the developer more control and performance for querying, whether for basic or more advanced needs. THis means that we need to add a peer service definition. Normally, we&#8217;re likely to do this in a separate file and probably repository as well. But for now we&#8217;ll do in the same API specification file: <code>api_spec.proto</code>.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Add an empty service definition at the end of the file, called <code>MyQueryApi</code>:</p>
+<div class="listingblock">
+<div class="content">
+<pre> service MyQueryApi {
+
+ }</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Querying in Akka Serverless is based on a feature called (<code>views</code>)[<a href="https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#view" class="bare">https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#view</a>]. Views are created automatically by Akka Serverless based on the <strong>events</strong> that occur, e.g. new data created, updated or deleted. As such, we have to define an API - not called directly by a developer - that will be used by Akka Serverless to connect the events to the query tables that will be created and managed. We do this using the <code>eventing</code> annotation.</p>
+<div class="listingblock">
+<div class="content">
+<pre> rpc UpdateView(UserProfile) returns (UserProfile) {
+     option (akkaserverless.method).eventing = {
+     in: {
+         value_entity: "user_profiles"
+     }
+     };
+     option (akkaserverless.method).view.update = {
+     table: "user_profiles"
+     };
+ }</pre>
+</div>
+</div>
+</li>
+<li>
+<p>The second part of our new <code>MyQueryApi</code> will be the actual API call that can be used by a developer to make the actual query. In this case, let&#8217;s do a simple query for fetching all of the users created by our <code>MyApi</code>. Name of the API is <code>GetUsers</code>, with no input parameters supported an a resonse of type <code>UsersResponse</code>. The annotation used, to define the query, is <code>option (akkaserverless.method).view.query</code> and the query is a simple select statement: <code>SELECT * AS results FROM user_profiles</code>.</p>
+<div class="listingblock">
+<div class="content">
+<pre> rpc GetUsers(google.protobuf.Empty) returns (UsersResponse) {
+     option (akkaserverless.method).view.query = {
+     query: "SELECT * AS results FROM user_profiles"
+     };
+     option (google.api.http) = {
+         get: "/users"
+     };
+ }</pre>
+</div>
+</div>
+</li>
+<li>
+<p>In the above, we have a new message type that we have to define: <code>UsersResponse</code>. In this case, it is a simple list of <code>UserProfile</code> messages. The definition is:</p>
+<div class="listingblock">
+<div class="content">
+<pre> message UsersResponse {
+     repeated UserProfile results = 1;
+ }</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Now we have our API defined and the eventing setup so the underlying data structures are populated. We connect this to code by updating our <code>api_impl.py</code>. We need to import some modules and then setup the View. You can add the below right after the <code>from api_spec_pb2 import (UserProfile, MyRequest, MyResponse, _MYAPI, DESCRIPTOR as API_DESCRIPTOR)</code> line. You could also put at the bottom of the file as well.</p>
+<div class="listingblock">
+<div class="content">
+<pre> from akkaserverless.view import View
+ from api_spec_pb2 import (_MYQUERYAPI, DESCRIPTOR as FILE_DESCRIPTOR)
+
+ view = View(_MYQUERYAPI,[FILE_DESCRIPTOR])</pre>
+</div>
+</div>
+</li>
+<li>
+<p>The final step is to expose it to the Akka Serverless run-time. Update the <code>api_service.py</code> file to import the <code>view</code> and add it to the list of components served. The file should look like:</p>
+<div class="listingblock">
+<div class="content">
+<pre> """
+ Copyright 2020 Lightbend Inc.
+ Licensed under the Apache License, Version 2.0.
+ """
+
+ from akkaserverless.akkaserverless_service import AkkaServerlessService
+ from api_impl import entity as myapi
+ from api_impl import view as myquery
+ import logging
+
+ if __name__ == '__main__':
+     logging.basicConfig(level=logging.DEBUG)
+
+     # create service and add components
+     service = AkkaServerlessService()
+     service.add_component(myapi)
+     service.add_component(myquery)
+     service.start()</pre>
+</div>
+</div>
+</li>
+<li>
+<p><code>./bin/start.sh</code></p>
+</li>
+<li>
+<p><code>curl -X POST -H "Content-Type: application/json" http://localhost:9000/users -d '{"user_profile_id": "test", "name": "My Name", "status": "active", "devices":[]}'</code></p>
+</li>
+<li>
+<p><code>curl -X GET -H "Content-Type: application/json" http://localhost:9000/users</code></p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_implement_update_a_users_devices_via_pubsub_eventing"><a class="anchor" href="#_implement_update_a_users_devices_via_pubsub_eventing"></a>Implement Update A User&#8217;s devices via Pubsub (Eventing)</h3>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The finished code is in the <code>pubsub_and_actions</code> branch. <code>git checkout pubsub_and_actions</code> to jump ahead to finished code.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open the <code>api_spec.proto</code> to add a new API method to the <code>MyApi</code> service.</p>
+<div class="listingblock">
+<div class="content">
+<pre> rpc UpdateUserDevices(UserProfile) returns (google.protobuf.Empty) {
+     option (akkaserverless.method).eventing = {
+         in: {
+           topic: "device_added"
+         }
+     };
+ };</pre>
+</div>
+</div>
+</li>
+<li>
+<p>At the bottom of the <code>api_spec.proto</code>, add a new service that will simulate external system.</p>
+<div class="listingblock">
+<div class="content">
+<pre> message UserDevices {
+     string user_profile_id = 1;
+     repeated Device devices = 4;
+
+ }
+
+ service MyEventApi {
+     rpc ValidateDevices(UserDevices) returns (UserProfile) {
+         option (akkaserverless.method).eventing = {
+             out: {
+             topic: "device_added"
+             }
+         };
+         option (google.api.http) = {
+             post: "/users/{user_profile_id}/devices",
+             body: "*"
+         };
+     };
+ }</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>3.</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="../developing/development-process-python.html">Process overview</a></span>
+  <span class="next"><a href="kickstart.html">Kickstart a Python module</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+
+</footer><script>window.uiRootPath = '../_'</script>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script src="../_/js/dist/theme.1.0.3.min.js"></script>
+
+<!--Footer Scripts Lightbend Specific-->
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TGBHM8D');</script>
+<!-- End Google Tag Manager -->
+
+<!-- Aha Feedback Widget -->
+<script type="text/plain" class="optanon-category-3" async="async">
+	function createUUID() {
+		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+			var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+			return v.toString(16);
+		});
+	}
+
+	u = createUUID();
+
+	(function (w, d, s, o, f, js, fjs) {
+		w['aha-widget'] = o; w[o] = w[o] || function () { (w[o].q = w[o].q || []).push(arguments); };
+		js = d.createElement(s); fjs = d.getElementsByTagName(s)[0]; js.id = o; js.src = f; js.async = 1; fjs.parentNode.insertBefore(js, fjs);
+	})(window, document, 'script', 'aha', 'https://cdn.aha.io:443/assets/feedback/feedback.js');
+
+	aha('initialize', {
+		account: 'lightbend',
+		applicationId: '7000060812484679534',
+		user: {
+			id: u,
+			name: 'as-user-'+u,
+			email: 'as-user-'+u+'+docs@lightbend.com',
+		},
+	});
+</script>
+
+<!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/plain" class="optanon-category-4" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5528d33a542dd356" async="async">  </body>
+</html>
