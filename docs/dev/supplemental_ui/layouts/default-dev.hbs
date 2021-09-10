@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+{{> head-dev defaultPageTitle='Untitled'}}
+  </head>
+  <body class="article dev hide-versions {{#with (or page.attributes.role page.role)}} {{{this}}}{{/with}}">
+{{> header}}
+{{> body}}
+{{> footer}}
+  </body>
+</html>

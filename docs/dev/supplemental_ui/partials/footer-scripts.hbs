@@ -1,0 +1,47 @@
+<script>window.uiRootPath = '{{{uiRootPath}}}'</script>
+<script src="{{uiRootPath}}/js/site.js"></script>
+<script async src="{{uiRootPath}}/js/vendor/highlight.js"></script>
+<script src="{{uiRootPath}}/js/dist/theme.1.0.3.min.js"></script>
+{{#if (eq env.DOCSEARCH_ENGINE 'lunr')}}
+	<script src="{{uiRootPath}}/js/dist/search.min.js" id="search-script" data-base-path="{{or siteRootPath (or site.url siteRootUrl)}}" data-page-path="{{@root.page.url}}"></script>
+	<script async src="{{uiRootPath}}/../search-index.js"></script>
+{{/if}}
+
+<!--Footer Scripts Lightbend Specific-->
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TGBHM8D');</script>
+<!-- End Google Tag Manager -->
+
+<!-- Aha Feedback Widget -->
+<script type="text/plain" class="optanon-category-3" async="async">
+	function createUUID() {
+		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+			var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+			return v.toString(16);
+		});
+	}
+
+	u = createUUID();
+
+	(function (w, d, s, o, f, js, fjs) {
+		w['aha-widget'] = o; w[o] = w[o] || function () { (w[o].q = w[o].q || []).push(arguments); };
+		js = d.createElement(s); fjs = d.getElementsByTagName(s)[0]; js.id = o; js.src = f; js.async = 1; fjs.parentNode.insertBefore(js, fjs);
+	})(window, document, 'script', 'aha', 'https://cdn.aha.io:443/assets/feedback/feedback.js');
+
+	aha('initialize', {
+		account: 'lightbend',
+		applicationId: '7000060812484679534',
+		user: {
+			id: u,
+			name: 'as-user-'+u,
+			email: 'as-user-'+u+'+docs@lightbend.com',
+		},
+	});
+</script>
+
+<!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/plain" class="optanon-category-4" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5528d33a542dd356" async="async">
