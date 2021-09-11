@@ -51,7 +51,7 @@ In the terminal window you should see something like:
 2021-09-11 08:53:40,115 - discovery_servicer.py - INFO: discovering.
 protocol_minor_version: 7
 proxy_name: "akkaserverless-proxy-core"
-proxy_version: "0.7.0-beta.14"
+proxy_version: "0.7.0-beta.18"
 supported_entity_types: "akkaserverless.component.action.Actions"
 supported_entity_types: "akkaserverless.component.view.Views"
 supported_entity_types: "akkaserverless.component.valueentity.ValueEntities"

@@ -4,6 +4,8 @@
 /docs/project/project/
 /docs/project/target/
 /docs/target/
+/docs/build/
+/docs/dev/build/
 venv
 /.venv/
 /dist/
