@@ -5,7 +5,7 @@ include::partial$attributes.adoc[]
 
 The Akka Serverless Python SDK offers an idiomatic Python language SDK for writing APIs and Services that will run in the Akka Serverless Platform-as-a-Service product. This page describes prerequisites for Python development and basic requirements for a development project. It is recommended that you check out the https://developer.lightbend.com/docs/akka-serverless[Akka Serverless documentation] site for introduction to the product itself, including the concepts.
 
-NOTE: Lightbend provides Tier 3 support for the Python SDK. See https://developer.lightbend.com/docs/akka-serverless/developing/sdk-support.html[an explanation of support tiers] for more information. Further development will need to happen to take the Python support to Tier 2
+NOTE: Lightbend provides Tier 3 support for the Python SDK. See https://developer.lightbend.com/docs/akka-serverless/faq/index.html#_what_languages_are_supported[an explanation of support tiers] for more information. Further development will need to happen to take the Python support to Tier 2. Use of this SDK in a production environment is not recommended. Please visit https://github.com/jpollock/akkaserverless-python-sdk/discussions to add ideas or ask questions specific to the Python SDK.
 
 Your development project needs to include the Akka Serverless Python SDK. You define API components using https://developers.google.com/protocol-buffers[protobuf] and use `protoc` to compile them. Finally, you implement business logic for service components.
 
