@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Untitled :: Akka Serverless Python SDK Documentation</title>
+    <title>Quickstart: Your First Full Featured Python API :: Akka Serverless Python SDK Documentation</title>
     <link rel="prev" href="../developing/development-process-python.html">
     <link rel="next" href="kickstart.html">
     <meta name="generator" content="Antora 2.3.4">
@@ -172,6 +172,7 @@
   <div class="toc-menu"></div>
 </aside>
 <article id="page-content" class="doc">
+<h1 class="page">Quickstart: Your First Full Featured Python API</h1>
 <fieldset class="supergroup-switch">
 	
 
@@ -181,7 +182,14 @@
 	
 
 
-</fieldset><div class="sect1">
+</fieldset><div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Learn how to create a user profile API in Python, package it into a container, and run it on Akka Serverless. We&#8217;ll build a system that is managing User Profiles that need to be directly incorporated into a run-time application, e.g. tracking last watched movies for a streaming video service User Profile or currently connected devices for a customer support User Profile.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_before_you_begin"><a class="anchor" href="#_before_you_begin"></a>Before you begin</h2>
 <div class="sectionbody">
 <div class="ulist">
@@ -200,7 +208,10 @@
 <p><a href="https://docs.docker.com/engine/install" target="new">Docker</a> 19.03 or higher</p>
 </li>
 <li>
-<p>Python 3 or higher</p>
+<p>Python {minimum_python_version} or higher</p>
+</li>
+<li>
+<p><a href="https://github.com/fullstorydev/grpcurl#installation" target="new"><code>grpcurl</code></a></p>
 </li>
 </ul>
 </div>
@@ -218,24 +229,90 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><code>git clone <a href="mailto:git@github.com">git@github.com</a>:jpollock/akka-serverless-getting-started-python.git</code></p>
+<p>In a terminal window, clone the repository: <code>git clone <a href="mailto:git@github.com">git@github.com</a>:jpollock/akka-serverless-getting-started-python.git</code>;</p>
 </li>
 <li>
-<p><code>cd akka-serverless-getting-started-python</code></p>
+<p>In the same terminal, navigate to the project folder: <code>cd akka-serverless-getting-started-python</code>;</p>
 </li>
 <li>
-<p><code>docker-compose up -d</code></p>
-</li>
-<li>
-<p><code>curl -X POST -H "Content-Type: application/json" http://localhost:9000/hello -d '{"name": "My Name"}'</code></p>
+<p>Run the containers: <code>docker-compose up -d</code>.</p>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p>This should result in:</p>
+<p>Once up and running, you can make your first API call:</p>
 </div>
 <div class="paragraph">
-<p>+</p>
+<p><code>curl -X POST -H "Content-Type: application/json" http://localhost:9000/hello -d '{"name": "My Name"}'</code></p>
+</div>
+<div class="paragraph">
+<p>This should result in:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre> {"text":"Do you want to play a game, My Name?"}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>docker-compose down</code> to shut things down.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_now_lets_get_setup_for_developing"><a class="anchor" href="#_now_lets_get_setup_for_developing"></a>Now, Let&#8217;s Get Setup For Developing</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Before launching into actual coding, let&#8217;s finish setting up our development environment.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>cd akka-serverless-getting-started-python</code> if not already there;</p>
+</li>
+<li>
+<p>Create a virtual environment: <code>python3 -m venv myenv</code>;</p>
+</li>
+<li>
+<p>Load the newly created environment: <code>source myenv/bin/activate</code>;</p>
+</li>
+<li>
+<p>Install the necessary Python modules: <code>pip install -r requirements.txt</code></p>
+</li>
+<li>
+<p>Start the API: <code>start.sh</code></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>In the terminal window you should see something like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code>2021-09-11 08:53:37,698 - akkaserverless_service.py - INFO: Starting Akka Serverless on address 0.0.0.0:8080
+2021-09-11 08:53:40,115 - discovery_servicer.py - INFO: discovering.
+protocol_minor_version: 7
+proxy_name: "akkaserverless-proxy-core"
+proxy_version: "0.7.0-beta.14"
+supported_entity_types: "akkaserverless.component.action.Actions"
+supported_entity_types: "akkaserverless.component.view.Views"
+supported_entity_types: "akkaserverless.component.valueentity.ValueEntities"
+supported_entity_types: "akkaserverless.component.replicatedentity.ReplicatedEntities"
+supported_entity_types: "akkaserverless.component.eventsourcedentity.EventSourcedEntities"
+dev_mode: true
+
+2021-09-11 08:53:40,115 - discovery_servicer.py - INFO: entity: com.example.MyApi
+2021-09-11 08:53:40,115 - discovery_servicer.py - INFO: discovering api_spec.proto
+2021-09-11 08:53:40,115 - discovery_servicer.py - INFO: SD: com.example.MyApi</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once up and running, you can make your first API call, in another terminal window:</p>
+</div>
+<div class="paragraph">
+<p><code>curl -X POST -H "Content-Type: application/json" http://localhost:9000/hello -d '{"name": "My Name"}'</code></p>
+</div>
+<div class="paragraph">
+<p>This should result in:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -245,45 +322,43 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_now_lets_get_setup_for_developing"><a class="anchor" href="#_now_lets_get_setup_for_developing"></a>Now, Let&#8217;s Get Setup For Developing</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Before launching into actual coding, let&#8217;s finish setting up our development environment.
-. <code>cd akka-serverless-getting-started-python</code> if not already there
-. <code>virtual env: python3 -m venv myenv</code>
-. load env: <code>source myenv/bin/activate</code>
-. <code>pip install -r requirements.txt</code>
-. <code>docker-compose -f docker-compose-proxy.yml up -d</code>
-. <code>start.sh</code>
-. <code>curl -X POST -H "Content-Type: application/json" http://localhost:9000/hello -d '{"name": "My Name"}'</code></p>
-</div>
-</div>
-</div>
-<div class="sect1">
 <h2 id="_building_our_first_api"><a class="anchor" href="#_building_our_first_api"></a>Building Our First API</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>We&#8217;re here to build something! Running the above was interesting, just to get a sense of what some aspects of the developer experience are, mainly:</p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>To run fully in local environment, running the Akka Serverless sidecar proxy will be critical; this was the <code>docker-compose -f docker-compose-proxy.yml up -d</code> above</p>
-</li>
-</ol>
+<div class="sidebarblock">
+<div class="content">
+To run fully in local environment, running the Akka Serverless sidecar proxy is necessary; this was the <code>docker-compose -f docker-compose-proxy.yml up -d</code> command above.
+</div>
 </div>
 <div class="paragraph">
-<p>For the rest of this quickstart, we&#8217;ll use a specific use case. We&#8217;ll build a system that is managing User Profiles that need to be directly incorporated into a run-time application, e.g. tracking last watched movies for a streaming video service User Profile or currently connected devices for a customer support User Profile. The objective of this first exercise will be to deliver on the following requirements:</p>
+<p>For the rest of this quickstart, we&#8217;ll use the specific use case: a system that is managing User Profiles that need to be directly incorporated into a run-time application, e.g. tracking last watched movies for a streaming video service User Profile or currently connected devices for a customer support User Profile and/or Chat Bot.</p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>We want to fetch a User Profile given the identifier for a particular user using a standard API approach.</p>
-</li>
-</ol>
+<div class="paragraph">
+<p>The objective of this first part will be to deliver on the following requirement:</p>
 </div>
-<div class="sect2">
-<h3 id="_design_the_fetch_user_profile_api"><a class="anchor" href="#_design_the_fetch_user_profile_api"></a>Design the Fetch User Profile API</h3>
+<div class="sidebarblock">
+<div class="content">
+We want to fetch a User Profile given the identifier for a particular user using a standard API approach.
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_design_and_develop_the_fetch_user_profile_api"><a class="anchor" href="#_design_and_develop_the_fetch_user_profile_api"></a>Design and Develop the Fetch User Profile API</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This API will be simple: given an identifier for a particular user, return the User Profile data. We&#8217;ll want to create an API that enables the following <code>curl</code> call (or accessed from wherever, either directly through gRPC or HTTP).</p>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command line hljs" data-lang="command line">curl -X GET -H "Content-Type: application/json" http://localhost:9000/users/$\{uuidgen\}</code></pre>
+</div>
+</div>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -292,45 +367,34 @@
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Goal is to make this a simple API that receives requests - in this case a GET of User Profile data with a result of some data, e.g. <code>GET /users/123</code>/</p>
+<p>The finished code is in the <code>fetch_user_profile</code> branch of this repository. <code>git checkout fetch_user_profile</code> to jump ahead to finished code.</p>
 </div>
 </td>
 </tr>
 </table>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
 <div class="paragraph">
-<p>The finished code is in the <code>fetch_user_profile</code> branch. <code>git checkout fetch_user_profile</code> to jump ahead to finished code.</p>
-</div>
-</td>
-</tr>
-</table>
+<p>Now on to actual building!</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Open the <code>api_spec.proto</code> file.</p>
+<p>Open the <code>api_spec.proto</code> file in your favorite code or text editor.</p>
 </li>
 <li>
 <p>Define the schema of the request. The data sent to the API, in this case, is quite simple: a <code>name</code>. This data will either be part of a JSON payload or part of the URI or request parameters. Fetching User Profile data by a person&#8217;s name wouldn&#8217;t work n the real world - too many Jeremys out there! - so let&#8217;s change name to be a parameter more like an <code>id</code>. Let&#8217;s change <code>name</code> to <code>user_profile_id</code>.</p>
 <div class="listingblock">
 <div class="content">
-<pre> message MyRequest {
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">message MyRequest {
     string user_profile_id = 1;
- }</pre>
+}</code></pre>
 </div>
 </div>
 </li>
 <li>
 <p>Now let&#8217;s move on to what data we expect to send back as a response to this request for User Profile data. <code>text</code> seems to not be a great choice so let&#8217;s change that to <code>name</code> (which nows seems appropiate!). And a <code>name</code> for a User Profile is rather bare bones so we will add some other attributes of a User Profile that we would like to see.</p>
-<div class="olist lowerroman">
-<ol class="lowerroman" type="i">
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
 <li>
 <p>Change <code>text</code> to <code>name</code>.</p>
 </li>
@@ -350,11 +414,11 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre> message MyResponse {
-    string name = 1;
-    string status = 2;
-    bool online = 3;
- }</pre>
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">message MyResponse {
+   string name = 1;
+   string status = 2;
+   bool online = 3;
+}</code></pre>
 </div>
 </div>
 </li>
@@ -373,47 +437,43 @@
 </li>
 <li>
 <p>Change <code>/hello</code> to <code>/users/{user_profile_id}</code>; we&#8217;re putting the parameter, <code>user_profile_id</code>, from our <code>MyRequest</code> message directly into the URI path.</p>
-</li>
-</ol>
-</div>
 <div class="paragraph">
-<p>Finished API specification should look like:</p>
-</div>
-<div class="paragraph">
-<p>+</p>
+<p>The finished API specification should look like:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre> // boilerplate for a new action API
- syntax = "proto3";
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">// boilerplate for a new action API
+syntax = "proto3";
 
- import "akkaserverless/annotations.proto";
- import "google/api/annotations.proto";
+import "akkaserverless/annotations.proto";
+import "google/api/annotations.proto";
 
 
- message MyRequest {
-     string user_profile_id = 1;
- }
+message MyRequest {
+    string user_profile_id = 1;
+}
 
- message MyResponse {
-     string name = 1;
-     string status = 2;
-     bool online = 3;
- }
+message MyResponse {
+    string name = 1;
+    string status = 2;
+    bool online = 3;
+}
 
- service ThingActionService {
-     rpc Users(MyRequest) returns (MyResponse) {
-         option (google.api.http) = {
-             get: "/users/{user_profile_id}",
-             body: "*"
-         };
-     }
- }</pre>
+service MyApi {
+    rpc GetUser(MyRequest) returns (MyResponse) {
+        option (google.api.http) = {
+            get: "/users/{user_profile_id}"
+        };
+    }
+}</code></pre>
 </div>
 </div>
 </li>
+</ol>
+</div>
+</li>
 <li>
-<p>Generate code by running, from terminal window, in the project directory: <code>./bin/compile.sh</code>.</p>
+<p>Generate Python stub code by running, from terminal window, in the project directory: <code>compile.sh</code>.</p>
 </li>
 <li>
 <p>Open the <code>api_impl.py</code> so that we can add our business logic.</p>
@@ -434,51 +494,62 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>"""
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">"""
 Copyright 2020 Lightbend Inc.
 Licensed under the Apache License, Version 2.0.
 """
-
-from dataclasses import dataclass, field
-from typing import MutableSet
 import random
 
-from google.protobuf.empty_pb2 import Empty
-
+# imports fom Akka Serverless SDK
 from akkaserverless.action_context import ActionContext
-from akkaserverless.action_protocol_entity import Actio
-from api_spec_pb2 import (MyRequest, MyResponse, _THINGACTIONSERVICE, DESCRIPTOR as API_DESCRIPTOR)
+from akkaserverless.action_protocol_entity import Action
+
+# import from generated GRPC file(s)
+from api_spec_pb2 import (MyRequest, MyResponse, _MYAPI, DESCRIPTOR as API_DESCRIPTOR)
 
 
-action = Action(_THINGACTIONSERVICE, [API_DESCRIPTOR])
+entity = Action(_MYAPI, [API_DESCRIPTOR])
 
-@action.unary_handler("Hello")
-def hello(command: MyRequest, context: ActionContext):
+@entity.unary_handler("GetUser")
+def fetch_user(command: MyRequest, context: ActionContext):
     resp = MyResponse(name= "My Name", status= random.choice(['active', 'inactive']), online= bool(random.getrandbits(1)))
-    return resp</pre>
+    return resp</code></pre>
 </div>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>./bin/start.sh</p>
-</li>
-<li>
-<p><code>curl -X GET -H "Content-Type: application/json" http://localhost:9000/users/$\{uuidgen\}</code> should return</p>
+<p>Start the API (and proxy) with the <code>start.sh</code> command in the terminal.</p>
 </li>
 </ol>
 </div>
+<div class="paragraph">
+<p>Make an API call through the following command:</p>
+</div>
 <div class="listingblock">
 <div class="content">
-<pre>{"name":"My Name","status":"active","online":false}%</pre>
+<pre class="highlightjs highlight"><code class="language-command line hljs" data-lang="command line">curl -X GET -H "Content-Type: application/json" http://localhost:9000/users/$\{uuidgen\}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The result should look like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command line hljs" data-lang="command line">{"name":"My Name","status":"active","online":false}%</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p><code>status</code> and <code>online</code> values should change randomly as you run that curl command repeatedly.</p>
 </div>
+<div class="paragraph">
+<p>Congratulations! You have your first Akka Serverless Python API! But it was a simple one and not fully using the power of Akka Serverless. Let&#8217;s move on to creating and updating actual User Profiles.</p>
 </div>
-<div class="sect2">
-<h3 id="_design_the_createupdate_user_profile_api"><a class="anchor" href="#_design_the_createupdate_user_profile_api"></a>Design the Create/Update User Profile API</h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_design_and_develop_the_createupdate_user_profile_api"><a class="anchor" href="#_design_and_develop_the_createupdate_user_profile_api"></a>Design and Develop the Create/Update User Profile API</h2>
+<div class="sectionbody">
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -499,26 +570,31 @@ def hello(command: MyRequest, context: ActionContext):
 <div class="paragraph">
 <p>The objective of this exercise will be to deliver on the following requirements:</p>
 </div>
+<div class="sidebarblock">
+<div class="content">
+We want to create and update User Profile data for a particular user using a standard API approach.
+</div>
+</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Open the <code>api_spec.proto</code> file</p>
+<p>Open the <code>api_spec.proto</code> file in your favorite code or text editor.</p>
 </li>
 <li>
 <p>Add a new message request, to capture the information we want to pass into the API: name of the User, status of the User, e.g. a customer or not, and list of devices.</p>
 <div class="listingblock">
 <div class="content">
-<pre> message UserProfile {
-     string user_profile_id = 1;
-     string name = 2;
-     string status = 3;
-     repeated Device devices = 4;
- }
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">message UserProfile {
+    string user_profile_id = 1;
+    string name = 2;
+    string status = 3;
+    repeated Device devices = 4;
+}
 
- message Device {
-     string id = 1;
-     string name = 2;
- }</pre>
+message Device {
+    string id = 1;
+    string name = 2;
+}</code></pre>
 </div>
 </div>
 </li>
@@ -526,21 +602,21 @@ def hello(command: MyRequest, context: ActionContext):
 <p>Annotate the <code>user_profile_id</code> parameter in both the <code>UserProfile</code> and <code>MyRequest</code> messages such that the parameter, <code>user_profile_id</code>, is denoted as the identifier that Akka Serverless should use for Value Entity (KV) storage and manipulation. The annotation is: <code>[(akkaserverless.field).entity_key = true]</code>. See below for example on where to put.</p>
 <div class="listingblock">
 <div class="content">
-<pre> message UserProfile {
-     string user_profile_id = 1 [(akkaserverless.field).entity_key = true];
-     string name = 2;
-     string status = 3;
-     repeated Device devices = 4;
- }
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">message UserProfile {
+    string user_profile_id = 1 [(akkaserverless.field).entity_key = true];
+    string name = 2;
+    string status = 3;
+    repeated Device devices = 4;
+}
 
- message Device {
-     string id = 1;
-     string name = 2;
- }
+message Device {
+    string id = 1;
+    string name = 2;
+}
 
- message MyRequest {
-     string user_profile_id = 1 [(akkaserverless.field).entity_key = true];
- }</pre>
+message MyRequest {
+    string user_profile_id = 1 [(akkaserverless.field).entity_key = true];
+}</code></pre>
 </div>
 </div>
 </li>
@@ -548,12 +624,12 @@ def hello(command: MyRequest, context: ActionContext):
 <p>Update the <code>MyResponse</code> so that it can be used in this new API as well; we are just adding additional data parameters that we will include in the body of the response.</p>
 <div class="listingblock">
 <div class="content">
-<pre> message MyResponse {
-     string name = 1;
-     string status = 2;
-     bool online = 3;
-     repeated Device devices = 4;
- }</pre>
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">message MyResponse {
+    string name = 1;
+    string status = 2;
+    bool online = 3;
+    repeated Device devices = 4;
+}</code></pre>
 </div>
 </div>
 </li>
@@ -561,38 +637,38 @@ def hello(command: MyRequest, context: ActionContext):
 <p>Add the API itself. We&#8217;ll two: a <code>POST /users</code> for creation of a UserProfle and <code>PUT /users/{user_profile_id}</code> for the update.</p>
 <div class="listingblock">
 <div class="content">
-<pre> service MyApi {
-     rpc GetUser(MyRequest) returns (MyResponse) {
-         option (google.api.http) = {
-             get: "/users/{user_profile_id}",
-         };
-     }
-     rpc CreateUser(UserProfile) returns (MyResponse) {
-         option (google.api.http) = {
-             post: "/users",
-             body: "*"
-         };
-     }
-     rpc UpdateUser(UserProfile) returns (MyResponse) {
-         option (google.api.http) = {
-             put: "/users/{user_profile_id}",
-             body: "*"
-         };
-     }
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">service MyApi {
+    rpc GetUser(MyRequest) returns (MyResponse) {
+        option (google.api.http) = {
+            get: "/users/{user_profile_id}",
+        };
+    }
+    rpc CreateUser(UserProfile) returns (MyResponse) {
+        option (google.api.http) = {
+            post: "/users",
+            body: "*"
+        };
+    }
+    rpc UpdateUser(UserProfile) returns (MyResponse) {
+        option (google.api.http) = {
+            put: "/users/{user_profile_id}",
+            body: "*"
+        };
+    }
 
- }</pre>
+}</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p>Generate code by running, from terminal window, in the project directory: <code>./bin/compile.sh</code>.</p>
+<p>Generate code by running, from terminal window, in the project directory: <code>compile.sh</code>.</p>
 </li>
 <li>
 <p>Open the <code>api_impl.py</code> so that we can add our business logic. First, change the implementation of our API from an Action to a Value Entity. Replace:</p>
 <div class="listingblock">
 <div class="content">
-<pre>   from akkaserverless.action_context import ActionContext
-   from akkaserverless.action_protocol_entity import Action</pre>
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">from akkaserverless.action_context import ActionContext
+from akkaserverless.action_protocol_entity import Action</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -600,26 +676,68 @@ def hello(command: MyRequest, context: ActionContext):
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>   from akkaserverless.value_context import ValueEntityCommandContext
-   from akkaserverless.value_entity import ValueEntity</pre>
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">from akkaserverless.value_context import ValueEntityCommandContext
+from akkaserverless.value_entity import ValueEntity</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p>Add <code>UserProfile</code> in front of <code>MyRequest</code> in the import statement:
-<code>from api_spec_pb2 import (UserProfile, MyRequest, MyResponse, _MYAPI, DESCRIPTOR as API_DESCRIPTOR)</code>.</p>
+<p>Add <code>UserProfile</code> in front of <code>MyRequest</code> in the import statement:</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>from api_spec_pb2 import (UserProfile, MyRequest, MyResponse, _MYAPI, DESCRIPTOR as API_DESCRIPTOR)</pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Change the API implementation type from <code>Action</code> to <code>ValueEntity</code>. Replace::</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">entity = Action(_MYAPI, [API_DESCRIPTOR])</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>with</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">entity = ValueEntity(_MYAPI, [API_DESCRIPTOR])</code></pre>
+</div>
+</div>
 </li>
 <li>
-<p>Change the API implementation type from <code>Action</code> to <code>ValueEntity</code>. This is done in this line: <code>entity = Action(_MYAPI, [API_DESCRIPTOR])</code>. The new code should be <code>entity = ValueEntity(_MYAPI, [API_DESCRIPTOR])</code>.</p>
+<p>Initialize default data for the User Profile. After the import statements, add:</p>
 </li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>def init(entity_id: str) -&gt; UserProfile:
+    return UserProfile()</pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p>Add init, add entity type</p>
-<div class="olist loweralpha">
-<ol class="loweralpha" type="a">
+<p>Update the entity definition to include both the <code>type</code> and the default data:</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>entity = ValueEntity(_MYAPI, [API_DESCRIPTOR], 'user_profiles', init)</pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
 <p>Since we&#8217;ve moved from <code>Action</code> to <code>ValueEntity</code> we need to change some things in our <code>GetUser</code> API code.</p>
-<div class="olist lowerroman">
-<ol class="lowerroman" type="i">
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
 <li>
 <p>Change <code>unary_handler</code> to <code>command_handler</code>.</p>
 </li>
@@ -627,11 +745,11 @@ def hello(command: MyRequest, context: ActionContext):
 <p>Change <code>command: MyRequest, context: ActionContext</code> to <code>state: UserProfile, command: MyRequest, context: ValueEntityCommandContext</code>.</p>
 </li>
 <li>
-<p>The api specification calls for a response of type <code>MyResponse</code>.Change</p>
+<p>The api specification calls for a response of type <code>MyResponse</code>. Change</p>
 <div class="listingblock">
 <div class="content">
-<pre> resp = MyResponse(name= "My Name", status= random.choice(['active', 'inactive']), online= bool(random.getrandbits(1)))
- return resp</pre>
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">resp = MyResponse(name= "My Name", status= random.choice(['active', 'inactive']), online= bool(random.getrandbits(1)))
+return resp</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -639,12 +757,9 @@ def hello(command: MyRequest, context: ActionContext):
 </div>
 <div class="listingblock">
 <div class="content">
-<pre> resp = MyResponse(name= state.name, status= state.status, online= bool(random.getrandbits(1)))
- return resp</pre>
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">resp = MyResponse(name= state.name, status= state.status, online= bool(random.getrandbits(1)))
+return resp</code></pre>
 </div>
-</div>
-</li>
-</ol>
 </div>
 </li>
 </ol>
@@ -664,25 +779,16 @@ def hello(command: MyRequest, context: ActionContext):
 <p>Your code should look like:</p>
 <div class="listingblock">
 <div class="content">
-<pre> @entity.command_handler("CreateUser")
- def create_user(state: UserProfile, command: UserProfile, context: ValueEntityCommandContext):
- state = command
- context.update_state(state)
- return MyResponse(name= state.name, status= state.status, online= bool(random.getrandbits(1))ß)</pre>
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">@entity.command_handler("CreateUser")
+def create_user(state: UserProfile, command: UserProfile, context: ValueEntityCommandContext):
+   state = command
+   context.update_state(state)
+   return MyResponse(name= state.name, status= state.status, online= bool(random.getrandbits(1)))</code></pre>
 </div>
 </div>
 </li>
 </ol>
 </div>
-</li>
-<li>
-<p><code>./bin/start.sh</code></p>
-</li>
-<li>
-<p><code>curl -X POST -H "Content-Type: application/json" http://localhost:9000/users -d '{"user_profile_id": "test", "name": "My Name", "status": "active", "devices":[]}'</code></p>
-</li>
-<li>
-<p><code>curl -X GET -H "Content-Type: application/json" http://localhost:9000/users/test</code></p>
 </li>
 <li>
 <p>Add a new command handler for <code>UpdateUser</code>.</p>
@@ -695,35 +801,45 @@ def hello(command: MyRequest, context: ActionContext):
 <p>Define a function, called <code>update_user</code> with parameters of <code>state</code>, <code>command</code>, <code>context</code>.</p>
 </li>
 <li>
-<p>Let&#8217;s make it a bit more complex and do some basic testing. The idea is the same: select which data off of the command (request) that you want to map into the state.
- <code>`</code>
-@entity.command_handler("UpdateUser")
+<p>Let&#8217;s make it a bit more complex and do some basic testing. The idea is the same: select which data off of the command (request) that you want to map into the state.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">@entity.command_handler("UpdateUser")
 def update_user(state: UserProfile, command: UserProfile, context: ValueEntityCommandContext):
- if command.name != state.name:
-   state.name = command.name
- if command.status != state.status:
-   state.status = command.status</p>
+    if command.name and command.name != state.name:
+        state.name = command.name
+    if command.status and command.status != state.status:
+        state.status = command.status
+    context.update_state(state)
+    return MyResponse(name= state.name, status= state.status, online= bool(random.getrandbits(1)))</code></pre>
+</div>
+</div>
 </li>
 </ol>
 </div>
-<div class="paragraph">
-<p>context.update_state(state)
- return MyResponse(name= state.name, status= state.status, online= bool(random.getrandbits(1)))
-  <code>`</code></p>
-</div>
-<div class="olist lowerroman">
-<ol class="lowerroman" type="i">
+</li>
 <li>
-<p><code>./bin/start.sh</code></p>
+<p>Now let&#8217;s start our updated API: <code>start.sh</code></p>
 </li>
 </ol>
 </div>
-</li>
-</ol>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command line hljs" data-lang="command line">curl -X POST -H "Content-Type: application/json" http://localhost:9000/users -d '{"user_profile_id": "test", "name": "My Name", "status": "active", "devices":[]}'
+
+curl -X GET -H "Content-Type: application/json" http://localhost:9000/users/test
+
+curl -X PUT -H "Content-Type: application/json" http://localhost:9000/users/test -d '{"status": "inactive"}'</code></pre>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_design_the_user_profile_query_api"><a class="anchor" href="#_design_the_user_profile_query_api"></a>Design the User Profile Query API</h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_design_the_user_profile_query_api"><a class="anchor" href="#_design_the_user_profile_query_api"></a>Design the User Profile Query API</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>So far we have built the API endpoints for creating, updating and fetching User Profile data. Let&#8217;s continue our development by using the <code>Views</code> capability of Akka Serverless to create queryable data.</p>
+</div>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -738,50 +854,42 @@ def update_user(state: UserProfile, command: UserProfile, context: ValueEntityCo
 </tr>
 </table>
 </div>
+<div class="sidebarblock">
+<div class="content">
+First, we have to know that Akka Serverless users (CQRS)][<a href="https://martinfowler.com/bliki/CQRS.html" class="bare">https://martinfowler.com/bliki/CQRS.html</a>] for supporting querying capabilities; the query mechanism always resides in a separate service/API, even if running within the same container environment. This ultimately gives the developer more control and performance for querying, whether for basic or more advanced needs. THis means that we need to add a peer service definition. Normally, we&#8217;re likely to do this in a separate file and probably repository as well. But for now we&#8217;ll do in the same API specification file: <code>api_spec.proto</code>.
+</div>
+</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
 <p>Open up proto file</p>
 </li>
-</ol>
-</div>
-<div class="exampleblock">
-<div class="content">
-<div class="olist upperalpha">
-<ol class="upperalpha" type="A">
-<li>
-<p>First, we have to know that Akka Serverless users (CQRS)][<a href="https://martinfowler.com/bliki/CQRS.html" class="bare">https://martinfowler.com/bliki/CQRS.html</a>] for supporting querying capabilities; the query mechanism always resides in a separate service/API, even if running within the same container environment. This ultimately gives the developer more control and performance for querying, whether for basic or more advanced needs. THis means that we need to add a peer service definition. Normally, we&#8217;re likely to do this in a separate file and probably repository as well. But for now we&#8217;ll do in the same API specification file: <code>api_spec.proto</code>.</p>
-</li>
-</ol>
-</div>
-</div>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
 <li>
 <p>Add an empty service definition at the end of the file, called <code>MyQueryApi</code>:</p>
 <div class="listingblock">
 <div class="content">
-<pre> service MyQueryApi {
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">service MyQueryApi {
 
- }</pre>
+}</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p>Querying in Akka Serverless is based on a feature called (<code>views</code>)[<a href="https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#view" class="bare">https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#view</a>]. Views are created automatically by Akka Serverless based on the <strong>events</strong> that occur, e.g. new data created, updated or deleted. As such, we have to define an API - not called directly by a developer - that will be used by Akka Serverless to connect the events to the query tables that will be created and managed. We do this using the <code>eventing</code> annotation.</p>
+<p>Querying in Akka Serverless is based on a feature called (<code>views</code>)[<a href="https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#view" class="bare">https://developer.lightbend.com/docs/akka-serverless/reference/glossary.html#view</a>]. Views are created automatically by Akka Serverless based on the <strong>events</strong> that occur, e.g. new data created, updated or deleted. As such, we have to define an API - not called directly by a developer - that will be used by Akka Serverless to connect the events to the query tables that will be created and managed. We do this using the <code>eventing</code> annotation. We will add this API endpoint to the <code>MyQueryApi</code>.</p>
 <div class="listingblock">
 <div class="content">
-<pre> rpc UpdateView(UserProfile) returns (UserProfile) {
-     option (akkaserverless.method).eventing = {
-     in: {
-         value_entity: "user_profiles"
-     }
-     };
-     option (akkaserverless.method).view.update = {
-     table: "user_profiles"
-     };
- }</pre>
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">service MyQueryApi {
+    rpc UpdateView(UserProfile) returns (UserProfile) {
+        option (akkaserverless.method).eventing = {
+            in: {
+                value_entity: "user_profiles"
+            }
+        };
+        option (akkaserverless.method).view.update = {
+            table: "user_profiles"
+        };
+    }
+}</code></pre>
 </div>
 </div>
 </li>
@@ -789,14 +897,14 @@ def update_user(state: UserProfile, command: UserProfile, context: ValueEntityCo
 <p>The second part of our new <code>MyQueryApi</code> will be the actual API call that can be used by a developer to make the actual query. In this case, let&#8217;s do a simple query for fetching all of the users created by our <code>MyApi</code>. Name of the API is <code>GetUsers</code>, with no input parameters supported an a resonse of type <code>UsersResponse</code>. The annotation used, to define the query, is <code>option (akkaserverless.method).view.query</code> and the query is a simple select statement: <code>SELECT * AS results FROM user_profiles</code>.</p>
 <div class="listingblock">
 <div class="content">
-<pre> rpc GetUsers(google.protobuf.Empty) returns (UsersResponse) {
-     option (akkaserverless.method).view.query = {
-     query: "SELECT * AS results FROM user_profiles"
-     };
-     option (google.api.http) = {
-         get: "/users"
-     };
- }</pre>
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">rpc GetUsers(google.protobuf.Empty) returns (UsersResponse) {
+    option (akkaserverless.method).view.query = {
+    query: "SELECT * AS results FROM user_profiles"
+    };
+    option (google.api.http) = {
+        get: "/users"
+    };
+}</code></pre>
 </div>
 </div>
 </li>
@@ -804,9 +912,17 @@ def update_user(state: UserProfile, command: UserProfile, context: ValueEntityCo
 <p>In the above, we have a new message type that we have to define: <code>UsersResponse</code>. In this case, it is a simple list of <code>UserProfile</code> messages. The definition is:</p>
 <div class="listingblock">
 <div class="content">
-<pre> message UsersResponse {
-     repeated UserProfile results = 1;
- }</pre>
+<pre class="highlightjs highlight"><code class="language-proto hljs" data-lang="proto">message UsersResponse {
+    repeated UserProfile results = 1;
+}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Compile the stub code based on our updated protobuf:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command line hljs" data-lang="command line">compile.sh</code></pre>
 </div>
 </div>
 </li>
@@ -814,10 +930,10 @@ def update_user(state: UserProfile, command: UserProfile, context: ValueEntityCo
 <p>Now we have our API defined and the eventing setup so the underlying data structures are populated. We connect this to code by updating our <code>api_impl.py</code>. We need to import some modules and then setup the View. You can add the below right after the <code>from api_spec_pb2 import (UserProfile, MyRequest, MyResponse, _MYAPI, DESCRIPTOR as API_DESCRIPTOR)</code> line. You could also put at the bottom of the file as well.</p>
 <div class="listingblock">
 <div class="content">
-<pre> from akkaserverless.view import View
- from api_spec_pb2 import (_MYQUERYAPI, DESCRIPTOR as FILE_DESCRIPTOR)
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">from akkaserverless.view import View
+from api_spec_pb2 import (_MYQUERYAPI, DESCRIPTOR as FILE_DESCRIPTOR)
 
- view = View(_MYQUERYAPI,[FILE_DESCRIPTOR])</pre>
+view = View(_MYQUERYAPI,[FILE_DESCRIPTOR])</code></pre>
 </div>
 </div>
 </li>
@@ -825,102 +941,131 @@ def update_user(state: UserProfile, command: UserProfile, context: ValueEntityCo
 <p>The final step is to expose it to the Akka Serverless run-time. Update the <code>api_service.py</code> file to import the <code>view</code> and add it to the list of components served. The file should look like:</p>
 <div class="listingblock">
 <div class="content">
-<pre> """
- Copyright 2020 Lightbend Inc.
- Licensed under the Apache License, Version 2.0.
- """
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">"""
+Copyright 2020 Lightbend Inc.
+Licensed under the Apache License, Version 2.0.
+"""
 
- from akkaserverless.akkaserverless_service import AkkaServerlessService
- from api_impl import entity as myapi
- from api_impl import view as myquery
- import logging
+from akkaserverless.akkaserverless_service import AkkaServerlessService
+from api_impl import entity as myapi
+from api_impl import view as myquery
+import logging
 
- if __name__ == '__main__':
-     logging.basicConfig(level=logging.DEBUG)
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
 
-     # create service and add components
-     service = AkkaServerlessService()
-     service.add_component(myapi)
-     service.add_component(myquery)
-     service.start()</pre>
+    # create service and add components
+    service = AkkaServerlessService()
+    service.add_component(myapi)
+    service.add_component(myquery)
+    service.start()</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p><code>./bin/start.sh</code></p>
-</li>
-<li>
-<p><code>curl -X POST -H "Content-Type: application/json" http://localhost:9000/users -d '{"user_profile_id": "test", "name": "My Name", "status": "active", "devices":[]}'</code></p>
-</li>
-<li>
-<p><code>curl -X GET -H "Content-Type: application/json" http://localhost:9000/users</code></p>
+<p>Start the API service again: <code>start.sh</code></p>
 </li>
 </ol>
 </div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command line hljs" data-lang="command line">curl -X POST -H "Content-Type: application/json" http://localhost:9000/users -d '{"user_profile_id": "test", "name": "My Name", "status": "active", "devices":[]}'
+
+curl -X POST -H "Content-Type: application/json" http://localhost:9000/users -d '{"user_profile_id": "test2", "name": "My Name", "status": "active", "devices":[]}'
+
+curl -X GET -H "Content-Type: application/json" http://localhost:9000/users</code></pre>
 </div>
-<div class="sect2">
-<h3 id="_implement_update_a_users_devices_via_pubsub_eventing"><a class="anchor" href="#_implement_update_a_users_devices_via_pubsub_eventing"></a>Implement Update A User&#8217;s devices via Pubsub (Eventing)</h3>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_package_and_deploy_your_service"><a class="anchor" href="#_package_and_deploy_your_service"></a>Package and deploy your service</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>The finished code is in the <code>pubsub_and_actions</code> branch. <code>git checkout pubsub_and_actions</code> to jump ahead to finished code.</p>
-</div>
-</td>
-</tr>
-</table>
+<p>To compile, build the container image, and publish it to your container registry, follow these steps</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Open the <code>api_spec.proto</code> to add a new API method to the <code>MyApi</code> service.</p>
+<p>Set your <code>DOCKER_REGISTRY</code> and <code>DOCKER_USER</code> environment variables:</p>
 <div class="listingblock">
 <div class="content">
-<pre> rpc UpdateUserDevices(UserProfile) returns (google.protobuf.Empty) {
-     option (akkaserverless.method).eventing = {
-         in: {
-           topic: "device_added"
-         }
-     };
- };</pre>
+<pre class="highlightjs highlight"><code class="language-command line hljs" data-lang="command line">export DOCKER_REGISTRY=&lt;your Docker registry, e.g. docker.io&gt;#
+export DOCKER_USER=&lt;your Docker registry username&gt;</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p>At the bottom of the <code>api_spec.proto</code>, add a new service that will simulate external system.</p>
+<p>From the root project directory, build the docker container (the 0.0.1 is just the version number you want to use to tag the container):</p>
 <div class="listingblock">
 <div class="content">
-<pre> message UserDevices {
-     string user_profile_id = 1;
-     repeated Device devices = 4;
-
- }
-
- service MyEventApi {
-     rpc ValidateDevices(UserDevices) returns (UserProfile) {
-         option (akkaserverless.method).eventing = {
-             out: {
-             topic: "device_added"
-             }
-         };
-         option (google.api.http) = {
-             post: "/users/{user_profile_id}/devices",
-             body: "*"
-         };
-     };
- }</pre>
+<pre class="highlightjs highlight"><code class="language-command line hljs" data-lang="command line">docker_build.sh 0.0.1</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>3.</p>
+</li>
+<li>
+<p>Push the built container to the registry:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-command line hljs" data-lang="command line">docker_push.sh 0.0.1</code></pre>
 </div>
+</div>
+</li>
+<li>
+<p>Sign in to your Akka Serverless account at: <a href="https://console.akkaserverless.com/">Akka Serverless Console</a></p>
+</li>
+<li>
+<p>If you do not have a project, click <strong>Add Project</strong> to create one, otherwise choose the project you want to deploy your service to.</p>
+</li>
+<li>
+<p>On the project dashboard click the "+" next to <strong>services</strong> to start the deployment wizard</p>
+</li>
+<li>
+<p>Choose a name for your service and click <strong>Next</strong></p>
+</li>
+<li>
+<p>Enter the container image URL from the above step and click <strong>Next</strong></p>
+</li>
+<li>
+<p>Click <strong>Next</strong> (no environment variables are needed for these samples)</p>
+</li>
+<li>
+<p>Check both <em>Add a route to this service</em> and <em>Enable CORS</em> and click <strong>Next</strong></p>
+</li>
+<li>
+<p>Click <strong>Finish</strong> to start the deployment</p>
+</li>
+<li>
+<p>Click <strong>Go to Service</strong> to see your newly deployed service</p>
 </li>
 </ol>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_invoke_your_service"><a class="anchor" href="#_invoke_your_service"></a>Invoke your service</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Now that you have deployed your service, the next step is to invoke it using gRPCurl</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>From the "<em>Service Explorer</em>" click on the method you want to invoke</p>
+</li>
+<li>
+<p>Click on "<em>gRPCurl</em>"</p>
+</li>
+<li>
+<p>In the bottom section of the dialog, fill in the values you want to send to your service</p>
+</li>
+<li>
+<p>In the top section of the dialog, click the "<em>Copy to clipboard</em>" button</p>
+</li>
+<li>
+<p>Open a new command line and paste the content you just copied</p>
+</li>
+</ol>
 </div>
 </div>
 </div>
